@@ -67,7 +67,9 @@
 - 提升 Mihomo 内核兼容性
 - 优化 WebView2 环境适配
 - 改善 Rule 模式刷新逻辑
+# 📦 Latest Release
 
+➡️ [Download Optimization Pack](../../releases/latest)
 ---
 
 ## 💻 Download Assets
