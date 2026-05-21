@@ -1,1 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Clash Verge Rev 官方指南（2026）｜下载配置 · TUN模式 · Mihomo代理中枢</title>
+
+  <meta
+    name="description"
+    content="Clash Verge Rev 官方文档与下载中心，提供 Windows、macOS、Linux 全平台客户端下载、TUN 模式教程、Mihomo 配置、规则分流、订阅导入与 FAQ 指南。"
+  />
+
+  <meta
+    name="keywords"
+    content="Clash Verge Rev, Clash Verge Rev下载, Mihomo, Clash代理, Clash配置, Clash TUN, Clash Rule, Clash Verge Rev教程"
+  />
+
+  <meta name="theme-color" content="#111827" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1180px;
+      margin: auto;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      background: rgba(15,23,42,0.95);
+      backdrop-filter: blur(12px);
+      z-index: 999;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .menu {
+      display: flex;
+      gap: 28px;
+    }
+
+    .menu a {
+      color: #cbd5e1;
+      font-size: 15px;
+      transition: .3s;
+    }
+
+    .menu a:hover {
+      color: #fff;
+    }
+
+    .hero {
+      padding: 100px 0 80px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(59,130,246,.15);
+      color: #60a5fa;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: 54px;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    .hero p {
+      color: #94a3b8;
+      font-size: 18px;
+      margin-bottom: 34px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: .3s;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,.15);
+      color: #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.05);
+    }
+
+    .hero-card {
+      background: linear-gradient(
+        145deg,
+        rgba(30,41,59,.95),
+        rgba(15,23,42,.95)
+      );
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      padding: 34px;
+    }
+
+    .hero-card h3 {
+      margin-bottom: 18px;
+      color: #fff;
+    }
+
+    .hero-card ul {
+      list-style: none;
+    }
+
+    .hero-card li {
+      margin-bottom: 12px;
+      color: #cbd5e1;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-size: 38px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .section-desc {
+      color: #94a3b8;
+      margin-bottom: 50px;
+      max-width: 900px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(15,23,42,.9);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 28px;
+      transition: .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59,130,246,.45);
+    }
+
+    .card h3 {
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .card p {
+      color: #94a3b8;
+      font-size: 15px;
+    }
+
+    .feature-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .feature-table th,
+    .feature-table td {
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 18px;
+      text-align: left;
+    }
+
+    .feature-table th {
+      background: rgba(30,41,59,.8);
+      color: #fff;
+    }
+
+    .feature-table td {
+      color: #cbd5e1;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .download-card {
+      background: rgba(15,23,42,.95);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 30px;
+    }
+
+    .download-card h3 {
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .download-card p {
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .download-card a {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .faq {
+      margin-top: 40px;
+    }
+
+    .faq-item {
+      background: rgba(15,23,42,.95);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .faq-item h3 {
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .faq-item p {
+      color: #94a3b8;
+    }
+
+    footer {
+      padding: 60px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 60px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 40px;
+    }
+
+    .footer-grid h4 {
+      margin-bottom: 18px;
+      color: #fff;
+    }
+
+    .footer-grid a {
+      display: block;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .copyright {
+      margin-top: 40px;
+      color: #64748b;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media(max-width: 960px) {
+
+      .hero-grid,
+      .grid-3,
+      .download-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      .menu {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">Clash Verge Rev</div>
+
+    <nav class="menu">
+      <a href="#">首页</a>
+      <a href="#">下载中心</a>
+      <a href="#">TUN 模式</a>
+      <a href="#">Mihomo</a>
+      <a href="#">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+
+    <div>
+      <div class="tag">
+        Clash Verge Rev v2.5.1 Latest
+      </div>
+
+      <h1>
+        Clash Verge Rev 官方指南（2026）
+      </h1>
+
+      <p>
+        基于 Mihomo 内核构建的新一代智能代理中枢，支持 Windows、macOS 与 Linux 全平台规则分流、TUN 模式、订阅同步与现代化代理控制体验。
+      </p>
+
+      <div class="buttons">
+        <a href="#" class="btn btn-primary">
+          Windows 下载
+        </a>
+
+        <a href="#" class="btn btn-secondary">
+          macOS 下载
+        </a>
+
+        <a href="#" class="btn btn-secondary">
+          Linux 下载
+        </a>
+
+        <a href="#" class="btn btn-secondary">
+          GitHub Releases
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <h3>v2.5.1 更新重点</h3>
+
+      <ul>
+        <li>✔ 修复 Windows 节点交互异常</li>
+        <li>✔ 修复配置备份功能问题</li>
+        <li>✔ 优化 Mihomo 内核兼容性</li>
+        <li>✔ 提升 TUN 模式稳定性</li>
+        <li>✔ 改善 Rule 模式刷新逻辑</li>
+        <li>✔ 增强 WebView2 环境适配</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2 class="section-title">
+      什么是 Clash Verge Rev
+    </h2>
+
+    <p class="section-desc">
+      Clash Verge Rev 是基于 Rust 与 Tauri 技术栈开发的新一代 Mihomo 图形化客户端，支持现代化规则分流、TUN 流量接管、多订阅同步、WebDAV 配置管理以及智能代理控制。相比传统 Clash for Windows，Clash Verge Rev 拥有更低资源占用、更强扩展能力以及更现代的 UI 架构。
+    </p>
+
+    <div class="grid-3">
+
+      <div class="card">
+        <h3>Mihomo Core</h3>
+
+        <p>
+          内置现代化 Mihomo 代理核心，支持 RULE-SET、GEOIP、Sniffer、Fake-IP 与脚本扩展能力。
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>TUN 模式</h3>
+
+        <p>
+          支持 Windows Wintun、macOS Network Extension 与 Linux Tun Device 系统级流量接管。
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>规则分流</h3>
+
+        <p>
+          支持 Rule、Global 与 Direct 模式，适用于智能代理、游戏加速与多区域网络访问。
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2 class="section-title">
+      Clash Verge Rev 核心功能
+    </h2>
+
+    <table class="feature-table">
+      <tr>
+        <th>模块</th>
+        <th>功能说明</th>
+      </tr>
+
+      <tr>
+        <td>Mihomo Engine</td>
+        <td>高性能代理内核与规则引擎</td>
+      </tr>
+
+      <tr>
+        <td>TUN Engine</td>
+        <td>系统级流量代理接管</td>
+      </tr>
+
+      <tr>
+        <td>Rule Dispatcher</td>
+        <td>智能规则分流与 GEOIP 匹配</td>
+      </tr>
+
+      <tr>
+        <td>Subscription Manager</td>
+        <td>多机场订阅同步与更新</td>
+      </tr>
+
+      <tr>
+        <td>WebDAV Sync</td>
+        <td>配置云端同步与恢复</td>
+      </tr>
+
+      <tr>
+        <td>CSS Injection</td>
+        <td>客户端 UI 个性化增强</td>
+      </tr>
+    </table>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2 class="section-title">
+      全平台客户端下载
+    </h2>
+
+    <p class="section-desc">
+      提供 Windows、macOS 与 Linux 多平台安装包下载，支持 x64、ARM64 与 Apple Silicon 架构。
+    </p>
+
+    <div class="download-grid">
+
+      <div class="download-card">
+        <h3>Windows</h3>
+
+        <p>
+          支持 Windows 10 / Windows 11，适用于 Intel、AMD 与 ARM 设备。
+        </p>
+
+        <a href="#">
+          下载 Windows 版本
+        </a>
+      </div>
+
+      <div class="download-card">
+        <h3>macOS</h3>
+
+        <p>
+          支持 Apple Silicon 与 Intel Mac，兼容 TUN 模式与 Mihomo 内核。
+        </p>
+
+        <a href="#">
+          下载 macOS 版本
+        </a>
+      </div>
+
+      <div class="download-card">
+        <h3>Linux</h3>
+
+        <p>
+          提供 Debian 与 RPM 安装包，适用于 Ubuntu、Fedora、Debian 等系统。
+        </p>
+
+        <a href="#">
+          下载 Linux 版本
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2 class="section-title">
+      FAQ 常见问题
+    </h2>
+
+    <div class="faq">
+
+      <div class="faq-item">
+        <h3>Clash Verge Rev 是否支持 Win7？</h3>
+
+        <p>
+          v2.5.1 起不再支持 Windows 7，建议升级至 Windows 10 或 Windows 11。
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>TUN 模式无法启动怎么办？</h3>
+
+        <p>
+          建议以管理员身份运行客户端，并检查 Wintun 驱动与系统网络组件是否正常。
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Clash Verge Rev 与 Clash for Windows 有什么区别？</h3>
+
+        <p>
+          Clash Verge Rev 基于 Rust + Tauri 架构开发，资源占用更低，Mihomo 支持更完善。
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+        <h4>下载中心</h4>
+
+        <a href="#">Windows 下载</a>
+        <a href="#">macOS 下载</a>
+        <a href="#">Linux 下载</a>
+      </div>
+
+      <div>
+        <h4>核心文档</h4>
+
+        <a href="#">TUN 模式</a>
+        <a href="#">Mihomo 教程</a>
+        <a href="#">规则分流</a>
+      </div>
+
+      <div>
+        <h4>帮助中心</h4>
+
+        <a href="#">FAQ</a>
+        <a href="#">安装教程</a>
+        <a href="#">订阅配置</a>
+      </div>
+
+      <div>
+        <h4>项目相关</h4>
+
+        <a href="#">GitHub</a>
+        <a href="#">更新日志</a>
+        <a href="#">版本历史</a>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2026 Clash Verge Rev Docs · 基于 Mihomo Core 构建的现代化智能代理中枢
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
