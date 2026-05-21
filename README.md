@@ -532,15 +532,219 @@ fake-ip-filter:
 
 ---
 
-# 📜 License
+## 🌐 Clash 客户端官网导航（2026 最新版）
 
-MIT License
+随着 Clash for Windows、ClashX 等传统客户端逐渐停更，当前 Clash / Mihomo 生态已经进入新阶段。  
+如今主流客户端已经全面转向：
+
+- Mihomo 内核
+- TUN 模式
+- Fake-IP
+- Rule 白名单结构
+- DNS 防泄漏
+- GEO 数据自动更新
+
+本导航页整理目前仍在维护、适合日常使用的 Clash 客户端，并提供：
+
+✅ 官方下载地址  
+✅ GitHub Releases  
+✅ 使用教程  
+✅ 平台兼容说明  
+✅ 停更状态标识
+
+---
+
+# 💻 Windows / macOS / Linux 桌面客户端
+
+| 客户端 | 推荐指数 | 内核 | 状态 | 下载地址 | 使用教程 |
+|---|---|---|---|---|---|
+| Clash Verge Rev | ⭐⭐⭐⭐⭐ | Mihomo | ✅ 持续更新 | https://github.com/clash-verge-rev/clash-verge-rev/releases | https://github.com/clashbk/clash/wiki/clash-verge-rev |
+| FlClash | ⭐⭐⭐⭐ | Mihomo | ✅ 持续更新 | https://github.com/chen08209/FlClash/releases | https://github.com/clashbk/clash/wiki/flclash |
+| Clash Mi | ⭐⭐⭐⭐ | Mihomo | ✅ 持续更新 | https://github.com/KaringX/clashmi/releases | https://github.com/clashbk/clash/wiki/clash-mi |
+| Clash Party | ⭐⭐⭐⭐ | Mihomo | ✅ 持续更新 | https://github.com/mihomo-party-org/clash-party/releases | https://github.com/clashbk/clash/wiki/clash-party |
+| Clash Nyanpasu | ⭐⭐⭐⭐ | Mihomo | ✅ 持续更新 | https://github.com/libnyanpasu/clash-nyanpasu/releases | https://github.com/clashbk/clash/wiki/clash-nyanpasu |
+| Hiddify Next | ⭐⭐⭐⭐ | Sing-box / Xray | ✅ 持续更新 | https://github.com/hiddify/hiddify-app/releases | https://github.com/clashbk/clash/wiki/hiddify-next |
+
+---
+
+# 🍎 macOS 专用客户端
+
+| 客户端 | 推荐指数 | 状态 | 下载地址 | 使用教程 |
+|---|---|---|---|---|
+| ClashX Meta | ⭐⭐⭐⭐⭐ | ✅ 持续更新 | https://github.com/MetaCubeX/ClashX.Meta/releases | https://github.com/clashbk/clash/wiki/clashx-meta |
+| ClashX | ⭐⭐ | ❌ 已停更 | https://github.com/clashbk/ClashX | https://github.com/clashbk/clash/wiki/clashx |
+| ClashX Pro | ⭐⭐ | ❌ 已停更 | https://github.com/clashbk/ClashX_Pro | https://github.com/clashbk/clash/wiki/clashx-pro |
+
+---
+
+# 🤖 Android 客户端
+
+| 客户端 | 推荐指数 | 状态 | 下载地址 | 使用教程 |
+|---|---|---|---|---|
+| Clash Meta For Android | ⭐⭐⭐⭐⭐ | ✅ 持续更新 | https://github.com/MetaCubeX/ClashMetaForAndroid/releases | https://github.com/clashbk/clash/wiki/clash-meta-for-android |
+| Clash for Android | ⭐⭐ | ❌ 已停更 | https://github.com/clashbk/Clash_for_Android | https://github.com/clashbk/clash/wiki/clash-for-android |
+
+---
+
+# 🪟 Windows 平台推荐客户端
+
+由于 Clash for Windows（CFW）长期停更，目前更推荐：
+
+## Clash Verge Rev
+
+核心优势：
+
+- Mihomo 内核
+- Rust + Tauri 架构
+- 更低内存占用
+- 更稳定 TUN 模式
+- Fake-IP 支持更完善
+- Rule 分流性能更强
+- 持续维护更新
+
+适合：
+
+- AI 网站代理
+- YouTube / Netflix
+- 开发环境
+- 游戏 UDP
+- 企业级 Rule 分流
+
+---
+
+# ⚡ 当前最推荐的客户端组合
+
+| 平台 | 推荐客户端 |
+|---|---|
+| Windows | Clash Verge Rev |
+| macOS | ClashX Meta |
+| Android | Clash Meta For Android |
+| Linux | Clash Verge Rev |
+| 低资源设备 | FlClash |
+| 多协议兼容 | Hiddify Next |
+
+---
+
+# 📦 为什么新客户端都转向 Mihomo
+
+相比传统 Clash Premium：
+
+Mihomo 提供：
+
+- 更强 Rule 兼容性
+- Sniffer 支持
+- Fake-IP 增强
+- TUN 更稳定
+- GEO 数据更新
+- UDP 转发增强
+- 更好的 DNS 模块
+
+因此：
+
+目前几乎所有新客户端都已经基于 Mihomo 开发。
+
+---
+
+# 🧠 新手如何选择 Clash 客户端
+
+## 普通用户
+
+推荐：
+
+- Clash Verge Rev
+
+原因：
+
+- UI 更现代
+- 更新频率高
+- 配置简单
+- 教程多
+
+---
+
+## macOS 用户
+
+推荐：
+
+- ClashX Meta
+
+原因：
+
+- 原生体验更好
+- Network Extension 更稳定
+- Apple Silicon 支持完善
+
+---
+
+## Android 用户
+
+推荐：
+
+- Clash Meta For Android
+
+原因：
+
+- Mihomo 兼容最好
+- Fake-IP 稳定
+- 后台保活更强
+
+---
+
+## 开发者 / 高级用户
+
+推荐：
+
+- Clash Verge Rev
+- Hiddify Next
+
+原因：
+
+- API 更完善
+- 自动化能力更强
+- Rule 结构更灵活
+
+---
+
+# 🔧 已停更客户端说明
+
+以下客户端已经长期停止维护：
+
+| 客户端 | 状态 |
+|---|---|
+| Clash for Windows | ❌ 停更 |
+| Clash Verge | ❌ 停更 |
+| ClashX | ❌ 停更 |
+| ClashX Pro | ❌ 停更 |
+| Clash for Android | ❌ 停更 |
+| Mihomo Party | ❌ 停更 |
+
+虽然仍可使用，但：
+
+- Rule 兼容性较旧
+- TUN 支持较弱
+- DNS 模块较旧
+- Fake-IP 兼容性不足
+
+不建议长期使用。
+
+---
+
+# 📚 推荐延伸教程
+
+建议继续阅读：
+
+- Clash Verge Rev 安装教程
+- Mihomo 深度优化
+- DNS 防泄漏方案
+- Rule 白名单结构
+- AI 网站智能分流
+- GitHub Actions 自动更新订阅
 
 ---
 
 # ⚠️ Disclaimer
 
-本仓库仅用于：
+本导航页仅用于：
 
 - 网络技术学习
 - 开发环境调试
