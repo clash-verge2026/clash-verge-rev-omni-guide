@@ -1,7 +1,7 @@
 # 🧠 Clash Verge Rev Omni Guide
 
 > 从入门到智能代理中枢。  
-> 一份专注于 Mihomo 内核调优、TUN 深度优化、DNS 防泄漏与 AI 分流 的原创实战指南。
+> 一份专注于 Mihomo 内核调优、TUN 深度优化、DNS 防泄漏与 AI 分流的原创实战指南。
 
 ---
 
@@ -20,41 +20,25 @@
 
 # 📦 Latest Release
 
-## Clash Verge Rev v2.6.0
+## 🆕 Clash Verge Rev v2.6.0
 
-本次更新：
+本次更新内容：
 
-✅ 修复 Windows 节点交互异常  
-✅ 优化 Fake-IP 稳定性  
-✅ 提升 Mihomo 内核兼容性  
-✅ 改善 DNS fallback 逻辑  
-✅ 增强 Linux TUN 适配能力  
+- ✅ 修复 Windows 节点交互异常
+- ✅ 优化 Fake-IP 稳定性
+- ✅ 提升 Mihomo 内核兼容性
+- ✅ 改善 DNS fallback 逻辑
+- ✅ 增强 Linux TUN 适配能力
 
 ---
 
-# ⬇️ Download
+## ⬇️ Download Release
 
-## Windows
-
-- x64（推荐）
-- ARM64
-- WebView2 内置版
-
-## macOS
-
-- Apple Silicon
-- Intel
-
-## Linux
-
-- DEB
-- RPM
-- ARM64
-- ARMv7
-
-### Download Release
-
+👉 **Clash Verge Rev v2.6.0 下载地址：**  
 https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0
+
+👉 **所有版本 Releases：**  
+https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases
 
 ---
 
@@ -87,43 +71,54 @@ cp config.example.yaml ~/.config/clash-verge-rev/config.yaml
 
 ## Windows
 
-1. 下载 Clash Verge Rev Release  
-2. 导入 config.example.yaml  
-3. 启用 TUN 模式  
-4. 更新订阅  
-5. 完成配置  
+1. 下载 **Clash Verge Rev Release：**  
+   https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases
+
+2. 导入 `config.example.yaml`
+
+3. 启用 TUN 模式
+
+4. 更新订阅
+
+5. 完成配置
 
 ---
 
 # 🛡️ Recommended Features
 
-推荐开启：
+建议开启：
 
 - TUN 模式
 - Fake-IP
 - Sniffer
-- Rule 模式
+- Rule 白名单模式
 - GEO 自动更新
-- DoH / DoT
+- DoH / DoT DNS
 
-可显著提升：
+提升效果：
 
-- YouTube 稳定性
-- Netflix 解锁成功率
-- AI 网站兼容性
-- DNS 安全性
-- UDP 游戏体验
+- YouTube 稳定性增强
+- Netflix 解锁成功率提升
+- AI 网站兼容性增强
+- DNS 防污染能力增强
+- UDP 游戏延迟优化
 
 ---
 
-# 📚 Documentation
+# 📚 Documentation (Wiki)
+
+👉 **完整使用文档（Wiki）：**  
+https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki
+
+包含：
 
 - Mihomo 内核调优
 - DNS 防泄漏方案
 - Rule 白名单结构
+- TUN 深度优化
+- Fake-IP 机制解析
 - GitHub Actions 自动更新
-- 开发环境代理
-- Clash API 自动化
+- 开发环境代理配置
 
 ---
 
