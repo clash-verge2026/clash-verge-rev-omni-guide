@@ -11,7 +11,7 @@
 
 ### 最新稳定版
 
-👉 [Clash Verge Rev v2.6.0 最新下载](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0)
+👉 [Clash Verge Rev v2.5.1 最新下载](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/2.5.1)
 
 ### 历史版本
 
@@ -84,7 +84,7 @@ Clash Verge Rev 是基于 Tauri 与 Mihomo 内核开发的新一代代理客户�
 
 # 📦 Latest Release
 
-## Clash Verge Rev v2.6.0
+## Clash Verge Rev v2.5.1
 
 ### 更新内容
 
@@ -100,7 +100,7 @@ Clash Verge Rev 是基于 Tauri 与 Mihomo 内核开发的新一代代理客户�
 
 ### 下载入口
 
-👉 [立即下载 Clash Verge Rev v2.6.0](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0)
+👉 [立即下载 Clash Verge Rev v2.5.1](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/2.5.1)
 
 👉 [浏览全部版本](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases)
 
