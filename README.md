@@ -1,158 +1,126 @@
 # 🧠 Clash Verge Rev Omni Guide
 
-> 从入门到智能代理中枢。  
-> 一份专注于 Mihomo 内核调优、TUN 深度优化、DNS 防泄漏与 AI 分流的原创实战指南。
+> Clash Verge Rev 下载、安装、配置与优化指南。  
+> 专注于 Mihomo 内核、TUN 模式、DNS 防泄漏、Fake-IP、Rule 分流及 AI 网站代理的完整实践文档。
 
 ---
 
-# 🚀 Features
+# 🚀 快速导航
 
-- Mihomo 内核优化
-- TUN 高性能模式
-- DNS 防泄漏方案
-- Fake-IP 深度配置
-- Rule 白名单架构
-- GitHub Actions 自动化
-- AI 网站智能分流
-- 开发环境代理集成
+## 📦 下载中心（Download Center）
+
+### 最新稳定版
+
+👉 [Clash Verge Rev v2.6.0 最新下载](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0)
+
+### 历史版本
+
+👉 [查看全部 Releases](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases)
+
+---
+
+## 📚 Wiki 文档中心
+
+### 新手入门
+
+📖 [Clash Verge Rev 安装教程](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Clash-Verge-Rev-%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B)
+
+📖 [Clash Verge Rev 配置教程](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Clash-Verge-Rev-%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
+
+---
+
+### 进阶优化
+
+⚙️ [Mihomo 内核调优](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-%E5%86%85%E6%A0%B8%E8%B0%83%E4%BC%98)
+
+🚀 [TUN 深度优化](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%8C%96)
+
+🛡️ [DNS 防泄漏方案](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-%E9%98%B2%E6%B3%84%E6%BC%8F%E6%96%B9%E6%A1%88)
+
+🌐 [Fake-IP 工作原理](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Fake-IP-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+
+📑 [Rule 白名单结构](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Rule-%E7%99%BD%E5%90%8D%E5%8D%95%E7%BB%93%E6%9E%84)
+
+🤖 [AI 网站智能分流](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/AI-%E7%BD%91%E7%AB%99%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81)
+
+---
+
+### Wiki 首页
+
+👉 [进入 Wiki 文档中心](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki)
+
+---
+
+# ⚡ Clash Verge Rev 是什么？
+
+Clash Verge Rev 是基于 Tauri 与 Mihomo 内核开发的新一代代理客户端。
+
+支持：
+
+- Windows
+- macOS
+- Linux
+
+核心能力：
+
+- Mihomo 内核
+- TUN 模式
+- Fake-IP
+- DNS 防泄漏
+- Rule 智能分流
+- GEO 数据更新
+- WebDAV 同步
+- AI 网站代理
+
+相比 Clash for Windows：
+
+- 更低内存占用
+- 更快启动速度
+- 更稳定 TUN 模式
+- 更强 DNS 模块
+- 持续维护更新
 
 ---
 
 # 📦 Latest Release
 
-## 🆕 Clash Verge Rev v2.6.0
+## Clash Verge Rev v2.6.0
 
-本次更新内容：
+### 更新内容
 
-- ✅ 修复 Windows 节点交互异常
-- ✅ 优化 Fake-IP 稳定性
-- ✅ 提升 Mihomo 内核兼容性
-- ✅ 改善 DNS fallback 逻辑
-- ✅ 增强 Linux TUN 适配能力
+✅ 修复 Windows 节点交互异常
 
----
+✅ 优化 Fake-IP 稳定性
 
-## ⬇️ Download Release
+✅ 提升 Mihomo 内核兼容性
 
-👉 **Clash Verge Rev v2.6.0 下载地址：**  
-https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0
+✅ 改善 DNS Fallback 逻辑
 
-👉 **所有版本 Releases：**  
-https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases
+✅ 增强 Linux TUN 适配能力
 
----
+### 下载入口
 
-# 🧩 Configuration Templates
+👉 [立即下载 Clash Verge Rev v2.6.0](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.0)
 
-| Template | Description |
-|---|---|
-| Minimal Mode | 最小化低资源代理 |
-| AI Mode | ChatGPT / Claude / Gemini 分流 |
-| Streaming Mode | 流媒体解锁 |
-| Gaming Mode | UDP 游戏优化 |
-| Full Rule Mode | 企业级规则架构 |
-| Dev Mode | 开发环境代理 |
+👉 [浏览全部版本](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases)
 
 ---
 
-# ⚡ Quick Start
+# 🔥 热门教程
 
-## macOS / Linux
+- [Clash Verge Rev 下载教程](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Clash-Verge-Rev-%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B)
 
-```bash
-git clone https://github.com/clash-verge2026/clash-verge-rev-omni-guide.git
+- [Clash Verge Rev 配置教程](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Clash-Verge-Rev-%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
 
-cd clash-verge-rev-omni-guide
+- [Mihomo 深度优化指南](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-%E5%86%85%E6%A0%B8%E8%B0%83%E4%BC%98)
 
-cp config.example.yaml ~/.config/clash-verge-rev/config.yaml
-```
+- [TUN 模式完整解析](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%8C%96)
 
----
+- [DNS 防泄漏终极方案](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-%E9%98%B2%E6%B3%84%E6%BC%8F%E6%96%B9%E6%A1%88)
 
-## Windows
+- [Fake-IP 工作原理](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Fake-IP-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
 
-1. 下载 **Clash Verge Rev Release：**  
-   https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases
-
-2. 导入 `config.example.yaml`
-
-3. 启用 TUN 模式
-
-4. 更新订阅
-
-5. 完成配置
-
----
-
-# 🛡️ Recommended Features
-
-建议开启：
-
-- TUN 模式
-- Fake-IP
-- Sniffer
-- Rule 白名单模式
-- GEO 自动更新
-- DoH / DoT DNS
-
-提升效果：
-
-- YouTube 稳定性增强
-- Netflix 解锁成功率提升
-- AI 网站兼容性增强
-- DNS 防污染能力增强
-- UDP 游戏延迟优化
-
----
-
-# 📚 Documentation (Wiki)
-
-👉 **完整使用文档（Wiki）：**  
-https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki
-
-包含：
-
-- Mihomo 内核调优
-- DNS 防泄漏方案
-- Rule 白名单结构
-- TUN 深度优化
-- Fake-IP 机制解析
-- GitHub Actions 自动更新
-- 开发环境代理配置
-
----
-
-# 💻 Recommended Clients
-
-| Platform | Recommended Client |
-|---|---|
-| Windows | Clash Verge Rev |
-| macOS | ClashX Meta |
-| Android | Clash Meta For Android |
-| Linux | Clash Verge Rev |
-
----
-
-# 🔧 Troubleshooting
-
-| 问题 | 解决方案 |
-|---|---|
-| 部分 APP 无法联网 | 在 tun.bypass 添加进程名 |
-| YouTube 断流 | 使用 url-test 自动测速 |
-| 内存占用高 | 关闭 store-fake-ip |
-| DNS 污染 | 开启 Fake-IP |
-| UDP 游戏异常 | 启用 TUN 模式 |
-
----
-
-# 🗺️ Roadmap
-
-- DNS 防泄漏增强
-- TUN 深度优化
-- 智能节点健康检测
-- Clash API Dashboard
-- WebDAV 自动备份
-- 企业级规则生成器
+- [AI 网站智能分流](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/AI-%E7%BD%91%E7%AB%99%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81)
 
 ---
 
