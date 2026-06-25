@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>教程中心 ｜ Clash Verge Rev · TUN 深度指南 · DNS 防泄漏 · 规则分流全攻略</title>
+    <meta name="description" content="Clash Verge Rev 全栈教程中心：从零基础安装、订阅导入、TUN 模式系统级代理配置，到 DNS 防泄漏终极方案、AI 网站智能分流、自定义规则编写、负载均衡策略调优。覆盖 Windows、macOS、Linux 全平台，含详细代码示例与故障排查。" />
+    <meta name="keywords" content="Clash Verge Rev教程, TUN模式配置, DNS防泄漏教程, 代理规则编写, Mihomo配置, 订阅导入, AI分流, 负载均衡, 故障排查, Windows代理教程, macOS代理教程, Linux代理教程" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/tutorials" />
+
+    <!-- Open Graph / 社交分享 -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash Verge Rev 全栈教程中心 · TUN 深度指南 · DNS 防泄漏 · 规则分流全攻略" />
+    <meta property="og:description" content="从零基础到高级调优，覆盖 TUN 模式、DNS 防泄漏、AI 分流、负载均衡、自定义规则等全部核心主题。含详细代码示例与故障排查。" />
+    <meta property="og:url" content="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/tutorials" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2025-08-20T00:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-06-20T00:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev Community" />
+    <meta property="article:section" content="教程" />
+    <meta property="article:tag" content="TUN模式" />
+    <meta property="article:tag" content="DNS防泄漏" />
+    <meta property="article:tag" content="规则分流" />
+    <meta property="article:tag" content="Mihomo" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Verge Rev 全栈教程中心" />
+    <meta name="twitter:description" content="TUN 模式 · DNS 防泄漏 · AI 分流 · 负载均衡 · 规则编写。含详细代码示例。" />
+
+    <!-- Schema.org 结构化数据 (Article + BreadcrumbList + FAQ) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash Verge Rev 全栈教程中心：TUN 深度指南 · DNS 防泄漏 · 规则分流全攻略",
+            "description": "从零基础安装、订阅导入、TUN 模式系统级代理配置，到 DNS 防泄漏终极方案、AI 网站智能分流、自定义规则编写、负载均衡策略调优。覆盖 Windows、macOS、Linux 全平台。",
+            "author": {
+                "@type": "Organization",
+                "name": "Clash Verge Rev Community",
+                "url": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Clash Verge Rev Community"
+            },
+            "datePublished": "2025-06-25",
+            "dateModified": "2026-06-25",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide/tutorials.html"
+            },
+            "about": [
+                { "@type": "Thing", "name": "TUN 模式配置" },
+                { "@type": "Thing", "name": "DNS 防泄漏" },
+                { "@type": "Thing", "name": "代理规则分流" },
+                { "@type": "Thing", "name": "Mihomo 内核优化" },
+                { "@type": "Thing", "name": "AI 网站专线代理" }
+            ],
+            "educationalLevel": "Beginner to Advanced",
+            "inLanguage": "zh-CN",
+            "timeRequired": "PT45M"
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "首页", "item": "index.html" },
+                { "@type": "ListItem", "position": 2, "name": "教程中心", "item": "tutorials.html" },
+                { "@type": "ListItem", "position": 3, "name": "TUN 深度指南", "item": "tutorials.html#tun-deep-dive" },
+                { "@type": "ListItem", "position": 4, "name": "DNS 防泄漏", "item": "tutorials.html#dns-anti-leak" }
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "TUN 模式无法启动提示驱动错误怎么办？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "请以管理员身份运行客户端。Windows 用户需确保 Wintun 驱动已正确安装；macOS 用户请检查系统扩展权限；Linux 用户请执行 modprobe tun 确认内核模块已加载，并确保用户有 /dev/net/tun 的读写权限。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "如何验证 DNS 防泄漏配置是否生效？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "访问 ipleak.net 或 dnsleaktest.com 进行检测。如果配置正确，页面显示的 DNS 服务器应全部为代理节点 IP，而非本地运营商 DNS。同时建议使用 nslookup 或 dig 命令进行本地验证。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "AI 网站分流规则如何编写？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "在配置文件中添加 DOMAIN-SUFFIX 规则匹配 openai.com、claude.ai、gemini.google.com 等域名，并指定代理策略组。建议使用 RULE-SET 方式引入社区维护的 AI 域名列表，实现自动更新。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "订阅链接导入后节点为空怎么解决？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "请检查订阅链接是否有效（可在浏览器中直接访问测试），确认链接格式为 Base64 编码或直接返回 YAML/URI 格式。同时检查网络是否能访问订阅服务器，必要时使用代理访问订阅链接。"
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --bg-code: #0d1117;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --border-accent: rgba(88, 166, 255, 0.35);
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-red: #f85149;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .container {
+            width: 90%;
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        /* ========== HEADER — 与首页一致 ========== */
+        .site-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-default);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: box-shadow var(--transition-fast);
+        }
+        .site-header.scrolled {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            gap: 16px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            padding: 6px 4px;
+            border-radius: var(--radius-sm);
+            transition: background var(--transition-fast);
+        }
+        .logo-link:hover {
+            background: var(--btn-outline-bg);
+        }
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .logo-text {
+            letter-spacing: -0.01em;
+        }
+        .logo-badge {
+            font-size: 0.7rem;
+            background: var(--border-default);
+            color: var(--text-secondary);
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 12px;
+        }
+        .main-nav a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            position: relative;
+        }
+        .main-nav a:hover {
+            color: var(--text-primary);
+            background: var(--btn-outline-bg);
+        }
+        .main-nav a.active {
+            color: var(--text-primary);
+            background: var(--btn-outline-bg);
+        }
+        .main-nav a .nav-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            margin-left: -2px;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.35;
+            }
+        }
+        .nav-separator {
+            width: 1px;
+            height: 18px;
+            background: var(--border-default);
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .search-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-default);
+            color: var(--text-primary);
+            padding: 7px 12px 7px 34px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            width: 200px;
+            transition: all var(--transition-smooth);
+            outline: none;
+        }
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12);
+            width: 240px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 11px;
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border-default);
+            background: var(--btn-outline-bg);
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .header-btn:hover {
+            background: var(--btn-outline-hover);
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+        .header-btn-primary {
+            background: var(--btn-primary-bg);
+            color: #fff;
+            border-color: transparent;
+            font-weight: 600;
+        }
+        .header-btn-primary:hover {
+            background: var(--btn-primary-hover);
+            color: #fff;
+        }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            transition: background var(--transition-fast);
+        }
+        .hamburger:hover {
+            background: var(--btn-outline-bg);
+            color: var(--text-primary);
+        }
+        .hamburger svg {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+        .mobile-nav-panel {
+            display: none;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-secondary);
+            z-index: 190;
+            padding: 20px 24px;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            border-top: 1px solid var(--border-default);
+        }
+        .mobile-nav-panel.open {
+            display: flex;
+        }
+        .mobile-nav-panel a {
+            display: block;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+        }
+        .mobile-nav-panel a:hover,
+        .mobile-nav-panel a.active {
+            background: var(--btn-outline-bg);
+            color: var(--text-primary);
+        }
+        .mobile-nav-panel .search-wrap-mobile {
+            margin-bottom: 8px;
+        }
+        .mobile-nav-panel .search-input {
+            width: 100%;
+        }
+
+        /* ========== HERO 教程页专属 ========== */
+        .hero-tutorials {
+            padding: 56px 0 44px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            border-bottom: 1px solid var(--border-muted);
+        }
+        .hero-tutorials::before {
+            content: "";
+            position: absolute;
+            top: -120px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(163, 113, 247, 0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .hero-tutorials::after {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(57, 210, 192, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .hero-tut-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .hero-tut-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(163, 113, 247, 0.1);
+            border: 1px solid rgba(163, 113, 247, 0.25);
+            color: var(--accent-purple);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            letter-spacing: 0.02em;
+        }
+        .hero-tut-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        .hero-tut-title .gradient-text {
+            background: linear-gradient(135deg, #a371f7 0%, #58a6ff 50%, #39d2c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-tut-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .hero-tut-desc {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+        .tut-meta-row {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        .tut-meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            background: var(--btn-outline-bg);
+            padding: 5px 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border-default);
+        }
+        .tut-meta-tag .meta-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .meta-dot.beginner {
+            background: var(--accent-green);
+        }
+        .meta-dot.intermediate {
+            background: var(--accent-orange);
+        }
+        .meta-dot.advanced {
+            background: var(--accent-purple);
+        }
+        .hero-tut-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            box-shadow: var(--shadow-card);
+        }
+        .hero-tut-card h3 {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .toc-list {
+            list-style: none;
+            font-size: 0.88rem;
+        }
+        .toc-list li {
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toc-list li:last-child {
+            border-bottom: none;
+        }
+        .toc-list a {
+            color: var(--accent-blue);
+            transition: color var(--transition-fast);
+        }
+        .toc-list a:hover {
+            color: #79c0ff;
+            text-decoration: underline;
+        }
+        .toc-difficulty {
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .diff-easy {
+            background: rgba(63, 185, 80, 0.15);
+            color: #3fb950;
+        }
+        .diff-mid {
+            background: rgba(210, 153, 29, 0.15);
+            color: #d2991d;
+        }
+        .diff-hard {
+            background: rgba(248, 81, 73, 0.15);
+            color: #f85149;
+        }
+
+        /* ========== 通用 Section ========== */
+        .section {
+            padding: 60px 0;
+        }
+        .section-alt {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-muted);
+            border-bottom: 1px solid var(--border-muted);
+        }
+        .section-header {
+            margin-bottom: 36px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+            color: #fff;
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 620px;
+        }
+
+        /* 教程内容卡片 */
+        .tutorial-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            padding: 28px 26px;
+            margin-bottom: 24px;
+            transition: all var(--transition-smooth);
+            scroll-margin-top: 80px;
+        }
+        .tutorial-block:hover {
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-elevated);
+        }
+        .tutorial-block h3 {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tut-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .tut-step-num.green {
+            background: var(--accent-green);
+        }
+        .tut-step-num.blue {
+            background: var(--accent-blue);
+        }
+        .tut-step-num.orange {
+            background: var(--accent-orange);
+        }
+        .tut-step-num.cyan {
+            background: var(--accent-cyan);
+        }
+        .tutorial-block h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 16px 0 8px;
+            color: #e6edf3;
+        }
+        .tutorial-block p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .tutorial-block ul,
+        .tutorial-block ol {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .tutorial-block li {
+            margin-bottom: 4px;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            margin: 14px 0;
+            overflow-x: auto;
+            position: relative;
+            font-family: "SF Mono", "Fira Code", "Fira Mono", "Menlo", "Consolas", "DejaVu Sans Mono", monospace;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            color: #e6edf3;
+            white-space: pre;
+            word-break: normal;
+            letter-spacing: 0.01em;
+        }
+        .code-block .code-comment {
+            color: #8b949e;
+            font-style: italic;
+        }
+        .code-block .code-key {
+            color: #ff7b72;
+        }
+        .code-block .code-val {
+            color: #a5d6ff;
+        }
+        .code-block .code-str {
+            color: #a5d6ff;
+        }
+        .code-block .code-bool {
+            color: #ff7b72;
+        }
+        .code-block .code-num {
+            color: #79c0ff;
+        }
+        .code-block .code-section {
+            color: #d2a8ff;
+            font-weight: 600;
+        }
+        .code-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--border-default);
+            color: var(--text-muted);
+            padding: 3px 10px;
+            border-radius: 4px 4px 0 0;
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 提示框 */
+        .callout {
+            border-left: 3px solid var(--accent-blue);
+            background: rgba(88, 166, 255, 0.06);
+            padding: 14px 18px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 14px 0;
+            font-size: 0.88rem;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .callout.warning {
+            border-left-color: var(--accent-orange);
+            background: rgba(210, 153, 29, 0.06);
+        }
+        .callout.tip {
+            border-left-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.06);
+        }
+        .callout.danger {
+            border-left-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.06);
+        }
+        .callout strong {
+            color: #fff;
+        }
+
+        /* 标签 */
+        .inline-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin: 0 2px;
+            letter-spacing: 0.02em;
+        }
+        .tag-win {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+        .tag-mac {
+            background: rgba(163, 113, 247, 0.15);
+            color: #a371f7;
+        }
+        .tag-linux {
+            background: rgba(63, 185, 80, 0.15);
+            color: #3fb950;
+        }
+        .tag-all {
+            background: rgba(57, 210, 192, 0.15);
+            color: #39d2c0;
+        }
+
+        /* 表格 */
+        .tut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+        .tut-table th,
+        .tut-table td {
+            border: 1px solid var(--border-default);
+            padding: 10px 14px;
+            text-align: left;
+        }
+        .tut-table th {
+            background: var(--bg-tertiary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        .tut-table td {
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+        }
+        .tut-table tr:hover td {
+            background: var(--bg-tertiary);
+        }
+
+        /* Footer */
+        .site-footer {
+            border-top: 1px solid var(--border-default);
+            background: var(--bg-secondary);
+            padding: 48px 0 32px;
+            margin-top: 20px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 30px;
+            margin-bottom: 32px;
+        }
+        .footer-col h4 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .footer-col a {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            padding: 4px 0;
+            transition: color var(--transition-fast);
+        }
+        .footer-col a:hover {
+            color: var(--accent-blue);
+        }
+        .footer-bottom {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-muted);
+        }
+        .footer-bottom a {
+            color: var(--accent-blue);
+        }
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 900px) {
+            .hero-tut-inner {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .hero-tut-title {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+            .search-wrap {
+                display: none;
+            }
+            .header-btn {
+                display: none;
+            }
+            .header-btn-primary {
+                display: inline-flex;
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-tut-title {
+                font-size: 1.7rem;
+            }
+            .section {
+                padding: 36px 0;
+            }
+            .tutorial-block {
+                padding: 18px 14px;
+            }
+            .header-inner {
+                height: 50px;
+            }
+            .mobile-nav-panel {
+                top: 50px;
+            }
+            html {
+                scroll-padding-top: 64px;
+            }
+            .code-block {
+                font-size: 0.76rem;
+                padding: 12px 14px;
+            }
+            .tut-table {
+                font-size: 0.76rem;
+            }
+            .tut-table th,
+            .tut-table td {
+                padding: 6px 8px;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-tut-title {
+                font-size: 1.4rem;
+            }
+            .hero-tut-subtitle {
+                font-size: 0.9rem;
+            }
+            .tut-meta-row {
+                gap: 8px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== HEADER / 导航栏 ==================== -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="features.html">✨ 特性</a>
+                    <a href="download.html">📥 下载</a>
+                    <a href="tutorials.html" class="active">📖 教程</a>
+                    <a href="faq.html">❓ FAQ</a>
+                    <a href="changelog.html">📋 更新日志</a>
+                    <a href="blog.html">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">
+                        📦 Releases
+                        <span class="nav-indicator"></span>
+                    </a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索教程…" aria-label="搜索教程" id="headerSearch" />
+                </div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn" title="GitHub 仓库">⬡ GitHub</a>
+                <a href="download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="搜索教程…" aria-label="搜索教程" id="mobileSearch" />
+            </div>
+            <a href="features.html">✨ 特性</a>
+            <a href="download.html">📥 下载</a>
+            <a href="tutorials.html" class="active">📖 教程</a>
+            <a href="faq.html">❓ FAQ</a>
+            <a href="changelog.html">📋 更新日志</a>
+            <a href="blog.html">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">⬡ GitHub 仓库</a>
+        </div>
+    </header>
+
+    <!-- ==================== HERO 教程页专属 ==================== -->
+    <section class="hero-tutorials" aria-labelledby="tutHeroTitle">
+        <div class="container hero-tut-inner">
+            <div>
+                <div class="hero-tut-badge">
+                    📖 全栈教程中心 · 持续更新
+                </div>
+                <h1 class="hero-tut-title" id="tutHeroTitle">
+                    从入门到精通<br />
+                    <span class="gradient-text">Clash Verge Rev 全攻略</span>
+                </h1>
+                <p class="hero-tut-subtitle">
+                    覆盖<strong>安装配置、订阅导入、TUN 系统级代理、DNS 防泄漏、AI 网站分流、负载均衡策略、自定义规则编写</strong>等全部核心主题。无论你是网络新手还是资深开发者，都能在这里找到最适合你的教程路径。
+                </p>
+                <p class="hero-tut-desc">
+                    每个教程均配有<strong>详细代码示例</strong>、<strong>参数说明表格</strong>以及<strong>常见错误排查指南</strong>。建议按难度等级循序渐进，从基础入门开始，逐步深入到高级调优。
+                </p>
+                <div class="tut-meta-row">
+                    <span class="tut-meta-tag"><span class="meta-dot beginner"></span> 入门教程 ×3</span>
+                    <span class="tut-meta-tag"><span class="meta-dot intermediate"></span> 进阶教程 ×4</span>
+                    <span class="tut-meta-tag"><span class="meta-dot advanced"></span> 高级教程 ×3</span>
+                    <span class="tut-meta-tag">📎 总计 10+ 篇</span>
+                    <span class="tut-meta-tag">⏱️ 累计阅读约 45 分钟</span>
+                </div>
+            </div>
+            <div class="hero-tut-card" aria-label="教程目录">
+                <h3>📑 快速导航目录</h3>
+                <ul class="toc-list">
+                    <li><span class="toc-difficulty diff-easy">入门</span> <a href="#tut-install">安装与基础配置</a></li>
+                    <li><span class="toc-difficulty diff-easy">入门</span> <a href="#tut-subscription">订阅导入与节点管理</a></li>
+                    <li><span class="toc-difficulty diff-easy">入门</span> <a href="#tut-first-run">首次运行验证指南</a></li>
+                    <li><span class="toc-difficulty diff-mid">进阶</span> <a href="#tun-deep-dive">TUN 模式深度配置</a></li>
+                    <li><span class="toc-difficulty diff-mid">进阶</span> <a href="#dns-anti-leak">DNS 防泄漏终极方案</a></li>
+                    <li><span class="toc-difficulty diff-mid">进阶</span> <a href="#ai-routing">AI 网站智能分流</a></li>
+                    <li><span class="toc-difficulty diff-mid">进阶</span> <a href="#rule-writing">自定义规则编写指南</a></li>
+                    <li><span class="toc-difficulty diff-hard">高级</span> <a href="#load-balance">负载均衡策略调优</a></li>
+                    <li><span class="toc-difficulty diff-hard">高级</span> <a href="#troubleshoot">深度故障排查手册</a></li>
+                    <li><span class="toc-difficulty diff-hard">高级</span> <a href="#perf-tuning">性能极限调优</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 入门教程区 ==================== -->
+    <section class="section" id="tut-install" aria-labelledby="installTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">入门教程 · 第 1 篇</span>
+                <h2 class="section-title" id="installTitle">📥 安装与基础配置</h2>
+                <p class="section-subtitle">从下载到首次成功代理，每一步都有清晰指引。预计阅读 5 分钟。</p>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num green">1</span> 下载对应平台版本</h3>
+                <p>
+                    前往 <a href="download.html" style="color:#58a6ff;">下载页面</a> 或 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" target="_blank" rel="noopener" style="color:#58a6ff;">GitHub Releases</a>，根据你的操作系统选择正确的安装包。Clash Verge Rev 提供以下格式：
+                </p>
+                <ul>
+                    <li><span class="inline-tag tag-win">Windows</span> <strong>.exe</strong> 安装程序（x64 / ARM64），双击运行即可完成安装。</li>
+                    <li><span class="inline-tag tag-mac">macOS</span> <strong>.dmg</strong> 镜像（Intel / Apple Silicon 通用），拖拽至 Applications 文件夹。</li>
+                    <li><span class="inline-tag tag-linux">Linux</span> <strong>.deb</strong> / <strong>.rpm</strong> / <strong>AppImage</strong> 三种格式，推荐使用 AppImage 以获得最佳兼容性。</li>
+                </ul>
+                <div class="callout tip">
+                    <strong>💡 提示：</strong>Apple Silicon (M1-M4) 用户请下载 <code>aarch64</code> 或 <code>arm64</code> 标识的版本，以获得原生性能。Intel Mac 用户选择 <code>x64</code> 版本。Linux 用户若使用 Wayland 显示协议，建议优先选择 AppImage 格式。
+                </div>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num green">2</span> 首次启动与权限配置</h3>
+                <p>
+                    安装完成后启动应用。首次启动时，操作系统可能会弹出安全提示：
+                </p>
+                <ul>
+                    <li><strong>Windows：</strong>SmartScreen 可能提示"未知发布者"，点击"更多信息"→"仍要运行"即可。这是因为应用未经过 Microsoft 代码签名（开源项目常见情况）。</li>
+                    <li><strong>macOS：</strong>Gatekeeper 可能阻止打开。前往<strong>系统偏好设置 → 安全性与隐私 → 通用</strong>，点击"仍要打开"。Apple Silicon 机型还需确认 Rosetta 2 已安装（如使用 x64 版本）。</li>
+                    <li><strong>Linux：</strong>若使用 AppImage，需先赋予执行权限：<code>chmod +x Clash_Verge_Rev*.AppImage</code>。.deb/.rpm 包通过包管理器安装后通常无需额外配置。</li>
+                </ul>
+                <div class="callout warning">
+                    <strong>⚠️ 注意：</strong>如果计划使用 TUN 模式，必须以<strong>管理员/root 权限</strong>运行客户端，否则虚拟网卡无法创建。Windows 用户可右键快捷方式 → 属性 → 兼容性 → 勾选"以管理员身份运行此程序"。
+                </div>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num green">3</span> 基础界面导览</h3>
+                <p>启动后你会看到主界面，关键区域如下：</p>
+                <ul>
+                    <li><strong>代理模式切换：</strong>位于顶部，可在"规则模式"、"全局模式"、"直连模式"之间快速切换。日常使用推荐<strong>规则模式</strong>。</li>
+                    <li><strong>节点列表：</strong>左侧面板展示所有可用节点，支持按延迟排序、手动测速、分组管理。</li>
+                    <li><strong>设置面板：</strong>齿轮图标进入，包含端口配置、TUN 开关、DNS 设置、外观主题等选项。</li>
+                    <li><strong>日志面板：</strong>实时显示 Mihomo 内核日志，排查问题时必看。</li>
+                </ul>
+                <div class="callout">
+                    <strong>📌 关键概念：</strong>规则模式 = 按配置文件中的规则自动分流（国内直连、国外代理）；全局模式 = 所有流量走代理；直连模式 = 所有流量不走代理。大部分场景下规则模式是最优选择。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 订阅导入 ==================== -->
+    <section class="section section-alt" id="tut-subscription" aria-labelledby="subTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">入门教程 · 第 2 篇</span>
+                <h2 class="section-title" id="subTitle">🔗 订阅导入与节点管理</h2>
+                <p class="section-subtitle">正确导入订阅链接是使用代理的第一步。预计阅读 4 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num blue">1</span> 获取订阅链接</h3>
+                <p>从你的机场/服务商处获取订阅链接。通常它是一个以 <code>https://</code> 开头的 URL，访问后会返回 Base64 编码的节点列表或直接返回 Clash 兼容的 YAML 配置。请确认你的订阅类型为 <strong>Clash 兼容格式</strong>。</p>
+                <div class="callout warning">
+                    <strong>⚠️ 注意：</strong>不要将订阅链接分享给他人，它通常包含你的流量凭证。建议使用服务商提供的"订阅链接加密"或"链接重置"功能定期更新。
+                </div>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num blue">2</span> 导入到 Clash Verge Rev</h3>
+                <p>在客户端中，进入<strong>设置 → 订阅</strong>，点击"添加订阅"，粘贴链接并保存。客户端会自动拉取节点列表。支持同时管理多个订阅，节点会自动合并到对应分组中。</p>
+                <div class="callout tip">
+                    <strong>💡 高级技巧：</strong>可在订阅 URL 后添加参数实现过滤，例如 <code>&amp;filter=香港|日本|新加坡</code> 只保留特定地区节点（需服务商支持）。部分服务商还支持 <code>&amp;emoji</code> 参数自动添加国旗图标。
+                </div>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num blue">3</span> 节点健康检查与自动切换</h3>
+                <p>导入完成后，点击"测速"按钮对所有节点进行延迟检测。你可以在设置中开启<strong>自动测速</strong>功能，客户端会定期检测节点可用性并自动切换到最低延迟节点。建议设置测速间隔为 300-600 秒，避免频繁测速消耗流量。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TUN 深度配置 ==================== -->
+    <section class="section" id="tun-deep-dive" aria-labelledby="tunTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">进阶教程 · 核心篇章</span>
+                <h2 class="section-title" id="tunTitle">🚀 TUN 模式深度配置指南</h2>
+                <p class="section-subtitle">TUN 模式是实现系统级代理的关键。本文详解每个参数的含义、最佳实践与平台差异。预计阅读 8 分钟。</p>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num orange">1</span> TUN 模式原理简述</h3>
+                <p>
+                    TUN 模式通过创建虚拟网络接口（Virtual NIC），在操作系统内核层面拦截所有网络流量，然后交由 Mihomo 内核进行规则匹配和转发。相比传统的系统代理（仅覆盖浏览器），TUN 模式可以接管<strong>终端命令、Docker 容器、游戏、UDP 流量、ICMP ping</strong>等所有网络请求，实现真正的"全设备代理"。
+                </p>
+                <p>工作流程概括为：应用程序发出网络请求 → 操作系统路由表将流量导向虚拟 TUN 接口 → Mihomo 内核读取数据包 → 根据规则决定直连或代理 → 转发至对应出口。</p>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num orange">2</span> 核心配置参数详解</h3>
+                <p>以下是在 Mihomo 配置中 TUN 相关的关键参数：</p>
+                <table class="tut-table">
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>推荐值</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>enable</code></td>
+                            <td>布尔</td>
+                            <td><code>true</code></td>
+                            <td>是否启用 TUN 模式</td>
+                        </tr>
+                        <tr>
+                            <td><code>stack</code></td>
+                            <td>字符串</td>
+                            <td><code>mixed</code></td>
+                            <td>协议栈类型：<code>system</code>（系统栈）、<code>gvisor</code>（用户空间栈）、<code>mixed</code>（混合，TCP 用 system，UDP 用 gvisor，推荐）</td>
+                        </tr>
+                        <tr>
+                            <td><code>auto-route</code></td>
+                            <td>布尔</td>
+                            <td><code>true</code></td>
+                            <td>自动配置路由表，将流量引导至 TUN 接口</td>
+                        </tr>
+                        <tr>
+                            <td><code>auto-detect-interface</code></td>
+                            <td>布尔</td>
+                            <td><code>true</code></td>
+                            <td>自动检测物理出口网卡，避免路由冲突</td>
+                        </tr>
+                        <tr>
+                            <td><code>dns-hijack</code></td>
+                            <td>数组</td>
+                            <td><code>["any:53"]</code></td>
+                            <td>劫持 DNS 请求至 Mihomo 内置 DNS 服务器，防止 DNS 泄漏的关键</td>
+                        </tr>
+                        <tr>
+                            <td><code>strict-route</code></td>
+                            <td>布尔</td>
+                            <td><code>true</code></td>
+                            <td>严格路由模式，防止流量绕过 TUN 接口</td>
+                        </tr>
+                        <tr>
+                            <td><code>mtu</code></td>
+                            <td>整数</td>
+                            <td><code>1500</code></td>
+                            <td>虚拟接口的最大传输单元，一般保持默认</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num orange">3</span> 完整配置示例</h3>
+                <span class="code-label">config.yaml · TUN 部分</span>
+                <div class="code-block"><span class="code-section"># ========== TUN 模式配置 ==========</span>
+                    <span class="code-key">tun</span>:
+                    <span class="code-key">enable</span>: <span class="code-bool">true</span>
+                    <span class="code-key">stack</span>: <span class="code-str">mixed</span>              <span class="code-comment"># 推荐 mixed，兼容性最佳</span>
+                    <span class="code-key">auto-route</span>: <span class="code-bool">true</span>          <span class="code-comment"># 自动配置路由</span>
+                    <span class="code-key">auto-detect-interface</span>: <span class="code-bool">true</span> <span class="code-comment"># 自动检测网卡</span>
+                    <span class="code-key">dns-hijack</span>:
+                    - <span class="code-str">any:53</span>               <span class="code-comment"># 劫持所有 DNS 请求</span>
+                    <span class="code-key">strict-route</span>: <span class="code-bool">true</span>       <span class="code-comment"># 严格路由</span>
+                    <span class="code-key">mtu</span>: <span class="code-num">1500</span></div>
+                <div class="callout warning">
+                    <strong>⚠️ Linux 用户特别注意：</strong>需要确保内核模块 <code>tun</code> 已加载。执行 <code>sudo modprobe tun</code> 加载模块，并将当前用户加入 <code>netdev</code> 组或赋予 <code>/dev/net/tun</code> 读写权限。部分发行版（如 Ubuntu 24.04+）还需安装 <code>linux-modules-extra</code> 包。
+                </div>
+            </div>
+
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num orange">4</span> 平台特定配置差异</h3>
+                <p><span class="inline-tag tag-win">Windows</span> 需安装 <strong>Wintun</strong> 驱动，Clash Verge Rev 安装包已内置。若遇到"驱动未找到"错误，请在设置中点击"重装 Wintun 驱动"。</p>
+                <p><span class="inline-tag tag-mac">macOS</span> 需在<strong>系统偏好设置 → 网络</strong>中信任新出现的虚拟网卡。首次启用 TUN 时系统会弹出权限提示，点击"允许"。</p>
+                <p><span class="inline-tag tag-linux">Linux</span> 若使用 NetworkManager，可能需要配置忽略 TUN 接口的 DHCP 请求，在 <code>/etc/NetworkManager/conf.d/</code> 中添加配置以避免冲突。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== DNS 防泄漏 ==================== -->
+    <section class="section section-alt" id="dns-anti-leak" aria-labelledby="dnsTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">进阶教程 · 安全核心</span>
+                <h2 class="section-title" id="dnsTitle">🛡️ DNS 防泄漏终极方案</h2>
+                <p class="section-subtitle">DNS 泄漏会暴露你的真实 IP 和浏览记录。本文教你彻底杜绝泄漏风险。预计阅读 7 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num purple">1</span> 理解 DNS 泄漏的危害</h3>
+                <p>当你的设备发起一个域名解析请求时，如果 DNS 查询绕过了代理隧道直接发送给本地运营商 DNS 服务器，就会发生<strong>DNS 泄漏</strong>。攻击者或监控方可以通过 DNS 查询记录推断出你访问了哪些网站——即使后续的 HTTP 流量走了代理，DNS 层面的痕迹已经留下。常见的泄漏场景包括：WebRTC 泄漏、IPv6 DNS 查询绕过、DNS-over-HTTP 未加密传输等。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num purple">2</span> Fake-IP 模式配置</h3>
+                <p>Fake-IP 是 Mihomo 内核提供的强力防泄漏机制。其原理是：当客户端发起 DNS 查询时，Mihomo 不真正解析域名，而是返回一个<strong>虚假的 IP 地址</strong>（通常为 198.18.0.x 段）。当后续流量到达 TUN 接口时，Mihomo 根据目标 Fake-IP 反查原始域名，再通过代理隧道进行真实解析。这样本地 DNS 查询完全不会泄露。</p>
+                <span class="code-label">config.yaml · DNS Fake-IP 配置</span>
+                <div class="code-block"><span class="code-section"># ========== DNS 防泄漏配置 ==========</span>
+                    <span class="code-key">dns</span>:
+                    <span class="code-key">enable</span>: <span class="code-bool">true</span>
+                    <span class="code-key">enhanced-mode</span>: <span class="code-str">fake-ip</span>       <span class="code-comment"># 核心：启用 Fake-IP 模式</span>
+                    <span class="code-key">fake-ip-range</span>: <span class="code-str">198.18.0.1/16</span> <span class="code-comment"># Fake-IP 地址段</span>
+                    <span class="code-key">fake-ip-filter</span>:              <span class="code-comment"># 排除不需要 Fake-IP 的域名</span>
+                    - <span class="code-str">+.lan</span>
+                    - <span class="code-str">+.localdomain</span>
+                    - <span class="code-str">ntp.*</span>
+                    <span class="code-key">nameserver</span>:                   <span class="code-comment"># 国内 DNS 用于直连域名</span>
+                    - <span class="code-str">https://doh.pub/dns-query</span>
+                    - <span class="code-str">223.5.5.5</span>
+                    <span class="code-key">fallback</span>:                     <span class="code-comment"># 国外 DNS 用于代理域名</span>
+                    - <span class="code-str">https://dns.google/dns-query</span>
+                    - <span class="code-str">tls://1.1.1.1:853</span>
+                    <span class="code-key">fallback-filter</span>:
+                    <span class="code-key">geoip</span>: <span class="code-bool">true</span>
+                    <span class="code-key">geoip-code</span>: <span class="code-str">CN</span></div>
+                <div class="callout tip">
+                    <strong>💡 最佳实践：</strong><code>nameserver</code> 使用国内 DoH/DoT 服务器处理国内域名，<code>fallback</code> 使用国外加密 DNS 处理代理域名。这样即使代理断开，国内网站仍可正常访问，而国外 DNS 查询通过代理隧道加密传输，双重保险。
+                </div>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num purple">3</span> 验证防泄漏效果</h3>
+                <p>配置完成后，使用以下工具验证：</p>
+                <ul>
+                    <li>访问 <a href="https://ipleak.net" target="_blank" rel="noopener" style="color:#58a6ff;">ipleak.net</a>——页面会显示你当前的出口 IP 和 DNS 服务器地址。如果 DNS 地址全部显示为代理节点所在地，则说明防泄漏成功。</li>
+                    <li>访问 <a href="https://dnsleaktest.com" target="_blank" rel="noopener" style="color:#58a6ff;">dnsleaktest.com</a>——点击"Extended Test"，检查是否有任何国内运营商 DNS 出现在结果中。</li>
+                    <li>使用命令行工具：<code>nslookup twitter.com</code> 查看返回的 DNS 服务器地址是否与本地配置一致。</li>
+                </ul>
+                <div class="callout danger">
+                    <strong>🚨 关键警告：</strong>即使 DNS 配置正确，<strong>WebRTC</strong> 仍可能泄漏真实 IP。建议在浏览器中禁用 WebRTC（Chrome 可安装 WebRTC Leak Prevent 扩展），或在 Mihomo 配置中通过规则屏蔽 WebRTC 相关的 STUN 请求。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== AI 分流 ==================== -->
+    <section class="section" id="ai-routing" aria-labelledby="aiTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">进阶教程 · 实用技巧</span>
+                <h2 class="section-title" id="aiTitle">🤖 AI 网站智能分流配置</h2>
+                <p class="section-subtitle">让 ChatGPT、OpenAI API、Claude、Gemini 等 AI 服务自动走最优代理节点。预计阅读 5 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num cyan">1</span> AI 服务域名汇总</h3>
+                <p>以下是主流 AI 服务及其相关域名，建议全部加入代理规则：</p>
+                <table class="tut-table">
+                    <thead>
+                        <tr><th>服务</th><th>需代理的域名</th><th>说明</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ChatGPT / OpenAI</td><td><code>openai.com</code>, <code>chatgpt.com</code>, <code>cdn.oaistatic.com</code>, <code>api.openai.com</code></td><td>Web 界面 + API 端点</td></tr>
+                        <tr><td>Claude / Anthropic</td><td><code>claude.ai</code>, <code>anthropic.com</code>, <code>api.anthropic.com</code></td><td>Web 界面 + API</td></tr>
+                        <tr><td>Google Gemini</td><td><code>gemini.google.com</code>, <code>generativelanguage.googleapis.com</code></td><td>Gemini Web + API</td></tr>
+                        <tr><td>Perplexity</td><td><code>perplexity.ai</code>, <code>api.perplexity.ai</code></td><td>AI 搜索引擎</td></tr>
+                        <tr><td>GitHub Copilot</td><td><code>copilot.github.com</code>, <code>api.githubcopilot.com</code></td><td>代码助手</td></tr>
+                        <tr><td>Hugging Face</td><td><code>huggingface.co</code>, <code>hf.co</code></td><td>模型托管平台</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num cyan">2</span> 规则配置示例</h3>
+                <span class="code-label">config.yaml · AI 分流规则</span>
+                <div class="code-block"><span class="code-section"># ========== AI 网站分流规则 ==========</span>
+                    <span class="code-key">rules</span>:
+                    <span class="code-comment"># OpenAI / ChatGPT</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,openai.com</span>,<span class="code-key">🚀 代理组</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,chatgpt.com</span>,<span class="code-key">🚀 代理组</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,cdn.oaistatic.com</span>,<span class="code-key">🚀 代理组</span>
+                    <span class="code-comment"># Anthropic / Claude</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,claude.ai</span>,<span class="code-key">🚀 代理组</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,anthropic.com</span>,<span class="code-key">🚀 代理组</span>
+                    <span class="code-comment"># Google Gemini</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,gemini.google.com</span>,<span class="code-key">🚀 代理组</span>
+                    <span class="code-comment"># Perplexity</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,perplexity.ai</span>,<span class="code-key">🚀 代理组</span>
+                    <span class="code-comment"># GitHub Copilot</span>
+                    - <span class="code-str">DOMAIN-SUFFIX,copilot.github.com</span>,<span class="code-key">🚀 代理组</span></div>
+                <div class="callout tip">
+                    <strong>💡 进阶建议：</strong>使用 <code>RULE-SET</code> 功能引入社区维护的 AI 域名列表，可实现自动更新。例如：<code>RULE-SET,https://rules.example.com/ai-domains.yaml,🚀 代理组</code>。这样无需手动维护域名列表，始终保持最新。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 自定义规则编写 ==================== -->
+    <section class="section section-alt" id="rule-writing" aria-labelledby="ruleTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">进阶教程 · 规则引擎</span>
+                <h2 class="section-title" id="ruleTitle">📐 自定义规则编写完全指南</h2>
+                <p class="section-subtitle">掌握规则语法，实现精准流量控制。预计阅读 6 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3>规则类型速查表</h3>
+                <table class="tut-table">
+                    <thead>
+                        <tr><th>规则类型</th><th>语法示例</th><th>匹配目标</th><th>优先级</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>DOMAIN</code></td><td><code>DOMAIN,example.com,Policy</code></td><td>精确匹配域名</td><td>高</td></tr>
+                        <tr><td><code>DOMAIN-SUFFIX</code></td><td><code>DOMAIN-SUFFIX,google.com,Policy</code></td><td>匹配域名后缀（含子域名）</td><td>高</td></tr>
+                        <tr><td><code>DOMAIN-KEYWORD</code></td><td><code>DOMAIN-KEYWORD,chat,Policy</code></td><td>域名包含关键词</td><td>中</td></tr>
+                        <tr><td><code>GEOIP</code></td><td><code>GEOIP,CN,DIRECT</code></td><td>按 IP 地理归属匹配</td><td>中</td></tr>
+                        <tr><td><code>IP-CIDR</code></td><td><code>IP-CIDR,10.0.0.0/8,DIRECT</code></td><td>按 IP 段匹配</td><td>中</td></tr>
+                        <tr><td><code>PROCESS-NAME</code></td><td><code>PROCESS-NAME,curl,Policy</code></td><td>按进程名匹配</td><td>低</td></tr>
+                        <tr><td><code>MATCH</code></td><td><code>MATCH,Policy</code></td><td>兜底匹配所有流量</td><td>最低</td></tr>
+                    </tbody>
+                </table>
+                <div class="callout">
+                    <strong>📌 规则匹配逻辑：</strong>规则从上到下依次匹配，命中即停止。因此<strong>更精确的规则应放在前面</strong>，通用规则（如 MATCH）放在最后。如果两条规则可能冲突，请调整顺序以确保正确匹配。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 负载均衡 ==================== -->
+    <section class="section" id="load-balance" aria-labelledby="lbTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">高级教程 · 性能优化</span>
+                <h2 class="section-title" id="lbTitle">⚖️ 负载均衡策略深度调优</h2>
+                <p class="section-subtitle">合理配置负载均衡，让多个节点协同工作，提升整体网络体验。预计阅读 6 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3>支持的分组类型</h3>
+                <ul>
+                    <li><strong>url-test：</strong>自动选择延迟最低的节点，适合对延迟敏感的场景。</li>
+                    <li><strong>fallback：</strong>按优先级使用节点，当前节点不可用时自动切换到下一个。</li>
+                    <li><strong>load-balance：</strong>轮询或基于连接数分配流量，适合多节点分摊负载。</li>
+                    <li><strong>select：</strong>手动选择节点，适合需要固定出口的场景。</li>
+                </ul>
+                <span class="code-label">config.yaml · 负载均衡示例</span>
+                <div class="code-block"><span class="code-section"># ========== 代理组配置 ==========</span>
+                    <span class="code-key">proxy-groups</span>:
+                    - <span class="code-key">name</span>: <span class="code-str">🚀 自动最优</span>
+                    <span class="code-key">type</span>: <span class="code-str">url-test</span>
+                    <span class="code-key">proxies</span>: [<span class="code-str">节点A</span>, <span class="code-str">节点B</span>, <span class="code-str">节点C</span>]
+                    <span class="code-key">url</span>: <span class="code-str">https://www.gstatic.com/generate_204</span>
+                    <span class="code-key">interval</span>: <span class="code-num">300</span>  <span class="code-comment"># 每 300 秒测速一次</span>
+
+                    - <span class="code-key">name</span>: <span class="code-str">⚖️ 负载均衡</span>
+                    <span class="code-key">type</span>: <span class="code-str">load-balance</span>
+                    <span class="code-key">proxies</span>: [<span class="code-str">节点A</span>, <span class="code-str">节点B</span>]
+                    <span class="code-key">strategy</span>: <span class="code-str">round-robin</span>  <span class="code-comment"># 轮询策略</span></div>
+                <div class="callout tip">
+                    <strong>💡 策略选择建议：</strong>日常浏览用 <code>url-test</code> 自动选最优；下载大文件用 <code>load-balance</code> 分摊流量；重要业务用 <code>fallback</code> 确保高可用；固定用途（如 AI 分流）用 <code>select</code> 手动指定。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 故障排查 ==================== -->
+    <section class="section section-alt" id="troubleshoot" aria-labelledby="tsTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">高级教程 · 排错手册</span>
+                <h2 class="section-title" id="tsTitle">🔧 深度故障排查手册</h2>
+                <p class="section-subtitle">遇到问题不要慌，系统性排查思路帮你快速定位根因。预计阅读 7 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num">1</span> 日志分析入门</h3>
+                <p>Clash Verge Rev 内置的<strong>日志面板</strong>是排查问题的第一入口。关键日志级别：<strong>INFO</strong>（正常信息）、<strong>WARN</strong>（警告，需关注）、<strong>ERROR</strong>（错误，需处理）。遇到问题时，先查看日志中是否有红色 ERROR 条目，它们通常直接指向问题根因。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3><span class="tut-step-num">2</span> 常见问题速查</h3>
+                <ul>
+                    <li><strong>节点全部超时：</strong>检查订阅是否过期、网络是否能直连服务商服务器。尝试在设置中切换"系统代理"模式测试。</li>
+                    <li><strong>TUN 启动失败：</strong>确认以管理员身份运行、驱动已安装、无其他 VPN 软件冲突（如 WireGuard、OpenVPN 等同时运行会导致路由表冲突）。</li>
+                    <li><strong>部分网站无法访问：</strong>检查规则是否覆盖了该域名，尝试临时切换到"全局模式"测试是否为规则问题。</li>
+                    <li><strong>DNS 解析异常：</strong>检查 <code>dns</code> 配置段是否正确，尝试在终端执行 <code>nslookup</code> 验证解析结果。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 性能调优 ==================== -->
+    <section class="section" id="perf-tuning" aria-labelledby="perfTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">高级教程 · 极限优化</span>
+                <h2 class="section-title" id="perfTitle">⚡ 性能极限调优参数</h2>
+                <p class="section-subtitle">针对高并发、低延迟场景的内核参数优化。预计阅读 4 分钟。</p>
+            </div>
+            <div class="tutorial-block">
+                <h3>关键调优参数</h3>
+                <ul>
+                    <li><strong><code>tcp-concurrent</code>：</strong>TCP 并发连接数，默认值对高并发场景可能不足，建议设为 <code>true</code> 并适当调整 <code>max-connections</code>。</li>
+                    <li><strong><code>geodata-mode</code>：</strong>使用 <code>memconservative</code> 可降低内存占用，适合低配设备。</li>
+                    <li><strong><code>sniffer</code>：</strong>开启嗅探功能可自动识别 TLS/HTTP 流量中的真实域名，提升分流精度。</li>
+                </ul>
+                <div class="callout danger">
+                    <strong>🚨 注意：</strong>调优参数需根据实际硬件配置调整。盲目增大连接数可能导致路由器或光猫过载，反而降低稳定性。建议每次只调整一个参数，观察效果后再继续。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Footer ==================== -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>📥 下载</h4>
+                    <a href="download.html">Windows 版</a>
+                    <a href="download.html">macOS 版</a>
+                    <a href="download.html">Linux 版</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a>
+                </div>
+                <div class="footer-col">
+                    <h4>📖 文档</h4>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a>
+                    <a href="tutorials.html">规则结构参考</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a>
+                </div>
+                <div class="footer-col">
+                    <h4>🆘 帮助</h4>
+                    <a href="faq.html">常见问题 FAQ</a>
+                    <a href="faq.html">安装问题排查</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank" rel="noopener">提交 Issue</a>
+                </div>
+                <div class="footer-col">
+                    <h4>🔗 项目</h4>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">GitHub 仓库</a>
+                    <a href="changelog.html">更新日志</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">Wiki 首页</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank" rel="noopener">⭐ Star 我们</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank" rel="noopener">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 交互脚本 ==================== -->
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', function() {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) {
+                            window.open(
+                                'https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' +
+                                query,
+                                '_blank',
+                                'noopener'
+                            );
+                        }
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            }
+        })();
+    </script>
+</body>
+</html>
