@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>下载 Clash Verge Rev ｜ Windows · macOS · Linux 全平台代理客户端</title>
-    <meta name="description" content="下载 Clash Verge Rev 最新版本 v2.5.1，支持 Windows 10/11、macOS (Intel & Apple Silicon)、Linux (.deb/.rpm/AppImage)。基于 Mihomo 内核，TUN 模式、DNS 防泄漏、AI 分流一站式代理。" />
-    <meta name="keywords" content="Clash Verge Rev 下载, Windows 代理下载, macOS 代理下载, Linux 代理下载, Mihomo 客户端下载, TUN 模式下载" />
+    <title>Clash Verge Rev下载｜ Windows · macOS · Linux 全平台代理客户端</title>
+    <meta name="description" content="下载 Clash Verge Rev 最新版本 v2.5.1，支持 Windows 10/11、macOS (Intel & Apple Silicon)、Linux (.deb/.rpm/AppImage)。提供多架构选择、SHA256 校验、安装指引与首次配置向导。基于 Mihomo 内核，安全、高速、开源。" />
+    <meta name="keywords" content="Clash Verge Rev下载, Windows代理客户端下载, macOS代理客户端下载, Linux代理客户端下载, TUN模式下载, 代理工具多架构, SHA256校验" />
     <meta name="theme-color" content="#0d1117" />
     <meta name="author" content="Clash Verge Rev Community" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
-    <link rel="canonical" href="https://your-domain.com/download.html" />
+    <link rel="canonical" href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/download.html" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="下载 Clash Verge Rev · 全平台代理客户端" />
-    <meta property="og:description" content="Windows、macOS、Linux 全架构覆盖，下载最新版本 v2.5.1，开始安全、高速的代理体验。" />
-    <meta property="og:url" content="https://your-domain.com/download.html" />
+    <meta property="og:title" content="下载 Clash Verge Rev · 全平台代理客户端 v2.5.1" />
+    <meta property="og:description" content="获取 Windows、macOS、Linux 多架构安装包，开始安全、高速的代理体验。包含安装指引与完整性校验工具。" />
+    <meta property="og:url" content="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/download.html" />
     <meta property="og:site_name" content="Clash Verge Rev" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
@@ -23,9 +23,9 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="下载 Clash Verge Rev · 全平台代理客户端" />
-    <meta name="twitter:description" content="下载最新版本 v2.5.1，Windows / macOS / Linux 全覆盖。" />
+    <meta name="twitter:description" content="v2.5.1 多架构下载，安全、高速、开源。含安装指引与校验方式。" />
 
-    <!-- 结构化数据：SoftwareApplication (下载页面专用) -->
+    <!-- 结构化数据 -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -34,7 +34,7 @@
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Windows, macOS, Linux",
             "description": "基于 Mihomo 内核的全平台代理客户端。支持 TUN 模式、DNS 防泄漏、智能规则分流与 AI 网站专线代理。",
-            "url": "https://your-domain.com/download.html",
+            "url": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide/download.html",
             "offers": {
                 "@type": "Offer",
                 "price": "0",
@@ -45,8 +45,8 @@
                 "name": "Clash Verge Rev Community"
             },
             "softwareVersion": "2.5.1",
-            "datePublished": "2025-06-24",
-            "dateModified": "2026-06-24",
+            "datePublished": "2025-06-25",
+            "dateModified": "2026-06-25",
             "downloadUrl": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1"
         }
     </script>
@@ -79,17 +79,8 @@
             --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 72px;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -99,533 +90,133 @@
             -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
         }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1140px;
-            margin: 0 auto;
-        }
+        a { text-decoration: none; color: inherit; }
+        .container { width: 90%; max-width: 1140px; margin: 0 auto; }
 
         /* ========== HEADER (与首页完全一致) ========== */
         .site-header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-default);
-            position: sticky;
-            top: 0;
-            z-index: 200;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: box-shadow var(--transition-fast);
+            background: var(--bg-secondary); border-bottom: 1px solid var(--border-default);
+            position: sticky; top: 0; z-index: 200; backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); transition: box-shadow var(--transition-fast);
         }
-        .site-header.scrolled {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-        }
+        .site-header.scrolled { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+        .header-left { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .logo-link { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.05rem; color: var(--text-primary); white-space: nowrap; padding: 6px 4px; border-radius: var(--radius-sm); transition: background var(--transition-fast); }
+        .logo-link:hover { background: var(--btn-outline-bg); }
+        .logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #58a6ff, #a371f7); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .logo-text { letter-spacing: -0.01em; }
+        .logo-badge { font-size: 0.7rem; background: var(--border-default); color: var(--text-secondary); padding: 2px 7px; border-radius: 10px; font-weight: 500; letter-spacing: 0.02em; }
+        .main-nav { display: flex; align-items: center; gap: 2px; margin-left: 12px; }
+        .main-nav a { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); transition: all var(--transition-fast); white-space: nowrap; position: relative; }
+        .main-nav a:hover { color: var(--text-primary); background: var(--btn-outline-bg); }
+        .main-nav a.active { color: var(--text-primary); background: var(--btn-outline-bg); }
+        .main-nav a .nav-indicator { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); margin-left: -2px; animation: pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+        .nav-separator { width: 1px; height: 18px; background: var(--border-default); margin: 0 4px; flex-shrink: 0; }
+        .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .search-wrap { position: relative; display: flex; align-items: center; }
+        .search-input { background: var(--bg-primary); border: 1px solid var(--border-default); color: var(--text-primary); padding: 7px 12px 7px 34px; border-radius: 20px; font-size: 0.85rem; width: 200px; transition: all var(--transition-smooth); outline: none; }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12); width: 240px; }
+        .search-icon { position: absolute; left: 11px; pointer-events: none; color: var(--text-muted); font-size: 0.85rem; }
+        .header-btn { display: flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--border-default); background: var(--btn-outline-bg); color: var(--text-secondary); transition: all var(--transition-fast); white-space: nowrap; cursor: pointer; }
+        .header-btn:hover { background: var(--btn-outline-hover); color: var(--text-primary); border-color: var(--text-muted); }
+        .header-btn-primary { background: var(--btn-primary-bg); color: #fff; border-color: transparent; font-weight: 600; }
+        .header-btn-primary:hover { background: var(--btn-primary-hover); color: #fff; }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; border-radius: var(--radius-sm); color: var(--text-secondary); transition: background var(--transition-fast); }
+        .hamburger:hover { background: var(--btn-outline-bg); color: var(--text-primary); }
+        .hamburger svg { display: block; width: 22px; height: 22px; }
+        .mobile-nav-panel { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: var(--bg-secondary); z-index: 190; padding: 20px 24px; flex-direction: column; gap: 4px; overflow-y: auto; border-top: 1px solid var(--border-default); }
+        .mobile-nav-panel.open { display: flex; }
+        .mobile-nav-panel a { display: block; padding: 12px 16px; border-radius: var(--radius-md); font-size: 1rem; font-weight: 500; color: var(--text-secondary); transition: all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background: var(--btn-outline-bg); color: var(--text-primary); }
+        .mobile-nav-panel .search-wrap-mobile { margin-bottom: 8px; }
+        .mobile-nav-panel .search-input { width: 100%; }
 
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-            gap: 16px;
-        }
+        /* ========== 下载页面特有样式 ========== */
+        .page-section { padding: 60px 0; }
+        .page-header { margin-bottom: 48px; text-align: center; }
+        .page-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.25); color: var(--accent-blue); font-size: 0.85rem; font-weight: 600; padding: 6px 16px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.02em; }
+        .page-title { font-size: 2.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: #fff; letter-spacing: -0.02em; }
+        .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; max-width: 700px; margin: 0 auto 8px; }
+        .page-desc { color: var(--text-muted); font-size: 0.95rem; max-width: 650px; margin: 0 auto; }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .logo-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: var(--text-primary);
-            white-space: nowrap;
-            padding: 6px 4px;
-            border-radius: var(--radius-sm);
-            transition: background var(--transition-fast);
-        }
-        .logo-link:hover {
-            background: var(--btn-outline-bg);
-        }
-        .logo-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #58a6ff, #a371f7);
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-        .logo-text {
-            letter-spacing: -0.01em;
-        }
-        .logo-badge {
-            font-size: 0.7rem;
-            background: var(--border-default);
-            color: var(--text-secondary);
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        .main-nav {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            margin-left: 12px;
-        }
-        .main-nav a {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: all var(--transition-fast);
-            white-space: nowrap;
-            position: relative;
-        }
-        .main-nav a:hover {
-            color: var(--text-primary);
-            background: var(--btn-outline-bg);
-        }
-        .main-nav a.active {
-            color: var(--text-primary);
-            background: var(--btn-outline-bg);
-        }
-        .main-nav a .nav-indicator {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            margin-left: -2px;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.35; }
-        }
-        .nav-separator {
-            width: 1px;
-            height: 18px;
-            background: var(--border-default);
-            margin: 0 4px;
-            flex-shrink: 0;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .search-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .search-input {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-default);
-            color: var(--text-primary);
-            padding: 7px 12px 7px 34px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            width: 200px;
-            transition: all var(--transition-smooth);
-            outline: none;
-        }
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-        .search-input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12);
-            width: 240px;
-        }
-        .search-icon {
-            position: absolute;
-            left: 11px;
-            pointer-events: none;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-        .header-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid var(--border-default);
-            background: var(--btn-outline-bg);
-            color: var(--text-secondary);
-            transition: all var(--transition-fast);
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .header-btn:hover {
-            background: var(--btn-outline-hover);
-            color: var(--text-primary);
-            border-color: var(--text-muted);
-        }
-        .header-btn-primary {
-            background: var(--btn-primary-bg);
-            color: #fff;
-            border-color: transparent;
-            font-weight: 600;
-        }
-        .header-btn-primary:hover {
-            background: var(--btn-primary-hover);
-            color: #fff;
-        }
-
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: var(--radius-sm);
-            color: var(--text-secondary);
-            transition: background var(--transition-fast);
-        }
-        .hamburger:hover {
-            background: var(--btn-outline-bg);
-            color: var(--text-primary);
-        }
-        .hamburger svg {
-            display: block;
-            width: 22px;
-            height: 22px;
-        }
-
-        .mobile-nav-panel {
-            display: none;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-secondary);
-            z-index: 190;
-            padding: 20px 24px;
-            flex-direction: column;
-            gap: 4px;
-            overflow-y: auto;
-            border-top: 1px solid var(--border-default);
-        }
-        .mobile-nav-panel.open {
-            display: flex;
-        }
-        .mobile-nav-panel a {
-            display: block;
-            padding: 12px 16px;
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: all var(--transition-fast);
-        }
-        .mobile-nav-panel a:hover,
-        .mobile-nav-panel a.active {
-            background: var(--btn-outline-bg);
-            color: var(--text-primary);
-        }
-        .mobile-nav-panel .search-wrap-mobile {
-            margin-bottom: 8px;
-        }
-        .mobile-nav-panel .search-input {
-            width: 100%;
-        }
-
-        /* ========== 页面主体 ========== */
-        .page-section {
-            padding: 60px 0;
-        }
-        .page-header {
-            margin-bottom: 48px;
-            text-align: center;
-        }
-        .page-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid rgba(88, 166, 255, 0.25);
-            color: var(--accent-blue);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 6px 16px;
-            border-radius: 20px;
-            margin-bottom: 16px;
-            letter-spacing: 0.02em;
-        }
-        .page-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 12px;
-            color: #fff;
-            letter-spacing: -0.02em;
-        }
-        .page-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        /* 平台切换标签 */
+        .platform-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+        .platform-tab { padding: 10px 24px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border-default); background: var(--btn-outline-bg); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-smooth); }
+        .platform-tab:hover { background: var(--btn-outline-hover); color: var(--text-primary); }
+        .platform-tab.active { background: var(--accent-blue); border-color: transparent; color: #fff; }
 
         /* 下载卡片网格 */
-        .download-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 60px;
-        }
-        .dl-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-lg);
-            padding: 32px 24px;
-            text-align: center;
-            transition: all var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .dl-card:hover {
-            border-color: rgba(88, 166, 255, 0.35);
-            box-shadow: var(--shadow-elevated);
-            transform: translateY(-4px);
-        }
-        .dl-card .dl-icon {
-            font-size: 3rem;
-            margin-bottom: 14px;
-        }
-        .dl-card h3 {
-            font-weight: 700;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-            color: #fff;
-        }
-        .dl-card .dl-arch {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 14px;
-            line-height: 1.5;
-        }
-        .dl-card .dl-requirements {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            text-align: left;
-            width: 100%;
-            background: var(--bg-primary);
-            padding: 12px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-muted);
-        }
-        .dl-card .dl-requirements strong {
-            color: var(--text-primary);
-            display: block;
-            margin-bottom: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .dl-card .dl-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--btn-primary-bg);
-            color: #fff;
-            padding: 12px 28px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all var(--transition-smooth);
-            margin-top: auto;
-        }
-        .dl-card .dl-btn:hover {
-            background: var(--btn-primary-hover);
-            box-shadow: 0 4px 14px rgba(35, 134, 54, 0.35);
-            transform: translateY(-1px);
-        }
-        .dl-card .dl-secondary-link {
-            font-size: 0.8rem;
-            color: var(--accent-blue);
-            margin-top: 12px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .dl-card .dl-secondary-link:hover {
-            text-decoration: underline;
-        }
+        .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
+        .dl-card { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 32px 24px; transition: all var(--transition-smooth); display: flex; flex-direction: column; align-items: center; }
+        .dl-card:hover { border-color: rgba(88,166,255,0.35); box-shadow: var(--shadow-elevated); transform: translateY(-4px); }
+        .dl-card .dl-icon { font-size: 3rem; margin-bottom: 14px; }
+        .dl-card h3 { font-weight: 700; font-size: 1.4rem; margin-bottom: 6px; color: #fff; }
+        .dl-card .dl-arch { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5; }
+        .dl-card .dl-requirements { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 20px; text-align: left; width: 100%; background: var(--bg-primary); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-muted); }
+        .dl-card .dl-requirements strong { color: var(--text-primary); display: block; margin-bottom: 4px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .dl-options { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; justify-content: center; margin-bottom: 12px; }
+        .dl-option-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border-default); background: var(--btn-outline-bg); color: var(--text-secondary); transition: all var(--transition-fast); white-space: nowrap; cursor: pointer; }
+        .dl-option-btn:hover { background: var(--btn-outline-hover); color: var(--text-primary); border-color: var(--accent-blue); }
+        .dl-option-btn.primary { background: var(--btn-primary-bg); color: #fff; border-color: transparent; }
+        .dl-option-btn.primary:hover { background: var(--btn-primary-hover); }
+        .dl-card .dl-secondary-link { font-size: 0.8rem; color: var(--accent-blue); margin-top: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+        .dl-card .dl-secondary-link:hover { text-decoration: underline; }
 
         /* 其他版本提示 */
-        .other-versions {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-lg);
-            padding: 24px 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .other-versions p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        .other-versions a {
-            font-weight: 600;
-            color: var(--accent-blue);
-        }
-        .btn-outline-sm {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid var(--border-default);
-            background: transparent;
-            color: var(--text-secondary);
-            transition: all var(--transition-fast);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-outline-sm:hover {
-            background: var(--btn-outline-bg);
-            border-color: var(--text-muted);
-            color: var(--text-primary);
-        }
+        .other-versions { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 60px; }
+        .other-versions p { color: var(--text-secondary); font-size: 0.95rem; }
+        .other-versions a { font-weight: 600; color: var(--accent-blue); }
+        .btn-outline-sm { padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); transition: all var(--transition-fast); display: inline-flex; align-items: center; gap: 6px; }
+        .btn-outline-sm:hover { background: var(--btn-outline-bg); border-color: var(--text-muted); color: var(--text-primary); }
 
-        /* FAQ 精简版 */
-        .faq-section {
-            margin-top: 60px;
-        }
-        .faq-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #fff;
-            text-align: center;
-        }
-        .faq-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .faq-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-md);
-            padding: 18px 22px;
-            transition: all var(--transition-smooth);
-        }
-        .faq-item:hover {
-            border-color: rgba(88, 166, 255, 0.3);
-        }
-        .faq-item h4 {
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #fff;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .faq-item h4 .faq-q {
-            color: var(--accent-blue);
-        }
-        .faq-item p {
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
+        /* 安装步骤卡片 */
+        .install-steps { margin-bottom: 60px; }
+        .install-steps h2 { font-size: 2rem; font-weight: 700; margin-bottom: 24px; text-align: center; color: #fff; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .step-card { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; position: relative; }
+        .step-number { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-green); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .step-card h4 { font-weight: 600; margin-bottom: 6px; color: #fff; }
+        .step-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
 
-        /* Footer (与首页一致) */
-        .site-footer {
-            border-top: 1px solid var(--border-default);
-            background: var(--bg-secondary);
-            padding: 48px 0 32px;
-            margin-top: 60px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 30px;
-            margin-bottom: 32px;
-        }
-        .footer-col h4 {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-        .footer-col a {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            padding: 4px 0;
-            transition: color var(--transition-fast);
-        }
-        .footer-col a:hover {
-            color: var(--accent-blue);
-        }
-        .footer-bottom {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-muted);
-        }
-        .footer-bottom a {
-            color: var(--accent-blue);
-        }
-        .footer-bottom a:hover {
-            text-decoration: underline;
-        }
+        /* 校验区块 */
+        .verify-section { margin-bottom: 60px; background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 28px; }
+        .verify-section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; color: #fff; }
+        .verify-section p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 12px; }
+        .verify-section pre { background: #0d1117; padding: 16px; border-radius: var(--radius-md); overflow-x: auto; font-family: monospace; font-size: 0.85rem; color: #e6edf3; }
 
-        /* 响应式 */
+        /* FAQ */
+        .faq-section { margin-top: 60px; }
+        .faq-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; color: #fff; text-align: center; }
+        .faq-list { display: flex; flex-direction: column; gap: 14px; max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 18px 22px; transition: all var(--transition-smooth); }
+        .faq-item:hover { border-color: rgba(88,166,255,0.3); }
+        .faq-item h4 { font-weight: 600; margin-bottom: 6px; color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+        .faq-item h4 .faq-q { color: var(--accent-blue); }
+        .faq-item p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+
+        /* Footer */
+        .site-footer { border-top: 1px solid var(--border-default); background: var(--bg-secondary); padding: 48px 0 32px; margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 30px; margin-bottom: 32px; }
+        .footer-col h4 { color: #fff; font-weight: 600; margin-bottom: 12px; font-size: 0.95rem; }
+        .footer-col a { display: block; color: var(--text-secondary); font-size: 0.88rem; padding: 4px 0; transition: color var(--transition-fast); }
+        .footer-col a:hover { color: var(--accent-blue); }
+        .footer-bottom { text-align: center; color: var(--text-muted); font-size: 0.82rem; padding-top: 20px; border-top: 1px solid var(--border-muted); }
+        .footer-bottom a { color: var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration: underline; }
+
         @media (max-width: 768px) {
-            .main-nav { display: none; }
-            .search-wrap { display: none; }
-            .header-btn { display: none; }
+            .main-nav { display: none; } .search-wrap { display: none; } .header-btn { display: none; }
             .header-btn-primary { display: inline-flex; font-size: 0.8rem; padding: 6px 12px; }
-            .hamburger { display: block; }
-            .page-title { font-size: 2rem; }
-            .header-inner { height: 50px; }
-            .mobile-nav-panel { top: 50px; }
-            html { scroll-padding-top: 58px; }
-            .other-versions { flex-direction: column; align-items: flex-start; }
+            .hamburger { display: block; } .page-title { font-size: 2rem; }
+            .header-inner { height: 50px; } .mobile-nav-panel { top: 50px; }
+            html { scroll-padding-top: 58px; } .other-versions { flex-direction: column; align-items: flex-start; }
         }
         @media (max-width: 480px) {
-            .download-grid { grid-template-columns: 1fr; }
-            .page-title { font-size: 1.6rem; }
-            .dl-card { padding: 24px 16px; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .download-grid { grid-template-columns: 1fr; } .page-title { font-size: 1.6rem; }
+            .dl-card { padding: 24px 16px; } .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
         }
     </style>
 </head>
@@ -647,27 +238,18 @@
                     <a href="faq.html">❓ FAQ</a>
                     <a href="changelog.html">📋 更新日志</a>
                     <a href="blog.html">📝 博客</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">
-                        📦 Releases
-                        <span class="nav-indicator"></span>
-                    </a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
                     <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
                 </nav>
             </div>
-
             <div class="header-right">
                 <div class="search-wrap">
                     <span class="search-icon">🔍</span>
                     <input type="text" class="search-input" placeholder="搜索文档…" aria-label="搜索文档" id="headerSearch" />
                 </div>
-                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn" title="GitHub 仓库">
-                    ⬡ GitHub
-                </a>
-                <a href="download.html" class="header-btn header-btn-primary">
-                    ⬇️ 下载 v2.5.1
-                </a>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.zip" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
             </div>
-
             <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -676,12 +258,8 @@
                 </svg>
             </button>
         </div>
-
         <div class="mobile-nav-panel" id="mobileNavPanel">
-            <div class="search-wrap-mobile">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="搜索文档…" id="mobileSearch" />
-            </div>
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文档…" id="mobileSearch" /></div>
             <a href="features.html">✨ 特性</a>
             <a href="download.html" class="active">📥 下载</a>
             <a href="tutorials.html">📖 教程</a>
@@ -694,102 +272,139 @@
         </div>
     </header>
 
-    <!-- ==================== 下载页面主体 ==================== -->
     <main>
         <section class="page-section">
             <div class="container">
                 <div class="page-header">
-                    <div class="page-badge">
-                        🆕 最新稳定版 v2.5.1
-                    </div>
+                    <div class="page-badge">🆕 最新稳定版 v2.5.1 · 2026-06-24</div>
                     <h1 class="page-title">下载 Clash Verge Rev</h1>
-                    <p class="page-subtitle">
-                        选择你的操作系统，获取最新版本。所有安装包均经过安全扫描，放心使用。
-                    </p>
+                    <p class="page-subtitle">无论你使用 Windows、macOS 还是 Linux，都能找到适配你设备架构的原生安装包。</p>
+                    <p class="page-desc">所有文件均通过 GitHub Actions 自动构建，并附带 SHA256 校验和。安全、透明、零添加。</p>
                 </div>
 
-                <!-- 下载卡片 -->
-                <div class="download-grid">
-                    <!-- Windows -->
-                    <div class="dl-card">
+                <!-- 平台快捷切换 -->
+                <div class="platform-tabs" role="tablist">
+                    <button class="platform-tab active" data-platform="windows">🪟 Windows</button>
+                    <button class="platform-tab" data-platform="mac">🍎 macOS</button>
+                    <button class="platform-tab" data-platform="linux">🐧 Linux</button>
+                </div>
+
+                <!-- 下载卡片 (默认显示全部，可通过JS切换，但为SEO保留全部) -->
+                <div class="download-grid" id="downloadGrid">
+                    <!-- Windows 卡片 -->
+                    <div class="dl-card" data-platform="windows">
                         <span class="dl-icon">🪟</span>
                         <h3>Windows</h3>
                         <p class="dl-arch">10 / 11 · x64 · ARM64</p>
                         <div class="dl-requirements">
                             <strong>系统需求</strong>
                             Windows 10 1809+ 或 Windows 11<br>
-                            需要安装 <a href="https://www.wintun.net/" target="_blank" rel="noopener" style="color:#58a6ff;">Wintun 驱动</a> (TUN 模式)
+                            TUN 模式需 <a href="https://www.wintun.net/" target="_blank" rel="noopener" style="color:#58a6ff;">Wintun 驱动</a> (内置)
                         </div>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.zip" target="_blank" rel="noopener" class="dl-btn">
-                            ⬇️ 下载 .msi (x64)
-                        </a>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">
-                            查看所有 Windows 安装包 →
-                        </a>
+                        <div class="dl-options">
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.zip" class="dl-option-btn primary">⬇ x64 .msi</a>
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.zip" class="dl-option-btn">ARM64 .msi</a>
+                        </div>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">查看所有 Windows 安装包 →</a>
                     </div>
-
-                    <!-- macOS -->
-                    <div class="dl-card">
+                    <!-- macOS 卡片 -->
+                    <div class="dl-card" data-platform="mac">
                         <span class="dl-icon">🍎</span>
                         <h3>macOS</h3>
                         <p class="dl-arch">Intel · Apple Silicon (M1-M4)</p>
                         <div class="dl-requirements">
                             <strong>系统需求</strong>
                             macOS 11 Big Sur 及以上<br>
-                            原生支持 Intel 和 Apple Silicon
+                            原生支持 Intel 和 Apple Silicon 架构
                         </div>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg" target="_blank" rel="noopener" class="dl-btn">
-                            ⬇️ 下载 .dmg (通用)
-                        </a>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">
-                            查看所有 macOS 安装包 →
-                        </a>
+                        <div class="dl-options">
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg" class="dl-option-btn primary">⬇ 通用 .dmg</a>
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg" class="dl-option-btn">Intel .dmg</a>
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg" class="dl-option-btn">Apple Silicon .dmg</a>
+                        </div>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">查看所有 macOS 安装包 →</a>
                     </div>
-
-                    <!-- Linux -->
-                    <div class="dl-card">
+                    <!-- Linux 卡片 -->
+                    <div class="dl-card" data-platform="linux">
                         <span class="dl-icon">🐧</span>
                         <h3>Linux</h3>
-                        <p class="dl-arch">.deb · .rpm · AppImage</p>
+                        <p class="dl-arch">.deb · .rpm · AppImage · 源码编译</p>
                         <div class="dl-requirements">
                             <strong>系统需求</strong>
-                            内核 5.10+，支持 systemd<br>
-                            需要 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">modprobe tun</code> (TUN 模式)
+                            内核 5.10+，glibc 2.31+<br>
+                            TUN 模式需 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">modprobe tun</code> 权限
                         </div>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.zip" target="_blank" rel="noopener" class="dl-btn">
-                            ⬇️ 下载 .deb (x64)
-                        </a>
-                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">
-                            查看所有 Linux 安装包 →
-                        </a>
+                        <div class="dl-options">
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.exe" class="dl-option-btn primary">⬇ .deb (x64)</a>
+                            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/download/v2.5.1/Clash.Verge-2.5.1-1.x86_64.rpm" class="dl-option-btn">.rpm (x64)</a>
+                            <a href="#" class="dl-option-btn">AppImage</a>
+                        </div>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" class="dl-secondary-link">查看所有 Linux 安装包 →</a>
                     </div>
                 </div>
 
-                <!-- 其他版本 / 历史版本 -->
+                <!-- 历史版本与源码 -->
                 <div class="other-versions">
-                    <p>
-                        📦 需要其他版本？查看 <a href="releases.html">Releases 页面</a> 获取历史版本、预发行版及源码包。
-                    </p>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" class="btn-outline-sm">
-                        📋 所有版本
-                    </a>
+                    <p>📦 需要其他版本？浏览 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">Releases 页面</a> 获取历史版本、预发行版以及源码压缩包。</p>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" class="btn-outline-sm">📋 所有版本</a>
                 </div>
 
-                <!-- 下载相关 FAQ -->
+                <!-- 安装步骤指南 -->
+                <div class="install-steps">
+                    <h2>📌 三步完成安装与首次代理</h2>
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h4>下载并安装</h4>
+                            <p>根据你的操作系统选择上方对应的安装包。Windows 双击 .msi，macOS 拖入应用程序文件夹，Linux 使用包管理器或直接运行 AppImage。</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h4>导入订阅或配置</h4>
+                            <p>启动后进入“订阅”界面，粘贴你的 Clash 兼容订阅链接。如果没有订阅，也可手动编写 config.yaml 文件放入配置目录。</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h4>选择节点并开启系统代理</h4>
+                            <p>在节点列表选择一个服务器，点击“系统代理”开关或启用 TUN 模式即可。建议初次使用保持默认的“规则模式”。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文件完整性校验 -->
+                <div class="verify-section">
+                    <h2>🔐 校验文件完整性 (SHA256)</h2>
+                    <p>为确保下载的文件未被篡改，我们强烈建议核对 SHA256 校验和。每个安装包在 GitHub Releases 页面均附有对应的 <code>.sha256</code> 文件。</p>
+                    <p><strong>Windows PowerShell 校验命令：</strong></p>
+                    <pre>Get-FileHash -Path "Clash.Verge_2.5.1_x64-setup.msi" -Algorithm SHA256</pre>
+                    <p><strong>macOS / Linux 校验命令：</strong></p>
+                    <pre>shasum -a 256 Clash.Verge_2.5.1_aarch64.dmg</pre>
+                    <p>请将输出结果与 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" style="color:#58a6ff;">Releases 页面</a> 公布的哈希值逐一比对。任何不匹配都可能意味着文件损坏或已被篡改。</p>
+                </div>
+
+                <!-- 常见问题 -->
                 <div class="faq-section">
                     <h2 class="faq-title">❓ 下载与安装常见问题</h2>
                     <div class="faq-list">
                         <div class="faq-item">
-                            <h4><span class="faq-q">Q:</span> 下载后如何安装？</h4>
-                            <p>Windows 用户双击 .msi 或 .exe 安装包，按提示完成安装。macOS 用户打开 .dmg 文件，将应用拖入 Applications 文件夹。Linux 用户可使用包管理器安装 .deb/.rpm，或直接运行 AppImage 文件。</p>
+                            <h4><span class="faq-q">Q:</span> 下载后 Windows 提示“无法验证发布者”怎么办？</h4>
+                            <p>这是因为我们尚未使用昂贵的商业代码签名证书。请点击“更多信息”然后选择“仍要运行”。你可以通过上述 SHA256 校验确保文件是官方的。我们保证所有构建产物均未经过第三方修改。</p>
                         </div>
                         <div class="faq-item">
-                            <h4><span class="faq-q">Q:</span> 为什么 Windows 提示“无法验证发布者”？</h4>
-                            <p>由于应用未使用商业代码签名证书，Windows SmartScreen 可能会弹出警告。请点击“更多信息”然后选择“仍要运行”。我们确保所有安装包均未篡改，你也可以通过 GitHub Releases 页面校验 SHA256 哈希值。</p>
+                            <h4><span class="faq-q">Q:</span> macOS 提示“无法打开，因为无法验证开发者”如何解决？</h4>
+                            <p>前往“系统偏好设置” → “安全性与隐私” → “通用”，点击“仍要打开”。或者使用终端命令 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">xattr -d com.apple.quarantine /Applications/Clash\ Verge\ Rev.app</code> 移除隔离属性。</p>
                         </div>
                         <div class="faq-item">
-                            <h4><span class="faq-q">Q:</span> 如何校验下载文件的完整性？</h4>
-                            <p>在 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1" target="_blank" rel="noopener" style="color:#58a6ff;">GitHub Releases 页面</a> 的 “Assets” 部分，每个文件均附有 SHA256 校验和。下载后使用命令行工具（如 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">certutil</code> 或 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">shasum</code>）进行比对。</p>
+                            <h4><span class="faq-q">Q:</span> Linux AppImage 无法运行或提示权限错误？</h4>
+                            <p>请确保 AppImage 文件具有可执行权限：<code style="background:#1c2129;padding:1px 4px;border-radius:3px;">chmod +x Clash*.AppImage</code>。如果系统缺少 FUSE，可尝试使用 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">--appimage-extract-and-run</code> 参数，或安装 <code>libfuse2</code>。</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4><span class="faq-q">Q:</span> 我应该选择哪个架构的安装包？</h4>
+                            <p>如果不确定，Windows 用户通常选 <strong>x64</strong> (64位)。macOS 用户若为 M1/M2/M3/M4 芯片选 <strong>Apple Silicon</strong>，否则选 Intel。Linux 用户可通过 <code style="background:#1c2129;padding:1px 4px;border-radius:3px;">uname -m</code> 查看架构（x86_64 选 x64，aarch64 选 arm64）。</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4><span class="faq-q">Q:</span> 安装完成后如何彻底卸载？</h4>
+                            <p>Windows 通过“控制面板”卸载；macOS 将应用移至废纸篓并删除 <code>~/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev</code> 文件夹；Linux 使用包管理器移除或直接删除 AppImage 及 <code>~/.config/clash-verge-rev</code> 目录。</p>
                         </div>
                     </div>
                 </div>
@@ -797,8 +412,7 @@
         </section>
     </main>
 
-    <!-- ==================== Footer (与首页相同) ==================== -->
-       <footer class="site-footer" aria-label="页脚导航">
+    <footer class="site-footer" aria-label="页脚导航">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
@@ -839,21 +453,19 @@
     <script>
         (function() {
             const header = document.getElementById('siteHeader');
-            window.addEventListener('scroll', function() {
-                header.classList.toggle('scrolled', window.scrollY > 10);
-            });
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
 
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const mobileNavPanel = document.getElementById('mobileNavPanel');
             let menuOpen = false;
-            hamburgerBtn.addEventListener('click', function() {
+            hamburgerBtn.addEventListener('click', () => {
                 menuOpen = !menuOpen;
                 mobileNavPanel.classList.toggle('open', menuOpen);
                 hamburgerBtn.setAttribute('aria-expanded', menuOpen);
                 document.body.style.overflow = menuOpen ? 'hidden' : '';
             });
-            mobileNavPanel.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
                     menuOpen = false;
                     mobileNavPanel.classList.remove('open');
                     hamburgerBtn.setAttribute('aria-expanded', false);
@@ -864,17 +476,33 @@
             function setupSearch(inputId) {
                 const input = document.getElementById(inputId);
                 if (!input) return;
-                input.addEventListener('keydown', function(e) {
+                input.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         const query = encodeURIComponent(input.value.trim());
-                        if (query) {
-                            window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
-                        }
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
                     }
                 });
             }
             setupSearch('headerSearch');
             setupSearch('mobileSearch');
+
+            // 平台切换功能 (仅视觉过滤，卡片全部保留于 DOM)
+            const tabs = document.querySelectorAll('.platform-tab');
+            const cards = document.querySelectorAll('.dl-card');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const platform = tab.dataset.platform;
+                    cards.forEach(card => {
+                        if (platform === 'all' || card.dataset.platform === platform) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
 
             if (window.scrollY > 10) header.classList.add('scrolled');
         })();
