@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>常见问题 ｜ Clash Verge Rev全平台代理客户端 · FAQ · 错误排查</title>
+    <meta name="description" content="Clash Verge Rev 最全面的常见问题解答。覆盖 Windows、macOS、Linux 安装问题，TUN 模式驱动错误，DNS 防泄漏验证，订阅导入失败，AI 网站分流配置，性能调优，错误代码速查表等。解决你的所有困惑。" />
+    <meta name="keywords" content="Clash Verge Rev 常见问题, TUN模式无法启动, DNS防泄漏验证, 订阅导入失败, 代理客户端 FAQ, AI代理配置, 代理规则编写, 错误代码, 社区支持" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/faq.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Clash Verge Rev 常见问题解答 · 全平台代理客户端 FAQ" />
+    <meta property="og:description" content="从入门到精通，解答关于 Clash Verge Rev 的所有常见问题。涵盖 TUN 模式、DNS 防泄漏、规则配置等。含错误代码速查表与社区支持入口。" />
+    <meta property="og:url" content="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/faq.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Verge Rev 常见问题解答" />
+    <meta name="twitter:description" content="全面解答代理配置、TUN 模式、DNS 防泄漏等常见问题。附错误代码速查表。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "为什么 Windows 安装后提示“无法验证发布者”？",
+                    "acceptedAnswer": { "@type": "Answer", "text": "因为 Clash Verge Rev 是开源项目，未使用商业代码签名证书。请点击“更多信息” -> “仍要运行”。可通过 GitHub Releases 校验 SHA256 哈希值确保安全。" }
+                },
+                {
+                    "@type": "Question",
+                    "name": "TUN 模式无法启动，提示驱动错误怎么办？",
+                    "acceptedAnswer": { "@type": "Answer", "text": "请以管理员身份运行客户端。Windows 需安装 Wintun 驱动（内置），macOS 需允许系统扩展，Linux 需执行 modprobe tun 加载内核模块。" }
+                },
+                {
+                    "@type": "Question",
+                    "name": "如何验证 DNS 是否已经彻底防泄漏？",
+                    "acceptedAnswer": { "@type": "Answer", "text": "访问 ipleak.net 或 dnsleaktest.com 进行检测。如果配置正确，显示的 DNS 服务器应全部为代理节点 IP。推荐使用 Fake-IP 模式配合 DoH/DoT 实现最强防护。" }
+                },
+                {
+                    "@type": "Question",
+                    "name": "如何为 ChatGPT 或 OpenAI API 设置分流规则？",
+                    "acceptedAnswer": { "@type": "Answer", "text": "在配置文件中添加 DOMAIN-SUFFIX 规则匹配 openai.com、chatgpt.com 等域名。推荐使用 RULE-SET 远程订阅社区维护的 AI 域名列表，实现自动更新。" }
+                },
+                {
+                    "@type": "Question",
+                    "name": "客户端会收集我的个人数据或浏览记录吗？",
+                    "acceptedAnswer": { "@type": "Answer", "text": "完全不会。Clash Verge Rev 践行零遥测、零追踪原则。所有数据处理均在本地完成，无任何后台上报行为。源代码完全开源可审计。" }
+                }
+            ]
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:1140px; margin:0 auto; }
+
+        /* 页眉 (与首页完全一致) */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .mobile-nav-panel .search-wrap-mobile { margin-bottom:8px; }
+        .mobile-nav-panel .search-input { width:100%; }
+
+        /* 页面特有 */
+        .page-section { padding:60px 0; }
+        .hero-faq { text-align:center; padding:60px 0 40px; background:linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); border-bottom:1px solid var(--border-muted); position:relative; overflow:hidden; }
+        .hero-faq::before { content:""; position:absolute; top:-100px; right:-200px; width:500px; height:500px; background:radial-gradient(circle, rgba(163,113,247,0.07) 0%, transparent 70%); pointer-events:none; }
+        .page-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(163,113,247,0.1); border:1px solid rgba(163,113,247,0.25); color:var(--accent-purple); font-size:0.85rem; font-weight:600; padding:6px 16px; border-radius:20px; margin-bottom:16px; }
+        .page-title { font-size:3rem; font-weight:800; color:#fff; margin-bottom:12px; letter-spacing:-0.02em; }
+        .page-subtitle { color:var(--text-secondary); font-size:1.1rem; max-width:700px; margin:0 auto 32px; }
+        .faq-search-large { max-width:500px; margin:0 auto 24px; }
+        .faq-search-large .search-input { width:100%; padding:12px 20px 12px 44px; font-size:0.95rem; border-radius:28px; }
+
+        /* 快速入口标签 */
+        .quick-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:48px; }
+        .quick-tag { padding:8px 18px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); cursor:pointer; transition:all var(--transition-fast); }
+        .quick-tag:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--accent-blue); }
+
+        /* FAQ 分类网格 */
+        .faq-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:24px; margin-bottom:60px; }
+        .faq-category { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:24px; transition:all var(--transition-smooth); }
+        .faq-category:hover { border-color:rgba(88,166,255,0.25); }
+        .cat-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--border-muted); }
+        .cat-icon { font-size:1.8rem; }
+        .cat-title { font-size:1.2rem; font-weight:700; color:#fff; }
+
+        details { border:1px solid var(--border-muted); border-radius:var(--radius-md); overflow:hidden; transition:all var(--transition-fast); background:var(--bg-primary); margin-bottom:12px; }
+        details:hover { border-color:var(--accent-blue); }
+        summary { padding:14px 18px; font-weight:600; font-size:0.9rem; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center; list-style:none; background:var(--bg-tertiary); user-select:none; }
+        summary::-webkit-details-marker { display:none; }
+        summary::after { content:"+"; font-size:1.2rem; color:var(--text-muted); font-weight:400; transition:transform 0.2s; }
+        details[open] summary::after { content:"−"; transform:rotate(180deg); }
+        .faq-answer { padding:16px 18px; color:var(--text-secondary); font-size:0.88rem; line-height:1.7; border-top:1px solid var(--border-muted); }
+        .faq-answer p { margin-bottom:8px; }
+        .faq-answer code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.85em; color:#e6edf3; }
+        .faq-answer a { color:var(--accent-blue); font-weight:500; }
+        .faq-answer a:hover { text-decoration:underline; }
+
+        /* 错误代码表格 */
+        .error-table-wrap { overflow-x:auto; margin:30px 0; border-radius:var(--radius-lg); border:1px solid var(--border-default); }
+        .error-table { width:100%; border-collapse:collapse; font-size:0.88rem; min-width:600px; }
+        .error-table th, .error-table td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        .error-table th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        .error-table td { background:var(--bg-secondary); color:var(--text-secondary); }
+        .error-table tr:hover td { background:var(--bg-tertiary); }
+        .section-header { margin-bottom:30px; text-align:center; }
+        .section-label { display:inline-block; font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent-cyan); margin-bottom:8px; }
+        .section-title { font-size:2rem; font-weight:700; color:#fff; margin-bottom:8px; }
+
+        /* 社区支持 */
+        .community-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:20px; margin-top:30px; }
+        .community-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:24px; text-align:center; transition:all var(--transition-smooth); }
+        .community-card:hover { border-color:rgba(88,166,255,0.4); transform:translateY(-3px); box-shadow:var(--shadow-elevated); }
+        .community-icon { font-size:2.2rem; margin-bottom:10px; }
+        .community-card h3 { font-size:1.1rem; color:#fff; margin-bottom:8px; }
+        .community-card p { color:var(--text-secondary); font-size:0.85rem; margin-bottom:12px; }
+        .btn-outline-sm { padding:8px 18px; border-radius:20px; font-size:0.85rem; font-weight:600; border:1px solid var(--border-default); background:transparent; color:var(--text-secondary); display:inline-flex; align-items:center; gap:6px; transition:all var(--transition-fast); cursor:pointer; }
+        .btn-outline-sm:hover { background:var(--btn-outline-bg); border-color:var(--text-muted); color:var(--text-primary); }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:20px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .page-title { font-size:2.2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+            .faq-grid { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="features.html">✨ 特性</a>
+                    <a href="download.html">📥 下载</a>
+                    <a href="tutorials.html">📖 教程</a>
+                    <a href="faq.html" class="active">❓ FAQ</a>
+                    <a href="changelog.html">📋 更新日志</a>
+                    <a href="blog.html">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文档…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文档…" id="mobileSearch" /></div>
+            <a href="features.html">✨ 特性</a><a href="download.html">📥 下载</a><a href="tutorials.html">📖 教程</a><a href="faq.html" class="active">❓ FAQ</a><a href="changelog.html">📋 更新日志</a><a href="blog.html">📝 博客</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero 区域 -->
+        <section class="hero-faq">
+            <div class="container">
+                <div class="page-badge">🤔 有疑问？看这里</div>
+                <h1 class="page-title">Clash Verge Rev 知识库</h1>
+                <p class="page-subtitle">这里整理了关于安装、配置、TUN模式、DNS防泄漏及AI分流的最常见疑问。共收录 <strong>25+</strong> 个高频问题，并附带错误代码速查表与社区支持入口。如果仍未解决你的困惑，欢迎随时通过 GitHub Issues 联系我们。</p>
+                <div class="faq-search-large search-wrap">
+                    <span class="search-icon" style="left:16px;">🔍</span>
+                    <input type="text" class="search-input" placeholder="输入关键词搜索问题… (如 TUN 驱动)" id="faqMainSearch" style="padding-left:44px;" />
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container">
+                <!-- 快速入口标签 -->
+                <div class="quick-tags">
+                    <span class="quick-tag">🪟 Windows 安装</span>
+                    <span class="quick-tag">🍎 macOS 权限</span>
+                    <span class="quick-tag">🐧 Linux 依赖</span>
+                    <span class="quick-tag">🔗 TUN 驱动</span>
+                    <span class="quick-tag">🛡️ DNS 检测</span>
+                    <span class="quick-tag">📑 规则编写</span>
+                    <span class="quick-tag">🤖 AI 分流</span>
+                    <span class="quick-tag">⚙️ 性能优化</span>
+                    <span class="quick-tag">📦 历史版本</span>
+                    <span class="quick-tag">👥 参与贡献</span>
+                </div>
+
+                <!-- FAQ 分类网格 -->
+                <div class="faq-grid">
+                    <!-- 安装与启动 -->
+                    <div class="faq-category">
+                        <div class="cat-header"><span class="cat-icon">📥</span><h2 class="cat-title">安装与启动</h2></div>
+                        <details><summary>为什么 Windows 安装后提示“无法验证发布者”？</summary><div class="faq-answer"><p>因为 Clash Verge Rev 是开源项目，未使用商业代码签名证书。请点击“更多信息” -> “仍要运行”。可通过 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" target="_blank">GitHub Releases</a> 校验 SHA256 哈希值确保安全。</p></div></details>
+                        <details><summary>macOS 提示“无法打开，因为无法验证开发者”如何解决？</summary><div class="faq-answer"><p>前往“系统偏好设置” → “安全性与隐私” → “通用”，点击“仍要打开”。或运行 <code>xattr -d com.apple.quarantine /Applications/Clash\ Verge\ Rev.app</code>。</p></div></details>
+                        <details><summary>Linux AppImage 无法运行或提示权限错误？</summary><div class="faq-answer"><p>确保文件具有可执行权限：<code>chmod +x Clash*.AppImage</code>。若缺少 FUSE，可尝试 <code>--appimage-extract-and-run</code> 或安装 <code>libfuse2</code>。</p></div></details>
+                        <details><summary>安装后提示“缺少运行库”或“无法定位程序输入点”？</summary><div class="faq-answer"><p>Windows 需安装 <a href="https://learn.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist" target="_blank">VC++ 可再发行组件</a>。Linux 请确保 <code>libgtk-3-0</code>、<code>libwebkit2gtk</code> 等依赖已安装。</p></div></details>
+                    </div>
+
+                    <!-- TUN 与系统代理 -->
+                    <div class="faq-category">
+                        <div class="cat-header"><span class="cat-icon">🔗</span><h2 class="cat-title">TUN 与系统代理</h2></div>
+                        <details><summary>TUN 模式无法启动，提示驱动错误怎么办？</summary><div class="faq-answer"><p>以管理员身份运行。Windows 重装 Wintun 驱动（设置内），macOS 允许系统扩展，Linux 执行 <code>modprobe tun</code> 并检查 <code>/dev/net/tun</code> 权限。</p></div></details>
+                        <details><summary>开启 TUN 后无法上网或速度变慢？</summary><div class="faq-answer"><p>排查路由表冲突（关闭其他 VPN）。开启 <code>auto-route</code> 与 <code>strict-route</code>，并确保 DNS 劫持生效 (<code>dns-hijack: [any:53]</code>)。</p></div></details>
+                        <details><summary>TUN 模式与系统代理的核心区别？</summary><div class="faq-answer"><p>系统代理仅接管遵循系统代理设置的应用（多数浏览器）。TUN 在 IP 层拦截所有流量，包括终端、UDP 游戏、Docker 等，但需管理员权限。</p></div></details>
+                        <details><summary>如何让局域网设备共享代理？</summary><div class="faq-answer"><p>在 TUN 设置中关闭 <code>strict-route</code>，并开启 IP 转发。需手动设置局域网其他设备的网关和 DNS 指向本机 IP。也可配合 SOCKS5 代理监听 0.0.0.0 使用。</p></div></details>
+                    </div>
+
+                    <!-- DNS 与隐私安全 -->
+                    <div class="faq-category">
+                        <div class="cat-header"><span class="cat-icon">🛡️</span><h2 class="cat-title">DNS 与隐私安全</h2></div>
+                        <details><summary>如何验证 DNS 是否彻底防泄漏？</summary><div class="faq-answer"><p>访问 <a href="https://ipleak.net" target="_blank">ipleak.net</a> 或 <a href="https://dnsleaktest.com" target="_blank">dnsleaktest.com</a>。正确配置下 DNS 服务器应全部显示代理节点 IP。Fake-IP + DoH/DoT 是最佳组合。</p></div></details>
+                        <details><summary>客户端会收集我的个人数据吗？</summary><div class="faq-answer"><p><strong>不会。</strong>零遥测、零追踪。一切处理均在本地完成，源代码可审计。</p></div></details>
+                        <details><summary>DNS 查询变慢或超时怎么办？</summary><div class="faq-answer"><p>国内 DNS 推荐 <code>https://doh.pub/dns-query</code>，国外使用 <code>https://dns.google/dns-query</code>。可适当增大 <code>timeout</code> 值并启用 <code>cached-alias</code>。</p></div></details>
+                        <details><summary>开启了 DoH/DoT 仍然检测到运营商 DNS？</summary><div class="faq-answer"><p>可能浏览器或系统存在其他 DNS 缓存。刷新 DNS 缓存 (<code>ipconfig /flushdns</code> 或 <code>systemd-resolve --flush-caches</code>)，并确保 TUN 的 <code>dns-hijack</code> 已劫持所有 53 端口流量。</p></div></details>
+                    </div>
+
+                    <!-- 配置与规则分流 -->
+                    <div class="faq-category">
+                        <div class="cat-header"><span class="cat-icon">📑</span><h2 class="cat-title">配置与规则分流</h2></div>
+                        <details><summary>导入订阅后节点列表为空？</summary><div class="faq-answer"><p>检查订阅链接是否有效（浏览器访问）。部分机场需添加参数如 <code>&amp;flag=clash</code>。确认返回内容为 Base64 编码的 Clash 配置。</p></div></details>
+                        <details><summary>如何为 ChatGPT/OpenAI API 设置分流？</summary><div class="faq-answer"><p>添加规则：<code>- DOMAIN-SUFFIX,openai.com,🚀 代理组</code>。推荐使用 RULE-SET 订阅社区 AI 域名列表。</p></div></details>
+                        <details><summary>怎么让特定的应用（如 WeChat）直连不走代理？</summary><div class="faq-answer"><p>使用 <code>PROCESS-NAME</code> 规则，例如：<code>- PROCESS-NAME,WeChat.exe,DIRECT</code>。规则需放在前面以确保优先级。</p></div></details>
+                        <details><summary>配置热重载没有生效？</summary><div class="faq-answer"><p>修改 config.yaml 后客户端会自动重载。若未生效，检查配置语法是否有误（可查看日志）。极少数情况需手动重启 Mihomo 内核。</p></div></details>
+                    </div>
+
+                    <!-- 性能调优与错误代码 -->
+                    <div class="faq-category">
+                        <div class="cat-header"><span class="cat-icon">⚙️</span><h2 class="cat-title">性能调优与错误代码</h2></div>
+                        <details><summary>内存占用过高怎么办？</summary><div class="faq-answer"><p>尝试将 DNS 的 <code>geodata-mode</code> 设为 <code>memconservative</code>，限制规则集大小。正常空闲约 45MB，远低于 CFW 的 120MB。</p></div></details>
+                        <details><summary>遇到“i/o timeout”或“connection refused”错误？</summary><div class="faq-answer"><p>通常为节点不可用。检查节点是否过期、服务器是否在线。可尝试切换其他节点或协议。如果所有节点均超时，请检查本地网络是否阻断代理协议。</p></div></details>
+                        <details><summary>“TUN adapter not found” 错误如何修复？</summary><div class="faq-answer"><p>重新安装 Wintun 驱动（Windows），或重启客户端。Linux 确认 <code>/dev/net/tun</code> 存在且用户有读写权限。</p></div></details>
+                        <details><summary>UDP 应用（如游戏）连接不稳定？</summary><div class="faq-answer"><p>TUN 模式使用 mixed 协议栈，UDP 走 gVisor 用户空间栈。可尝试调整 <code>udp-timeout</code> 参数，或切换节点协议（如 SS 或 VLess 对 UDP 支持较好）。</p></div></details>
+                    </div>
+                </div>
+
+                <!-- 错误代码速查表 -->
+                <div class="section-header" style="margin-top:40px;">
+                    <span class="section-label">故障排查利器</span>
+                    <h2 class="section-title">📋 常见错误代码速查表</h2>
+                    <p style="color:var(--text-secondary); max-width:600px; margin:0 auto;">下表汇总了 Mihomo 内核中常见的错误信息及对应的快速解决办法，帮助你第一时间定位问题。</p>
+                </div>
+                <div class="error-table-wrap">
+                    <table class="error-table">
+                        <thead>
+                            <tr><th>错误信息</th><th>可能原因</th><th>解决方案</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>i/o timeout</code></td><td>节点不可达或网络封锁</td><td>切换节点、检查代理协议/端口、重启客户端</td></tr>
+                            <tr><td><code>connection refused</code></td><td>目标服务器拒绝连接</td><td>确认服务端口正确、防火墙放行、节点未过期</td></tr>
+                            <tr><td><code>TUN adapter not found</code></td><td>虚拟网卡驱动缺失</td><td>重装 Wintun（Win）、加载 tun 模块（Linux）</td></tr>
+                            <tr><td><code>dns resolve failed</code></td><td>DNS 配置错误或上游不可用</td><td>更换 nameserver、检查 DoH/DoT 地址、启用 Fake-IP</td></tr>
+                            <tr><td><code>rule match error</code></td><td>规则语法不正确</td><td>检查逗号分隔、策略组名称一致性，使用在线 YAML 校验</td></tr>
+                            <tr><td><code>out of memory</code></td><td>规则集过大或内存限制</td><td>精简规则、使用 RULE-SET 远程加载、增加虚拟内存</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 社区支持 -->
+                <div class="section-header" style="margin-top:60px;">
+                    <span class="section-label">需要更多帮助？</span>
+                    <h2 class="section-title">👥 社区与支持</h2>
+                    <p style="color:var(--text-secondary);">我们拥有活跃的开源社区，多个渠道可以获取帮助或参与贡献。</p>
+                </div>
+                <div class="community-grid">
+                    <div class="community-card">
+                        <span class="community-icon">🐙</span>
+                        <h3>GitHub Issues</h3>
+                        <p>报告 Bug、请求功能或搜索已有问题。提交时请附上日志与版本信息。</p>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank" class="btn-outline-sm">🔗 提交 Issue</a>
+                    </div>
+                    <div class="community-card">
+                        <span class="community-icon">📖</span>
+                        <h3>项目 Wiki</h3>
+                        <p>详细的配置手册、TUN 深度指南与 DNS 防泄漏专题，持续更新中。</p>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" class="btn-outline-sm">📚 访问 Wiki</a>
+                    </div>
+                    <div class="community-card">
+                        <span class="community-icon">💬</span>
+                        <h3>讨论区</h3>
+                        <p>分享使用技巧、配置文件模板，与其他用户交流调优经验。</p>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/discussions" target="_blank" class="btn-outline-sm">💡 参与讨论</a>
+                    </div>
+                    <div class="community-card">
+                        <span class="community-icon">❤️</span>
+                        <h3>贡献指南</h3>
+                        <p>欢迎提交代码、翻译文档或完善测试。每一位贡献者都将被列入致谢名单。</p>
+                        <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/blob/main/CONTRIBUTING.md" target="_blank" class="btn-outline-sm">📝 如何贡献</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="download.html">Windows 版</a><a href="download.html">macOS 版</a><a href="download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="faq.html">常见问题 FAQ</a><a href="faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            setupSearch('faqMainSearch');
+
+            // 快速标签点击滚动到对应分类（简单实现：点击标签弹窗提示或跳转，这里做控制台提示）
+            document.querySelectorAll('.quick-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const text = this.innerText.trim();
+                    alert('快速定位功能开发中，您可以在上方搜索框搜索：' + text);
+                });
+            });
+
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
