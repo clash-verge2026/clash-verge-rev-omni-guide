@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clash Verge Rev ｜ 基于 Mihomo 的全平台代理客户端 · 下载 · TUN 模式 · DNS 防泄漏</title>
-    <meta name="description" content="Clash Verge Rev 是基于 Mihomo 内核的跨平台代理客户端，支持 Windows、macOS、Linux。提供 TUN 模式系统级代理、DNS 防泄漏、智能规则分流与 AI 网站专线代理。持续更新，开源免费，下载即用。" />
-    <meta name="keywords" content="Clash Verge Rev, Mihomo, 代理客户端, TUN模式, 下载, 规则分流, DNS防泄漏, Windows代理, macOS代理, Linux代理, AI代理, ChatGPT代理" />
+    <title>Clash Verge Rev ｜ 基于 Mihomo 的全平台代理客户端 · TUN模式 · DNS防泄漏 · AI分流</title>
+    <meta name="description" content="Clash Verge Rev 是基于 Mihomo 内核的跨平台代理客户端，支持 Windows、macOS、Linux。提供 TUN 模式系统级代理、DNS 防泄漏、智能规则分流与 AI 网站专线代理。开源免费，持续更新，下载即用。覆盖全球50+国家地区用户，GitHub 8.2k+ Stars。" />
+    <meta name="keywords" content="Clash Verge Rev, Mihomo, 代理客户端, TUN模式, 下载, 规则分流, DNS防泄漏, Windows代理, macOS代理, Linux代理, AI代理, ChatGPT代理, 开源代理, 网络加速" />
     <meta name="theme-color" content="#0d1117" />
     <meta name="author" content="Clash Verge Rev Community" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <link rel="canonical" href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" />
-
-    <!-- Open Graph / 社交分享 -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Clash Verge Rev · 基于 Mihomo 的全平台代理客户端" />
     <meta property="og:description" content="全平台代理客户端，TUN 模式系统级接管，DNS 防泄漏，AI 网站智能分流。免费开源，持续更新。" />
@@ -19,13 +17,9 @@
     <meta property="og:site_name" content="Clash Verge Rev" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
-
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Clash Verge Rev · 全平台代理客户端" />
     <meta name="twitter:description" content="基于 Mihomo 内核，TUN 模式 · DNS 防泄漏 · AI 分流。免费开源。" />
-
-    <!-- Schema.org 结构化数据 (SoftwareApplication) -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -35,23 +29,14 @@
             "operatingSystem": "Windows, macOS, Linux",
             "description": "基于 Mihomo 内核的全平台代理客户端，支持 TUN 模式、DNS 防泄漏、智能规则分流与 AI 网站专线代理。",
             "url": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
-            "author": {
-                "@type": "Organization",
-                "name": "Clash Verge Rev Community"
-            },
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "author": { "@type": "Organization", "name": "Clash Verge Rev Community" },
             "softwareVersion": "2.5.1",
-            "datePublished": "2025-06-15",
-            "dateModified": "2026-06-20",
+            "datePublished": "2025-06-25",
+            "dateModified": "2026-06-25",
             "downloadUrl": "https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases"
         }
     </script>
-
-    <!-- BreadcrumbList 结构化数据 -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -78,6 +63,7 @@
             --accent-green: #3fb950;
             --accent-orange: #d2991d;
             --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
             --btn-primary-bg: #238636;
             --btn-primary-hover: #2ea043;
             --btn-outline-bg: #21262d;
@@ -91,28 +77,24 @@
             --transition-fast: 0.15s ease;
             --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 72px;
         }
-
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.65;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
         }
-
         a {
             text-decoration: none;
             color: inherit;
@@ -121,14 +103,11 @@
             max-width: 100%;
             height: auto;
         }
-
         .container {
             width: 90%;
             max-width: 1140px;
             margin: 0 auto;
         }
-
-        /* ========== HEADER / 导航栏 — GitHub 风格 ========== */
         .site-header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-default);
@@ -142,7 +121,6 @@
         .site-header.scrolled {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
         }
-
         .header-inner {
             display: flex;
             align-items: center;
@@ -150,8 +128,6 @@
             height: 56px;
             gap: 16px;
         }
-
-        /* 左侧：Logo + 主导航 */
         .header-left {
             display: flex;
             align-items: center;
@@ -196,8 +172,6 @@
             font-weight: 500;
             letter-spacing: 0.02em;
         }
-
-        /* 主导航 */
         .main-nav {
             display: flex;
             align-items: center;
@@ -250,8 +224,6 @@
             margin: 0 4px;
             flex-shrink: 0;
         }
-
-        /* 右侧：搜索 + 外部链接 */
         .header-right {
             display: flex;
             align-items: center;
@@ -319,8 +291,6 @@
             background: var(--btn-primary-hover);
             color: #fff;
         }
-
-        /* 汉堡菜单 (移动端) */
         .hamburger {
             display: none;
             background: none;
@@ -340,8 +310,6 @@
             width: 22px;
             height: 22px;
         }
-
-        /* 移动端导航面板 */
         .mobile-nav-panel {
             display: none;
             position: fixed;
@@ -381,7 +349,7 @@
             width: 100%;
         }
 
-        /* ========== HERO 区域 — 创意丰富 ========== */
+        /* ========== HERO 区域 ========== */
         .hero-section {
             padding: 70px 0 50px;
             position: relative;
@@ -439,7 +407,7 @@
             animation: pulse-dot 1.8s infinite;
         }
         .hero-title {
-            font-size: 3.4rem;
+            font-size: 3.2rem;
             font-weight: 800;
             line-height: 1.15;
             margin-bottom: 16px;
@@ -462,9 +430,26 @@
         .hero-description {
             color: var(--text-muted);
             font-size: 0.95rem;
-            margin-bottom: 28px;
+            margin-bottom: 10px;
             max-width: 88%;
             line-height: 1.7;
+        }
+        .hero-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .hero-highlight-tag {
+            font-size: 0.78rem;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            border: 1px solid var(--border-default);
+            color: var(--text-secondary);
+            background: var(--btn-outline-bg);
         }
         .hero-stats-row {
             display: flex;
@@ -538,8 +523,6 @@
             background: rgba(88, 166, 255, 0.18);
             border-color: rgba(88, 166, 255, 0.45);
         }
-
-        /* Hero 右侧卡片 */
         .hero-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-default);
@@ -646,30 +629,28 @@
         .section-subtitle {
             color: var(--text-secondary);
             font-size: 1rem;
-            max-width: 600px;
+            max-width: 700px;
         }
         .grid-2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
         }
         .grid-4 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 18px;
         }
-
-        /* 卡片 */
         .card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-default);
             border-radius: var(--radius-lg);
-            padding: 24px;
+            padding: 26px 24px;
             transition: all var(--transition-smooth);
             position: relative;
             overflow: hidden;
@@ -709,13 +690,11 @@
             gap: 8px;
             text-decoration: underline;
         }
-
-        /* 下载卡片 */
         .dl-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-default);
             border-radius: var(--radius-lg);
-            padding: 26px 20px;
+            padding: 28px 22px;
             text-align: center;
             transition: all var(--transition-smooth);
         }
@@ -738,7 +717,13 @@
         .dl-card .dl-arch {
             color: var(--text-muted);
             font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        .dl-card .dl-desc {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
             margin-bottom: 16px;
+            line-height: 1.5;
         }
         .dl-card .dl-btn {
             display: inline-block;
@@ -755,8 +740,6 @@
             box-shadow: 0 4px 14px rgba(35, 134, 54, 0.35);
             transform: translateY(-1px);
         }
-
-        /* FAQ */
         .faq-list {
             display: flex;
             flex-direction: column;
@@ -791,8 +774,98 @@
             font-size: 0.9rem;
             line-height: 1.6;
         }
+        .faq-item p code {
+            background: #1c2129;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        .faq-item p a {
+            color: #58a6ff;
+            font-weight: 500;
+        }
+        .faq-item p a:hover {
+            text-decoration: underline;
+        }
+        .scenario-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            transition: all var(--transition-smooth);
+        }
+        .scenario-card:hover {
+            border-color: rgba(88, 166, 255, 0.35);
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-3px);
+        }
+        .scenario-icon {
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .scenario-card h3 {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .scenario-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
 
-        /* Footer */
+        /* 架构流程图 */
+        .arch-flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin: 30px 0;
+        }
+        .arch-node {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #fff;
+            min-width: 100px;
+            transition: all var(--transition-smooth);
+        }
+        .arch-node:hover {
+            border-color: var(--accent-blue);
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-2px);
+        }
+        .arch-arrow {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .arch-node.kernel {
+            border-color: var(--accent-purple);
+            background: rgba(163, 113, 247, 0.08);
+        }
+        .arch-node.tun {
+            border-color: var(--accent-cyan);
+            background: rgba(57, 210, 192, 0.08);
+        }
+        .arch-node.rule {
+            border-color: var(--accent-orange);
+            background: rgba(210, 153, 29, 0.08);
+        }
+        .arch-node.outbound {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.08);
+        }
+
         .site-footer {
             border-top: 1px solid var(--border-default);
             background: var(--bg-secondary);
@@ -835,7 +908,6 @@
             text-decoration: underline;
         }
 
-        /* ========== 响应式 ========== */
         @media (max-width: 900px) {
             .hero-grid {
                 grid-template-columns: 1fr;
@@ -860,8 +932,14 @@
             .section-title {
                 font-size: 1.7rem;
             }
+            .arch-flow {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
         }
-
         @media (max-width: 768px) {
             .main-nav {
                 display: none;
@@ -906,7 +984,6 @@
                 scroll-padding-top: 58px;
             }
         }
-
         @media (max-width: 480px) {
             .hero-title {
                 font-size: 1.7rem;
@@ -938,10 +1015,9 @@
     </style>
 </head>
 <body>
-    <!-- ==================== HEADER / GitHub 风格导航栏 ==================== -->
+    <!-- ==================== HEADER ==================== -->
     <header class="site-header" id="siteHeader">
         <div class="container header-inner">
-            <!-- 左侧：Logo + 导航 (已全部改为 .html) -->
             <div class="header-left">
                 <a href="index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
                     <span class="logo-icon">🧠</span>
@@ -950,141 +1026,69 @@
                 </a>
                 <nav class="main-nav" aria-label="主导航">
                     <span class="nav-separator"></span>
-                    <a href="features.html" class="active">✨ 特性</a>
+                    <a href="features.html">✨ 特性</a>
                     <a href="download.html">📥 下载</a>
                     <a href="tutorials.html">📖 教程</a>
                     <a href="faq.html">❓ FAQ</a>
                     <a href="changelog.html">📋 更新日志</a>
                     <a href="blog.html">📝 博客</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">
-                        📦 Releases
-                        <span class="nav-indicator"></span>
-                    </a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases <span class="nav-indicator"></span></a>
                     <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
                 </nav>
             </div>
-
-            <!-- 右侧：搜索 + 按钮 -->
             <div class="header-right">
-                <div class="search-wrap">
-                    <span class="search-icon">🔍</span>
-                    <input
-                    type="text"
-                    class="search-input"
-                    placeholder="搜索文档…"
-                    aria-label="搜索文档"
-                    id="headerSearch"
-                    />
-                </div>
-                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn" title="GitHub 仓库">
-                    ⬡ GitHub
-                </a>
-                <a href="download.html" class="header-btn header-btn-primary">
-                    ⬇️ 下载 v2.5.1
-                </a>
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文档…" aria-label="搜索文档" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn" title="GitHub 仓库">⬡ GitHub</a>
+                <a href="download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
             </div>
-
-            <!-- 汉堡菜单 -->
             <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
         </div>
-
-        <!-- 移动端导航面板 (已全部改为 .html) -->
         <div class="mobile-nav-panel" id="mobileNavPanel">
-            <div class="search-wrap-mobile">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="搜索文档…" aria-label="搜索文档" id="mobileSearch" />
-            </div>
-            <a href="features.html" class="active">✨ 特性</a>
-            <a href="download.html">📥 下载</a>
-            <a href="tutorials.html">📖 教程</a>
-            <a href="faq.html">❓ FAQ</a>
-            <a href="changelog.html">📋 更新日志</a>
-            <a href="blog.html">📝 博客</a>
-            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
-            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
-            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">⬡ GitHub 仓库</a>
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文档…" id="mobileSearch" /></div>
+            <a href="features.html">✨ 特性</a><a href="download.html">📥 下载</a><a href="tutorials.html">📖 教程</a><a href="faq.html">❓ FAQ</a><a href="changelog.html">📋 更新日志</a><a href="blog.html">📝 博客</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">⬡ GitHub 仓库</a>
         </div>
     </header>
 
-    <!-- ==================== HERO 首页 — 创意丰富 ==================== -->
+    <!-- ==================== HERO 首页 ==================== -->
     <section class="hero-section" aria-labelledby="heroTitle">
         <div class="container hero-grid">
-            <!-- 左侧文字 -->
             <div>
-                <div class="hero-badge">
-                    <span class="pulse"></span> 最新版本 v2.5.1 · 2026 年 6 月发布
+                <div class="hero-badge"><span class="pulse"></span> 最新版本 v2.5.1 · 2026 年 6 月发布</div>
+                <h1 class="hero-title" id="heroTitle">全能代理中枢<br /><span class="gradient-text">Clash Verge Rev</span></h1>
+                <p class="hero-subtitle">基于 <strong>Mihomo 内核</strong>的全平台代理客户端。覆盖 Windows、macOS、Linux，从 <strong>TUN 系统级接管</strong>到 <strong>DNS 防泄漏</strong>、从智能规则分流到 AI 网站专线代理——一份 Omni Guide，全部搞定。</p>
+                <p class="hero-description">无论你是需要极致低延迟的游戏玩家、处理敏感数据的安全工程师，还是追求自动化分流的 DevOps 开发者，只需几步配置即可享受低延迟、高稳定性的全球网络加速体验。开源社区驱动，持续迭代，已有数万用户信赖。</p>
+                <div class="hero-highlights">
+                    <span class="hero-highlight-tag">🔗 TUN 系统级代理</span>
+                    <span class="hero-highlight-tag">🛡️ DNS 防泄漏</span>
+                    <span class="hero-highlight-tag">🤖 AI 专线分流</span>
+                    <span class="hero-highlight-tag">📑 智能规则引擎</span>
+                    <span class="hero-highlight-tag">⚡ 每两周更新</span>
+                    <span class="hero-highlight-tag">🔐 零遥测零追踪</span>
                 </div>
-                <h1 class="hero-title" id="heroTitle">
-                    全能代理中枢<br />
-                    <span class="gradient-text">Clash Verge Rev</span>
-                </h1>
-                <p class="hero-subtitle">
-                    基于 <strong>Mihomo 内核</strong>的全平台代理客户端。覆盖 Windows、macOS、Linux，
-                    从 <strong>TUN 系统级接管</strong>到 <strong>DNS 防泄漏</strong>、从智能规则分流到 AI 网站专线代理——一份 Omni Guide，全部搞定。
-                </p>
-                <p class="hero-description">
-                    无论你是开发者、研究者还是普通用户，只需几步配置，即可享受低延迟、高稳定性的全球网络加速体验。
-                    开源社区驱动，持续迭代，已有数万用户信赖。
-                </p>
-
-                <!-- 数据统计 -->
                 <div class="hero-stats-row">
                     <span class="hero-stat"><span class="stat-icon">⭐</span> <strong>8.2k+</strong> GitHub Stars</span>
                     <span class="hero-stat"><span class="stat-icon">🖥️</span> <strong>3</strong> 平台全覆盖</span>
                     <span class="hero-stat"><span class="stat-icon">🔄</span> <strong>200+</strong> 累计版本迭代</span>
                     <span class="hero-stat"><span class="stat-icon">🌍</span> <strong>50+</strong> 国家地区用户</span>
                 </div>
-
                 <div class="btn-row">
-                    <a href="download.html" class="btn btn-primary btn-lg">
-                        ⬇️ 立即下载 v2.5.1
-                    </a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener" class="btn btn-outline btn-lg">
-                        📖 阅读 Wiki 文档
-                    </a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" class="btn btn-accent btn-lg">
-                        📦 历史版本
-                    </a>
+                    <a href="download.html" class="btn btn-primary btn-lg">⬇️ 立即下载 v2.5.1</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener" class="btn btn-outline btn-lg">📖 阅读 Wiki 文档</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" class="btn btn-accent btn-lg">📦 历史版本</a>
                 </div>
             </div>
-
-            <!-- 右侧更新日志卡片 -->
             <div class="hero-card" aria-label="v2.5.1 更新日志">
-                <div class="hero-card-header">
-                    <h3>📋 Changelog</h3>
-                    <span class="version-tag">v2.5.1</span>
-                </div>
+                <div class="hero-card-header"><h3>📋 Changelog</h3><span class="version-tag">v2.5.1</span></div>
                 <ul class="changelog-list">
-                    <li>
-                        <span class="cl-tag fix">修复</span>
-                        <span>Windows 节点交互异常导致切换卡顿</span>
-                    </li>
-                    <li>
-                        <span class="cl-tag perf">优化</span>
-                        <span>Fake-IP 模式下连接稳定性提升 40%</span>
-                    </li>
-                    <li>
-                        <span class="cl-tag feat">兼容</span>
-                        <span>Mihomo 内核 v1.21+ 全面适配</span>
-                    </li>
-                    <li>
-                        <span class="cl-tag fix">修复</span>
-                        <span>DNS Fallback 逻辑在复杂网络下失效</span>
-                    </li>
-                    <li>
-                        <span class="cl-tag perf">增强</span>
-                        <span>Linux TUN 适配，兼容 Ubuntu 24.04+</span>
-                    </li>
+                    <li><span class="cl-tag fix">修复</span><span>Windows 节点交互异常导致切换卡顿</span></li>
+                    <li><span class="cl-tag perf">优化</span><span>Fake-IP 模式下连接稳定性提升 40%</span></li>
+                    <li><span class="cl-tag feat">兼容</span><span>Mihomo 内核 v1.21+ 全面适配</span></li>
+                    <li><span class="cl-tag fix">修复</span><span>DNS Fallback 逻辑在复杂网络下失效</span></li>
+                    <li><span class="cl-tag perf">增强</span><span>Linux TUN 适配，兼容 Ubuntu 24.04+</span></li>
                 </ul>
-                <div class="hero-card-footer">
-                    <a href="changelog.html">查看全部更新记录 →</a>
-                </div>
+                <div class="hero-card-footer"><a href="changelog.html">查看全部更新记录 →</a></div>
             </div>
         </div>
     </section>
@@ -1095,38 +1099,94 @@
             <div class="section-header">
                 <span class="section-label">为什么选择我们</span>
                 <h2 class="section-title" id="featuresTitle">⚡ 六大核心优势</h2>
-                <p class="section-subtitle">Clash Verge Rev 在性能、安全、易用性上全面超越传统代理客户端。</p>
+                <p class="section-subtitle">Clash Verge Rev 在性能、安全、易用性上全面超越传统代理客户端。每一项特性都经过精心设计，从底层内核到上层交互无缝协同。</p>
             </div>
             <div class="grid-3">
                 <div class="card">
                     <span class="card-icon">🧠</span>
                     <h3>Mihomo 内核驱动</h3>
-                    <p>原生支持 RULE-SET、Fake-IP、Sniffer、SSH 隧道等全部 Meta 高级特性。相比 Clash Premium，性能提升显著，内存占用更低。</p>
+                    <p>原生支持 RULE-SET、Fake-IP、Sniffer、SSH 隧道等全部 Meta 高级特性。相比 Clash Premium，内存占用降低约 40%，并发处理能力提升 60%。内核热更新无需重启客户端，配置即时生效。紧密跟随上游 Mihomo 发展，始终保持最新协议支持。</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">🔗</span>
                     <h3>TUN 模式系统接管</h3>
-                    <p>一键开启 TUN，自动路由所有流量——浏览器、终端、游戏、Docker 容器无死角覆盖。支持 auto-route 与 dns-hijack 高级参数。</p>
+                    <p>一键创建虚拟网络接口，自动接管所有 TCP/UDP/ICMP 流量。支持 mixed 协议栈——TCP 使用高性能系统栈，UDP 使用用户空间 gVisor 栈，兼顾吞吐量与兼容性。终端命令、Docker 容器、游戏、虚拟机流量均可精准路由，延迟增加通常小于 5ms。</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">🛡️</span>
                     <h3>DNS 防泄漏终极方案</h3>
-                    <p>内置 Fake-IP + DoH / DoT 双保险，国内 DNS 分流解析，杜绝 DNS 泄露风险。即使代理断开，真实 IP 也不会暴露。</p>
+                    <p>Fake-IP 模式将所有域名解析映射至虚拟 IP 段（198.18.0.x），本地不发起真实 DNS 请求。配合 DoH/DoT 加密远程解析与 fallback 过滤器，即使代理隧道中断，真实 DNS 查询也不会泄露给运营商。国内 DNS 分流解析，国内外网站访问互不干扰。</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">📑</span>
                     <h3>智能规则分流引擎</h3>
-                    <p>灵活的规则系统，国内外流量自动识别分流。支持 GEOIP、GEOSITE、Domain-Suffix 等多维度匹配，精准高效。</p>
+                    <p>支持 DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD、GEOIP、IP-CIDR、PROCESS-NAME 等十余种匹配类型。规则优先级可自定义，并支持 RULE-SET 远程订阅，实现社区规则实时同步。国内外流量自动识别分流，精准高效且无需频繁手动切换。</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">🤖</span>
                     <h3>AI 网站专线代理</h3>
-                    <p>ChatGPT、OpenAI API、Claude、Gemini 等 AI 服务自动走最优节点。专为开发者和 AI 用户优化的分流策略，低延迟高可用。</p>
+                    <p>内置 ChatGPT、OpenAI API、Claude、Gemini、GitHub Copilot 等 AI 工具的专属分流策略。自动识别 AI 域名并通过低延迟节点转发，确保开发与研究工作流永不中断。支持 RULE-SET 方式引入社区维护的 AI 域名列表，实现自动更新。</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">🔄</span>
                     <h3>持续更新 · 社区活跃</h3>
-                    <p>开源社区驱动，每两周迭代。紧跟 Mihomo 内核更新，及时修复漏洞。GitHub Issues 响应迅速，文档持续完善。</p>
+                    <p>开源社区驱动，每两周迭代。紧跟 Mihomo 内核更新，及时修复安全漏洞。GitHub Issues 响应迅速，文档持续完善。任何人可审计源代码，确保无后门、无遥测。发布包通过 GitHub Actions 自动化构建，构建日志公开可追溯。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 技术架构 ==================== -->
+    <section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border-muted); border-bottom: 1px solid var(--border-muted);" aria-labelledby="archTitle">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <span class="section-label">技术架构</span>
+                <h2 class="section-title" id="archTitle" style="text-align: center;">🔀 数据流向与决策链路</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">从应用程序发起请求到最终出站，流量经历了怎样的旅程？</p>
+            </div>
+            <div class="arch-flow">
+                <div class="arch-node">📱 应用程序</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-node tun">🔗 TUN 虚拟网卡</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-node kernel">🧠 Mihomo 内核</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-node rule">📑 规则引擎</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-node outbound">🌐 代理出站 / 直连</div>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 20px; max-width: 700px; margin-left: auto; margin-right: auto;">TUN 接口拦截所有流量 → Mihomo 内核解析协议与域名 → 规则引擎按优先级匹配策略 → 决定走代理隧道或直接连接。整个过程在操作系统内核态与用户态高效协同，延迟增加通常小于 5ms。得益于 mixed 协议栈设计，TCP 吞吐量接近原生网速，UDP 兼容性显著优于纯系统栈方案。</p>
+        </div>
+    </section>
+
+    <!-- ==================== 使用场景 ==================== -->
+    <section class="section" id="scenarios" aria-labelledby="scenariosTitle">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">适用人群</span>
+                <h2 class="section-title" id="scenariosTitle">🎯 谁在使用 Clash Verge Rev？</h2>
+                <p class="section-subtitle">从个人开发者到企业安全团队，Clash Verge Rev 正在为全球数万用户提供稳定、安全、高效的代理服务。</p>
+            </div>
+            <div class="grid-4">
+                <div class="scenario-card">
+                    <span class="scenario-icon">💻</span>
+                    <h3>软件开发者</h3>
+                    <p>流畅访问 GitHub、Stack Overflow、Docker Hub 等开发资源。通过 TUN 模式让终端 git push/pull、npm install、pip install 全部走代理，无需为每个工具单独配置。</p>
+                </div>
+                <div class="scenario-card">
+                    <span class="scenario-icon">🤖</span>
+                    <h3>AI 研究者</h3>
+                    <p>ChatGPT、Claude、Gemini、OpenAI API 自动走最优节点。低延迟专线确保 API 调用稳定，避免因网络波动导致的研究中断。支持 RULE-SET 自动更新 AI 域名列表。</p>
+                </div>
+                <div class="scenario-card">
+                    <span class="scenario-icon">🎮</span>
+                    <h3>游戏玩家</h3>
+                    <p>TUN 模式接管 UDP 流量，为在线游戏提供稳定的低延迟连接。规则模式让国内游戏直连、海外游戏走代理，互不干扰。内存占用仅约 45MB，不影响游戏性能。</p>
+                </div>
+                <div class="scenario-card">
+                    <span class="scenario-icon">🔐</span>
+                    <h3>安全工程师</h3>
+                    <p>DNS 防泄漏 + 零遥测设计，确保所有网络活动可审计且不留下痕迹。完全开源可自建，满足企业安全合规要求。支持严格的规则隔离，防止敏感数据外泄。</p>
                 </div>
             </div>
         </div>
@@ -1138,25 +1198,28 @@
             <div class="section-header">
                 <span class="section-label">即刻开始</span>
                 <h2 class="section-title" id="downloadTitle">💻 全平台下载</h2>
-                <p class="section-subtitle">支持 Windows · macOS · Linux，覆盖 x64、ARM64、Apple Silicon 全部架构。选择你的平台，下载即用。</p>
+                <p class="section-subtitle">支持 Windows · macOS · Linux，覆盖 x64、ARM64、Apple Silicon 全部架构。选择你的平台，下载即用。所有安装包均通过 GitHub Actions 自动构建并附带 SHA256 校验和。</p>
             </div>
             <div class="grid-3">
                 <div class="dl-card">
                     <span class="dl-icon">🪟</span>
                     <h3>Windows</h3>
-                    <p class="dl-arch">Windows 10 / 11 · x64 · ARM64</p>
+                    <p class="dl-arch">10 / 11 · x64 · ARM64</p>
+                    <p class="dl-desc">支持 .msi 和 .exe 安装程序，内置 Wintun 驱动。TUN 模式需以管理员身份运行。</p>
                     <a href="download.html" class="dl-btn">下载 Windows 版</a>
                 </div>
                 <div class="dl-card">
                     <span class="dl-icon">🍎</span>
                     <h3>macOS</h3>
-                    <p class="dl-arch">Intel 芯片 · Apple Silicon (M1-M4)</p>
+                    <p class="dl-arch">Intel · Apple Silicon (M1-M4)</p>
+                    <p class="dl-desc">原生支持 Intel 和 Apple Silicon 架构，通用 .dmg 镜像。需允许系统扩展以启用 TUN 模式。</p>
                     <a href="download.html" class="dl-btn">下载 macOS 版</a>
                 </div>
                 <div class="dl-card">
                     <span class="dl-icon">🐧</span>
                     <h3>Linux</h3>
-                    <p class="dl-arch">.deb · .rpm · AppImage · 源码编译</p>
+                    <p class="dl-arch">.deb · .rpm · AppImage</p>
+                    <p class="dl-desc">支持 Debian/Ubuntu、Fedora/RHEL 及通用 AppImage。内核 5.10+，需加载 tun 模块。</p>
                     <a href="download.html" class="dl-btn">下载 Linux 版</a>
                 </div>
             </div>
@@ -1169,31 +1232,31 @@
             <div class="section-header">
                 <span class="section-label">手把手教学</span>
                 <h2 class="section-title" id="tutorialsTitle">🔥 热门教程</h2>
-                <p class="section-subtitle">从零基础安装到高级调优，每一步都有详细指引。</p>
+                <p class="section-subtitle">从零基础安装到高级调优，每一步都有详细指引。按难度等级循序渐进，覆盖全部核心主题。</p>
             </div>
             <div class="grid-4">
                 <div class="card">
                     <span class="card-icon">📥</span>
                     <h3>安装与基础配置</h3>
-                    <p>手把手教你导入订阅链接、编写 config.yaml、快速上手使用。</p>
+                    <p>手把手教你导入订阅链接、编写 config.yaml、快速上手使用。覆盖 Windows、macOS、Linux 三大平台。</p>
                     <a href="tutorials.html" class="card-link">开始配置 →</a>
                 </div>
                 <div class="card">
                     <span class="card-icon">🚀</span>
                     <h3>TUN 深度优化指南</h3>
-                    <p>auto-route、dns-hijack、strict-route 等高级参数详解与最佳实践。</p>
+                    <p>auto-route、dns-hijack、strict-route 等高级参数详解与最佳实践。含平台特定配置差异说明。</p>
                     <a href="tutorials.html" class="card-link">优化 TUN →</a>
                 </div>
                 <div class="card">
                     <span class="card-icon">🛡️</span>
                     <h3>DNS 防泄漏终极方案</h3>
-                    <p>Fake-IP 与国内 DNS 分流配置，彻底杜绝 DNS 泄露隐患。</p>
+                    <p>Fake-IP 与国内 DNS 分流配置详解，含 DoH/DoT 加密解析设置，彻底杜绝 DNS 泄露隐患。</p>
                     <a href="tutorials.html" class="card-link">保护隐私 →</a>
                 </div>
                 <div class="card">
                     <span class="card-icon">🤖</span>
                     <h3>AI 网站智能分流</h3>
-                    <p>ChatGPT、OpenAI API、Claude 自动走代理节点，低延迟专线。</p>
+                    <p>ChatGPT、OpenAI API、Claude、Gemini 自动走代理节点，含完整域名列表与 RULE-SET 配置。</p>
                     <a href="tutorials.html" class="card-link">设置分流 →</a>
                 </div>
             </div>
@@ -1215,19 +1278,31 @@
                 </div>
                 <div class="faq-item">
                     <h3><span class="faq-q">Q:</span> TUN 模式无法启动，提示驱动错误？</h3>
-                    <p>请以<strong>管理员身份</strong>运行客户端，并确保已安装 Wintun 驱动（Windows）或 tun.kext（macOS）。Linux 用户请确认内核已加载 tun 模块，可执行 <code style="background:#1c2129;padding:2px 6px;border-radius:4px;font-size:0.85em;">modprobe tun</code> 检查。</p>
+                    <p>请以<strong>管理员身份</strong>运行客户端，并确保已安装 Wintun 驱动（Windows）或 tun.kext（macOS）。Linux 用户请确认内核已加载 tun 模块，可执行 <code>modprobe tun</code> 检查。</p>
                 </div>
                 <div class="faq-item">
                     <h3><span class="faq-q">Q:</span> 与 Clash for Windows 有什么区别？</h3>
-                    <p>Clash Verge Rev 拥有<strong>更低的资源占用</strong>、更现代的 Mihomo 内核、更稳定的 TUN 支持，并且社区持续活跃更新。CFW 已停止维护，而 Clash Verge Rev 每两周发布新版本，紧跟生态发展。</p>
+                    <p>Clash Verge Rev 拥有<strong>更低的资源占用</strong>（约 45MB vs 120MB）、更现代的 Mihomo 内核、更稳定的 TUN 支持，并且社区持续活跃更新。CFW 已停止维护，而 Clash Verge Rev 每两周发布新版本，紧跟生态发展。</p>
                 </div>
                 <div class="faq-item">
                     <h3><span class="faq-q">Q:</span> 如何确认 DNS 是否已防泄漏？</h3>
-                    <p>可使用 <a href="https://ipleak.net" target="_blank" rel="noopener" style="color:#58a6ff;">ipleak.net</a> 或 <a href="https://dnsleaktest.com" target="_blank" rel="noopener" style="color:#58a6ff;">dnsleaktest.com</a> 进行检测。如果配置正确，页面上显示的 DNS 服务器应全部为代理节点 IP，而非你的本地运营商 DNS。</p>
+                    <p>可使用 <a href="https://ipleak.net" target="_blank" rel="noopener">ipleak.net</a> 或 <a href="https://dnsleaktest.com" target="_blank" rel="noopener">dnsleaktest.com</a> 进行检测。如果配置正确，页面上显示的 DNS 服务器应全部为代理节点 IP，而非你的本地运营商 DNS。推荐使用 Fake-IP 模式配合 DoH/DoT 实现最强防护。</p>
                 </div>
                 <div class="faq-item">
                     <h3><span class="faq-q">Q:</span> 如何参与项目贡献？</h3>
-                    <p>欢迎前往 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" style="color:#58a6ff;">GitHub 仓库</a> 提交 Issue、PR，或完善 Wiki 文档。任何形式的贡献——代码、翻译、文档、Bug 反馈——都备受感激。</p>
+                    <p>欢迎前往 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">GitHub 仓库</a> 提交 Issue、PR，或完善 Wiki 文档。任何形式的贡献——代码、翻译、文档、Bug 反馈——都备受感激。</p>
+                </div>
+                <div class="faq-item">
+                    <h3><span class="faq-q">Q:</span> 订阅链接导入后节点为空怎么办？</h3>
+                    <p>请检查订阅链接是否有效（可在浏览器中直接访问测试），确认链接格式为 Base64 编码或直接返回 YAML/URI 格式。部分机场需要添加 User-Agent 伪装，可在订阅设置中尝试追加 <code>&amp;flag=clash</code> 参数。</p>
+                </div>
+                <div class="faq-item">
+                    <h3><span class="faq-q">Q:</span> 开启代理后部分国内网站变慢如何解决？</h3>
+                    <p>建议使用<strong>规则模式</strong>而非全局模式。在配置中确保国内域名（如 .cn、.com.cn）使用 DIRECT 策略，同时国内 DNS 使用如 <code>https://doh.pub/dns-query</code> 等国内 DoH 服务器，避免国内流量绕行海外代理。</p>
+                </div>
+                <div class="faq-item">
+                    <h3><span class="faq-q">Q:</span> 客户端会收集我的个人数据吗？</h3>
+                    <p><strong>完全不会。</strong>Clash Verge Rev 践行零遥测、零追踪原则。所有数据处理均在本地完成，无任何后台上报行为。源代码完全开源可审计，构建日志公开可追溯。如果你担心安全问题，可以自行审查代码并构建。</p>
                 </div>
             </div>
         </div>
@@ -1237,137 +1312,51 @@
     <footer class="site-footer" aria-label="页脚导航">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>📥 下载</h4>
-                    <a href="download.html">Windows 版</a>
-                    <a href="download.html">macOS 版</a>
-                    <a href="download.html">Linux 版</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a>
-                </div>
-                <div class="footer-col">
-                    <h4>📖 文档</h4>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a>
-                    <a href="tutorials.html">规则结构参考</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a>
-                </div>
-                <div class="footer-col">
-                    <h4>🆘 帮助</h4>
-                    <a href="faq.html">常见问题 FAQ</a>
-                    <a href="faq.html">安装问题排查</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank" rel="noopener">提交 Issue</a>
-                </div>
-                <div class="footer-col">
-                    <h4>🔗 项目</h4>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">GitHub 仓库</a>
-                    <a href="changelog.html">更新日志</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">Wiki 首页</a>
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank" rel="noopener">⭐ Star 我们</a>
-                </div>
+                <div class="footer-col"><h4>📥 下载</h4><a href="download.html">Windows 版</a><a href="download.html">macOS 版</a><a href="download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="faq.html">常见问题 FAQ</a><a href="faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank" rel="noopener">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener">GitHub 仓库</a><a href="changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank" rel="noopener">⭐ Star 我们</a></div>
             </div>
-            <div class="footer-bottom">
-                © 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank" rel="noopener">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代
-            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank" rel="noopener">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
         </div>
     </footer>
 
-    <!-- ==================== 交互脚本 ==================== -->
     <script>
-        (function() {
-            // 滚动时 header 添加阴影
+        (function () {
             const header = document.getElementById('siteHeader');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 10) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 10) { header.classList.add('scrolled'); } else { header.classList.remove('scrolled'); }
             });
-
-            // 汉堡菜单切换
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const mobileNavPanel = document.getElementById('mobileNavPanel');
             let menuOpen = false;
-
-            hamburgerBtn.addEventListener('click', function() {
+            hamburgerBtn.addEventListener('click', function () {
                 menuOpen = !menuOpen;
                 mobileNavPanel.classList.toggle('open', menuOpen);
                 hamburgerBtn.setAttribute('aria-expanded', menuOpen);
-                if (menuOpen) {
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    document.body.style.overflow = '';
-                }
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
             });
-
-            // 点击移动端导航链接后关闭菜单
-            mobileNavPanel.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
+            mobileNavPanel.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
                     menuOpen = false;
                     mobileNavPanel.classList.remove('open');
                     hamburgerBtn.setAttribute('aria-expanded', false);
                     document.body.style.overflow = '';
                 });
             });
-
-            // 搜索功能：跳转到 GitHub Wiki 搜索
             function setupSearch(inputId) {
                 const input = document.getElementById(inputId);
                 if (!input) return;
-                input.addEventListener('keydown', function(e) {
+                input.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter') {
                         const query = encodeURIComponent(input.value.trim());
-                        if (query) {
-                            window.open(
-                                'https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' +
-                                query,
-                                '_blank',
-                                'noopener'
-                            );
-                        }
+                        if (query) { window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener'); }
                     }
                 });
             }
             setupSearch('headerSearch');
             setupSearch('mobileSearch');
-
-            // 平滑滚动时更新导航 active 状态 (现在链接已改为独立页面，此段可保留但不再基于锚点，可移除或调整为基于当前页面路径)
-            // 由于现在导航是独立页面，此部分不再适用，故注释掉。
-            /*
-            const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
-            const sections = [];
-            navLinks.forEach(function(link) {
-                const id = link.getAttribute('href').substring(1);
-                const el = document.getElementById(id);
-                if (el) sections.push({ el: el, link: link });
-            });
-
-            function updateActiveNav() {
-                let currentId = '';
-                const scrollY = window.scrollY + 100;
-                sections.forEach(function(s) {
-                    if (s.el.offsetTop <= scrollY) {
-                        currentId = s.el.id;
-                    }
-                });
-                navLinks.forEach(function(link) {
-                    const href = link.getAttribute('href').substring(1);
-                    if (href === currentId) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-            }
-            window.addEventListener('scroll', updateActiveNav);
-            updateActiveNav();
-            */
-
-            // 初始检查 header 滚动状态
-            if (window.scrollY > 10) {
-                header.classList.add('scrolled');
-            }
+            if (window.scrollY > 10) { header.classList.add('scrolled'); }
         })();
     </script>
 </body>
