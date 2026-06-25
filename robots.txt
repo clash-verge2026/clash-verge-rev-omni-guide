@@ -1,0 +1,5 @@
+User-agent: *
+
+Allow: /
+
+Sitemap: https://clash-verge2026.github.io/clash-verge-rev-omni-guide/sitemap.xml
