@@ -57,4 +57,32 @@
     <priority>0.7</priority>
   </url>
 
+      <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/benchmark-2026.html</loc>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+    <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.1-story.html</loc>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+        <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/ai-routing-guide.html</loc>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+        <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/dns-anti-leak-deep.html</loc>
+    <lastmod>2026-07-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
 </urlset>
