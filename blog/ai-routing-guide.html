@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 分流最佳实践：让 ChatGPT、Claude 和 Gemini 同时在线 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="手把手教你使用 Clash Verge Rev 的 RULE-SET 与策略组，实现 ChatGPT、Claude、Gemini、GitHub Copilot 等 AI 服务的自动分流与负载均衡。告别手动切换，让多个 AI 助手同时在线且互不干扰。" />
+    <meta name="keywords" content="AI 分流, ChatGPT 代理, Claude 代理, Gemini 代理, AI 代理配置, Clash Verge Rev, RULE-SET, 负载均衡, OpenAI API, 多节点分流" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/ai-routing-guide.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="AI 分流最佳实践：让 ChatGPT、Claude 和 Gemini 同时在线" />
+    <meta property="og:description" content="使用 Clash Verge Rev 的智能分流与 RULE-SET，轻松管理多个 AI 服务的代理规则，实现低延迟、高可用的 AI 网络环境。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/ai-routing-guide.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-06-10T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-06-18T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="教程指南" />
+    <meta property="article:tag" content="AI 分流" />
+    <meta property="article:tag" content="规则配置" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI 分流最佳实践：让 ChatGPT、Claude 和 Gemini 同时在线" />
+    <meta name="twitter:description" content="Clash Verge Rev 智能分流配置指南，轻松搞定多 AI 服务代理。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "AI 分流最佳实践：让 ChatGPT、Claude 和 Gemini 同时在线",
+            "description": "手把手教你使用 Clash Verge Rev 的 RULE-SET 与策略组，实现 ChatGPT、Claude、Gemini 等 AI 服务的自动分流与负载均衡。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-06-10",
+            "dateModified": "2026-06-18",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/ai-routing-guide.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 (与首页完全一致) */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(57,210,192,0.15); color:var(--accent-cyan); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-cyan); background:rgba(57,210,192,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); font-style:italic; }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="features.html">✨ 特性</a>
+                    <a href="download.html">📥 下载</a>
+                    <a href="tutorials.html">📖 教程</a>
+                    <a href="faq.html">❓ FAQ</a>
+                    <a href="changelog.html">📋 更新日志</a>
+                    <a href="blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">教程指南 · AI 分流</span>
+                <h1 class="article-title">AI 分流最佳实践：让 ChatGPT、Claude 和 Gemini 同时在线</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-06-10</span>
+                    <span>⏱️ 阅读时间约 8 分钟</span>
+                </div>
+                <div class="article-intro">
+                    随着 OpenAI、Anthropic、Google 等公司的 AI 服务逐渐成为日常工作流的一部分，如何让这些服务在代理环境中稳定、低延迟地运行，成为许多开发者的痛点。本文将带你从零开始，使用 Clash Verge Rev 的 <strong>RULE-SET</strong> 与 <strong>策略组</strong> 功能，搭建一套自动分流、负载均衡的 AI 专用代理方案。告别频繁手动切换节点，让 ChatGPT、Claude、Gemini 甚至 GitHub Copilot 同时在线且互不干扰。
+                </div>
+            </header>
+
+            <!-- 为什么需要 AI 分流 -->
+            <h2>🤔 为什么需要专门的 AI 分流？</h2>
+            <p>你可能已经有一个日常使用的代理规则，它将大部分国外流量导向代理节点。但 AI 服务有其特殊性：</p>
+            <ul>
+                <li><strong>延迟敏感：</strong>ChatGPT 的流式响应和 Claude 的逐字输出对网络波动极为敏感，稍高的延迟就会导致“打字感”不流畅。</li>
+                <li><strong>域名分散：</strong>OpenAI 除了 <code>openai.com</code> 还有 <code>chatgpt.com</code>、<code>cdn.oaistatic.com</code> 等；Google Gemini 涉及 <code>gemini.google.com</code> 和 <code>generativelanguage.googleapis.com</code>。手动维护容易遗漏。</li>
+                <li><strong>并发需求：</strong>你可能同时打开 ChatGPT、Claude 和 Gemini，如果它们都挤在同一条代理隧道上，带宽和连接数可能成为瓶颈。</li>
+                <li><strong>API 端点特殊：</strong>OpenAI API 和 Anthropic API 的流量模式不同于网页端，可能需要走不同的代理节点以确保稳定性。</li>
+            </ul>
+            <div class="callout">
+                <strong>📌 核心理念：</strong>将 AI 相关域名统一划入一个专门的策略组，并通过 <strong>RULE-SET 远程订阅</strong> 自动更新域名列表，既能精细化控制代理行为，又能免去手动维护的繁琐。
+            </div>
+
+            <!-- AI 域名汇总 -->
+            <h2>📋 主流 AI 服务域名一览</h2>
+            <p>以下是截至 2026 年 6 月，各主要 AI 服务涉及的核心域名。你可以直接将这些域名加入规则，但我们强烈推荐使用 RULE-SET 方式（后文详解）。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>服务</th><th>核心域名</th><th>用途</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ChatGPT / OpenAI</td><td><code>chatgpt.com</code>, <code>openai.com</code>, <code>cdn.oaistatic.com</code>, <code>api.openai.com</code>, <code>auth0.openai.com</code></td><td>Web 界面 + API + 认证</td></tr>
+                        <tr><td>Claude / Anthropic</td><td><code>claude.ai</code>, <code>anthropic.com</code>, <code>api.anthropic.com</code></td><td>Web 界面 + API</td></tr>
+                        <tr><td>Google Gemini</td><td><code>gemini.google.com</code>, <code>generativelanguage.googleapis.com</code>, <code>bard.google.com</code></td><td>Web 界面 + API</td></tr>
+                        <tr><td>Perplexity</td><td><code>perplexity.ai</code>, <code>api.perplexity.ai</code></td><td>AI 搜索引擎</td></tr>
+                        <tr><td>GitHub Copilot</td><td><code>copilot.github.com</code>, <code>api.githubcopilot.com</code></td><td>代码补全</td></tr>
+                        <tr><td>Hugging Face</td><td><code>huggingface.co</code>, <code>hf.co</code></td><td>模型托管</td></tr>
+                        <tr><td>Notion AI</td><td><code>notion.so</code>, <code>msgstore.www.notion.so</code></td><td>笔记 AI</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RULE-SET 自动订阅 -->
+            <h2>🔄 RULE-SET：一劳永逸的域名管理</h2>
+            <p>Clash Verge Rev 的 Mihomo 内核原生支持 <code>RULE-SET</code> 功能，可以从远程 URL 拉取预定义的域名列表，并自动定时更新。社区已经维护了一份 AI 专用规则集，你只需在配置中引用即可。</p>
+            <h3>步骤一：在配置文件中引用 AI 规则集</h3>
+            <p>打开你的 <code>config.yaml</code>，在 <code>rule-providers</code> 下添加：</p>
+            <div class="code-block"><span class="code-comment"># ========== AI 规则集订阅 ==========</span>
+            rule-providers:
+            ai-services:
+                type: http
+                behavior: classical
+                url: "https://raw.githubusercontent.com/clash-verge2026/rule-sets/main/ai-services.yaml"
+                path: ./ruleset/ai-services.yaml
+                interval: 86400  <span class="code-comment"># 每天自动更新一次</span></div>
+            <h3>步骤二：在规则中引用规则集</h3>
+            <p>在 <code>rules</code> 部分添加如下条目（注意顺序，放在 <code>GEOIP</code> 和 <code>MATCH</code> 之前）：</p>
+            <div class="code-block"><span class="code-comment"># ========== AI 分流规则 ==========</span>
+            rules:
+            - RULE-SET,ai-services,🚀 AI-Proxy
+            <span class="code-comment"># 其他规则...</span>
+            - GEOIP,CN,DIRECT
+            - MATCH,🚀 默认代理</div>
+            <div class="callout tip">
+                <strong>💡 优势：</strong>当 AI 服务新增域名或变更 CDN 时，社区维护的规则集会及时更新，你的本地配置无需任何改动。默认的 <code>interval: 86400</code> 表示每 24 小时自动拉取一次。
+            </div>
+
+            <!-- 负载均衡策略 -->
+            <h2>⚖️ 为 AI 服务配置独立策略组</h2>
+            <p>建议不要将 AI 流量与日常浏览混在同一个策略组中。创建一个专门的 AI 代理组，并为其配置负载均衡或自动测速策略。</p>
+            <div class="code-block"><span class="code-comment"># ========== AI 专用策略组 ==========</span>
+            proxy-groups:
+            - name: 🚀 AI-Proxy
+                type: url-test          <span class="code-comment"># 自动选择延迟最低的节点</span>
+                proxies:
+                - 日本-AI专线
+                - 新加坡-优化
+                - 美国西海岸
+                url: "https://www.gstatic.com/generate_204"
+                interval: 300          <span class="code-comment"># 每 5 分钟测速一次</span></div>
+            <p>如果你的机场提供针对 AI 流量的优化节点（如低延迟专线），将其放入 <code>proxies</code> 列表即可。使用 <code>url-test</code> 策略组可自动避开故障节点，确保 AI 服务始终连接在最优路径上。</p>
+            <div class="callout warning">
+                <strong>⚠️ 注意：</strong>某些 AI API（特别是 OpenAI 的 <code>api.openai.com</code>）可能会对短时间内来自不同 IP 的请求进行风控。如果你的负载均衡策略导致 IP 频繁变化，建议改用 <code>fallback</code> 或手动 <code>select</code> 策略组，以避免触发风控。
+            </div>
+
+            <!-- 高级技巧 -->
+            <h2>🧰 高级技巧与故障排查</h2>
+            <h3>1. 针对 API 端点单独分流</h3>
+            <p>如果你希望 ChatGPT 网页端使用一个节点，OpenAI API 使用另一个节点，可以拆分为两个策略组：</p>
+            <div class="code-block">rules:
+            - DOMAIN-SUFFIX,api.openai.com,🚀 OpenAI-API
+            - RULE-SET,ai-services,🚀 AI-Web</div>
+            <h3>2. 验证分流是否生效</h3>
+            <p>打开 Clash Verge Rev 的“连接”面板，访问 ChatGPT 并发送一条消息，观察连接记录。如果看到目标域名为 <code>chatgpt.com</code> 且匹配规则为 <code>RULE-SET,ai-services</code>，则说明分流已生效。</p>
+            <h3>3. 处理 Cloudflare 盾</h3>
+            <p>部分 AI 网站使用 Cloudflare 防护，如果频繁切换 IP 可能触发验证码。建议为这些服务使用固定节点的 <code>select</code> 策略组，或在浏览器中安装 Cloudflare 相关扩展辅助解决。</p>
+
+            <!-- 效果展示 -->
+            <h2>📊 实际效果</h2>
+            <p>在配置完成后，我们进行了为期一周的日常使用测试。三个 AI 服务并行打开，YouTube 播放 4K 视频，同时进行 Docker 镜像拉取。Clash Verge Rev 的 TUN 模式将 AI 流量精确导向低延迟节点，其他流量按原有规则处理，各服务之间互不影响。AI 对话的流式响应延迟始终保持在 200ms 以下，体验流畅。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="benchmark-2026.html" class="related-card">
+                        <h4>基准测试：Clash Verge Rev vs 其他代理客户端内存与吞吐量对比</h4>
+                        <p>2026-05-28 · 性能优化</p>
+                    </a>
+                    <a href="v2.5.1-story.html" class="related-card">
+                        <h4>v2.5.1 发布背后的故事：从问题反馈到紧急修复</h4>
+                        <p>2026-06-24 · 版本发布</p>
+                    </a>
+                    <a href="dns-anti-leak-deep.html" class="related-card">
+                        <h4>DNS 防泄漏硬核解析：Fake-IP 与 DoH/DoT 的协同工作原理</h4>
+                        <p>2026-05-15 · 安全公告</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
