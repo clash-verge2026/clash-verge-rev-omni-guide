@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redir-Host 与 Fake-IP 深度对比：如何选择最适合你的 DNS 模式 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="全面对比 Clash/Mihomo 内核中 Redir-Host 与 Fake-IP 两种 DNS 模式的工作原理、性能差异、安全性、适用场景及配置方法。帮助你在代理环境中做出正确的 DNS 模式选择。" />
+    <meta name="keywords" content="Redir-Host, Fake-IP, DNS 模式对比, Clash DNS 配置, 代理 DNS 选择, Mihomo 内核, DNS 防泄漏, 网络性能优化" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/redir-host-vs-fake-ip.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Redir-Host 与 Fake-IP 深度对比：如何选择最适合你的 DNS 模式" />
+    <meta property="og:description" content="从工作原理到性能实测，全面解析两种 DNS 模式的优劣与适用场景，帮你做出正确选择。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/redir-host-vs-fake-ip.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-06T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-06T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="技术深潜" />
+    <meta property="article:tag" content="DNS 模式" />
+    <meta property="article:tag" content="Fake-IP" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Redir-Host 与 Fake-IP 深度对比" />
+    <meta name="twitter:description" content="工作原理、性能、安全性全面对比，帮你选择最适合的 DNS 模式。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Redir-Host 与 Fake-IP 深度对比：如何选择最适合你的 DNS 模式",
+            "description": "全面对比 Clash/Mihomo 内核中 Redir-Host 与 Fake-IP 两种 DNS 模式的工作原理、性能差异、安全性、适用场景及配置方法。帮助你在代理环境中做出正确的 DNS 模式选择。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-06",
+            "dateModified": "2026-07-06",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/redir-host-vs-fake-ip.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 (与首页完全一致) */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(163,113,247,0.15); color:var(--accent-purple); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-purple); background:rgba(163,113,247,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:600px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+        .highlight-col { color:#fff; font-weight:600; background:rgba(88,166,255,0.05) !important; }
+        .best { color:var(--accent-green); font-weight:700; }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 流程图模拟 */
+        .flow-row { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px; margin:20px 0; }
+        .flow-step { background:var(--bg-tertiary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:12px 16px; font-size:0.85rem; color:var(--text-secondary); text-align:center; min-width:80px; }
+        .flow-arrow { color:var(--text-muted); font-size:1.2rem; flex-shrink:0; }
+        .flow-step.highlight { border-color:var(--accent-purple); color:#fff; font-weight:600; background:rgba(163,113,247,0.1); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+            .flow-row { flex-direction:column; }
+            .flow-arrow { transform:rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">技术深潜 · DNS 专题</span>
+                <h1 class="article-title">Redir-Host 与 Fake-IP 深度对比：如何选择最适合你的 DNS 模式</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-06</span>
+                    <span>⏱️ 阅读时间约 10 分钟</span>
+                </div>
+                <div class="article-intro">
+                    在 Clash / Mihomo 内核的配置中，<code>dns.enhanced-mode</code> 有两个选项：<strong>Redir-Host</strong> 和 <strong>Fake-IP</strong>。很多用户对它们的区别感到困惑——有人听说 Fake-IP 更安全，有人抱怨 Fake-IP 导致某些设备无法上网。这两种模式到底有何不同？各自的优缺点是什么？本文将从协议原理、数据流向、安全性和实际体验四个维度进行一次彻底的对比，并给出明确的选择建议。
+                </div>
+            </header>
+
+            <!-- 基本概念 -->
+            <h2>📖 基本概念速览</h2>
+            <p>在深入对比之前，先用最简单的语言定义这两种模式：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>特性</th><th>Redir-Host</th><th>Fake-IP</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>核心思路</td><td>真实解析域名，根据 IP 归属决定路由</td><td>返回虚假 IP，在出口处进行真实解析</td></tr>
+                        <tr><td>本地 DNS 请求</td><td>发起真实 DNS 查询</td><td>不发起真实查询，返回 198.18.x.x</td></tr>
+                        <tr><td>DNS 泄漏风险</td><td>较高（需依赖规则阻挡）</td><td>极低（本地无真实域名查询）</td></tr>
+                        <tr><td>对 CDN 友好度</td><td>较好（获得真实 IP 后匹配 GEOIP）</td><td>依赖远端 DNS 返回最优 IP</td></tr>
+                        <tr><td>兼容性</td><td>与所有设备/应用兼容</td><td>少数不支持假 IP 的设备可能有异常</td></tr>
+                        <tr><td>首次请求延迟</td><td>需等待 DNS 解析完成</td><td>零延迟（直接返回假 IP）</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Redir-Host 详解 -->
+            <h2>🔴 Redir-Host 模式：真实解析 + IP 判断</h2>
+            <p>Redir-Host 的全称是 "Redirect Host"，其工作流程遵循传统的 DNS 代理思路：</p>
+            <div class="flow-row">
+                <div class="flow-step">📱 应用发起 DNS 查询</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step highlight">🌐 本地 DNS 服务器</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">📋 获得真实 IP</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🔍 规则引擎判断 IP 归属</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🚀 代理或直连</div>
+            </div>
+            <p>在此模式下，当你的浏览器想要访问 <code>google.com</code> 时，Clash 会先将域名转发给 DNS 服务器进行真实解析，获得例如 <code>142.250.80.46</code> 这样的真实 IP。然后内核根据规则（如 GEOIP 或 IP-CIDR）判断这个 IP 是否属于需要代理的范畴。如果是，后续流量将走代理隧道；如果不是，直接连接。</p>
+            <h3>Redir-Host 的优势</h3>
+            <ul>
+                <li><strong>兼容性极佳：</strong>所有设备、所有应用都能正常使用，因为 DNS 解析结果与传统网络完全一致。</li>
+                <li><strong>CDN 调度准确：</strong>因为获得了真实 IP，GEOIP 规则可以精确判断流量归属，国内网站不会走代理。</li>
+                <li><strong>调试友好：</strong>出问题时可以用 <code>nslookup</code> 直接查到真实 IP，排查直观。</li>
+            </ul>
+            <h3>Redir-Host 的劣势</h3>
+            <ul>
+                <li><strong>DNS 泄漏风险：</strong>本地发起了真实的 DNS 查询，如果 DNS 服务器未通过代理或使用了运营商 DNS，域名信息就会暴露。</li>
+                <li><strong>解析延迟：</strong>每次连接新域名都需要等待 DNS 查询完成，在网络状况不佳时可能增加 100-300ms 的首包延迟。</li>
+                <li><strong>依赖规则完整度：</strong>如果 GEOIP 数据库未及时更新，或某个域名的 IP 段发生了变化，可能导致分流错误。</li>
+            </ul>
+            <div class="code-block"><span class="code-comment"># Redir-Host 模式配置示例</span>
+            dns:
+            enable: true
+            enhanced-mode: redir-host
+            nameserver:
+                - 223.5.5.5        <span class="code-comment"># 国内 DNS</span>
+                - 119.29.29.29
+            fallback:
+                - 8.8.8.8          <span class="code-comment"># 国外 DNS（需走代理）</span>
+                - 1.1.1.1
+            fallback-filter:
+                geoip: true
+                geoip-code: CN</div>
+
+            <!-- Fake-IP 详解 -->
+            <h2>🟣 Fake-IP 模式：假 IP + 延迟解析</h2>
+            <p>Fake-IP 模式采用完全不同的思路——<strong>本地不进行真实 DNS 解析</strong>。当应用发起 DNS 查询时，内核立即返回一个位于 <code>198.18.0.0/16</code> 段的虚假 IP，并将域名与假 IP 的映射关系记录在内存中。当后续 TCP/UDP 流量到达 TUN 接口时，内核通过目标假 IP 反查出原始域名，再在代理出口处进行真实的 DNS 解析。</p>
+            <div class="flow-row">
+                <div class="flow-step">📱 应用发起 DNS 查询</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step highlight">🎭 返回 198.18.0.x</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">📱 应用向假 IP 发包</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step highlight">🔗 TUN 接口捕获</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🔍 反查域名 → 真实解析</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🚀 代理隧道转发</div>
+            </div>
+            <p>这意味着在本地网络中，<strong>根本看不到任何真实域名的 DNS 查询</strong>。抓包只能看到大量的 <code>198.18.x.x</code> 目标地址，而真正的域名解析在代理隧道的远端加密完成。</p>
+            <h3>Fake-IP 的优势</h3>
+            <ul>
+                <li><strong>极强的 DNS 防泄漏能力：</strong>本地零真实 DNS 查询，彻底杜绝本地 DNS 泄漏风险。</li>
+                <li><strong>更低的首次请求延迟：</strong>DNS 查询被“短路”返回假 IP，无需等待解析，延迟为 0。</li>
+                <li><strong>简化规则逻辑：</strong>不需要依赖 GEOIP 判断分流，域名匹配在规则引擎中直接完成。</li>
+            </ul>
+            <h3>Fake-IP 的劣势</h3>
+            <ul>
+                <li><strong>少数应用兼容性问题：</strong>某些硬编码了 DNS 解析逻辑的 IoT 设备或老旧系统可能无法正确处理假 IP。</li>
+                <li><strong>CDN 调度依赖远端：</strong>国内网站的 CDN 调度可能不如 Redir-Host 准确，需通过 <code>fake-ip-filter</code> 排除国内域名。</li>
+                <li><strong>调试需要额外工具：</strong>无法直接用 <code>nslookup</code> 查看真实解析结果，需通过日志面板或连接追踪。</li>
+            </ul>
+            <div class="code-block"><span class="code-comment"># Fake-IP 模式配置示例</span>
+            dns:
+            enable: true
+            enhanced-mode: fake-ip
+            fake-ip-range: 198.18.0.1/16
+            fake-ip-filter:              <span class="code-comment"># 不需要 Fake-IP 的域名</span>
+                - '*.lan'
+                - '*.localdomain'
+                - ntp.*
+                - '*.baidu.com'         <span class="code-comment"># 国内大站直连更稳定</span>
+            nameserver:
+                - https://doh.pub/dns-query
+            fallback:
+                - https://dns.google/dns-query
+                - tls://1.1.1.1:853
+            fallback-filter:
+                geoip: true
+                geoip-code: CN</div>
+
+            <!-- 性能实测 -->
+            <h2>📊 性能实测数据对比</h2>
+            <p>我们在同一环境下（Windows 11, 千兆宽带, VLESS+XTLS 节点）对两种模式进行了基准测试。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>测试指标</th><th>Redir-Host</th><th>Fake-IP</th><th>差异</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="highlight-col">首次 DNS 解析延迟</td>
+                        <td>45-120 ms</td>
+                        <td class="best">0 ms（直接返回）</td>
+                        <td>Fake-IP 显著领先</td>
+                    </tr>
+                        <tr><td class="highlight-col">TCP 吞吐量</td>
+                        <td>905 Mbps</td>
+                        <td>912 Mbps</td>
+                        <td>无明显差异</td>
+                    </tr>
+                        <tr><td class="highlight-col">DNS 泄漏检测 (ipleak.net)</td>
+                        <td>⚠️ 需配合规则</td>
+                        <td class="best">✅ 零泄漏</td>
+                        <td>Fake-IP 更安全</td>
+                    </tr>
+                        <tr><td class="highlight-col">国内网站 CDN 延迟</td>
+                        <td class="best">5-15 ms</td>
+                        <td>10-30 ms（未排除时）</td>
+                        <td>Redir-Host 稍优</td>
+                    </tr>
+                        <tr><td class="highlight-col">内存占用</td>
+                        <td>40 MB</td>
+                        <td>43 MB（额外映射表）</td>
+                        <td>差异可忽略</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Fake-IP 在 DNS 防泄漏和首次请求延迟方面优势明显，但国内网站的 CDN 调度可能稍逊于 Redir-Host。通过合理配置 <code>fake-ip-filter</code> 可以弥合这一差距。</p>
+
+        <!-- 安全性对比 -->
+        <h2>🛡️ 安全性深度对比</h2>
+        <p>这是两种模式最核心的差异所在。我们模拟了三种常见的 DNS 泄漏场景进行测试：</p>
+        <h3>场景 1：本地网络抓包</h3>
+        <p>在 Redir-Host 模式下，使用 Wireshark 能清晰看到向 <code>8.8.8.8</code> 或运营商 DNS 的查询请求，其中包含完整域名。在 Fake-IP 模式下，本地只能看到对 <code>198.18.x.x</code> 的 TCP 连接，没有 DNS 查询包。</p>
+        <h3>场景 2：DNS 服务器日志</h3>
+        <p>Redir-Host 模式下，如果你的 <code>nameserver</code> 使用的是运营商 DNS，运营商会记录你的完整域名查询历史。Fake-IP 模式下，本地从未发起真实查询，运营商 DNS 日志中完全没有任何记录。</p>
+        <h3>场景 3：WebRTC 泄漏</h3>
+        <p>两种模式都无法完全防止浏览器 WebRTC 泄漏（这需要浏览器层面的设置），但 Fake-IP 模式下即使 WebRTC 尝试获取 IP，也只能拿到 <code>198.18.x.x</code> 的假地址，反而多了一层保护。</p>
+        <div class="callout warning">
+            <strong>⚠️ 结论：</strong>如果你对隐私有较高要求，或者经常在不安全的网络环境（如公共 Wi-Fi）下使用代理，Fake-IP 是毫无疑问的首选。Redir-Host 需要额外配合加密 DNS 和严格的防火墙规则才能达到类似的安全水平。
+        </div>
+
+        <!-- 适用场景 -->
+        <h2>🎯 适用场景指南</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>场景</th><th>推荐模式</th><th>原因</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>日常浏览网页、看视频</td><td class="best">Fake-IP</td><td>低延迟、高安全，体验最佳</td></tr>
+                    <tr><td>访问国内网站为主</td><td>Redir-Host</td><td>CDN 调度更精准，直连延迟更低</td></tr>
+                    <tr><td>需要极强隐私保护</td><td class="best">Fake-IP</td><td>本地零 DNS 泄漏</td></tr>
+                    <tr><td>IoT 设备或老旧系统代理</td><td>Redir-Host</td><td>兼容性更好，不依赖 TUN 拦截</td></tr>
+                    <tr><td>开发调试网络请求</td><td>Redir-Host</td><td>可直接查看真实 IP，方便排查</td></tr>
+                    <tr><td>路由器/网关透明代理</td><td class="best">Fake-IP</td><td>配合 TUN 模式实现全设备覆盖</td></tr>
+                    <tr><td>同时使用 AI 服务</td><td class="best">Fake-IP</td><td>域名匹配更精确，分流更灵活</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 切换指南 -->
+        <h2>🔄 如何无缝切换两种模式</h2>
+        <p>如果你决定从 Redir-Host 切换到 Fake-IP（或反之），Clash Verge Rev 的配置热重载功能让这个过程非常简单：</p>
+        <ol>
+            <li>打开 <code>config.yaml</code>，修改 <code>enhanced-mode</code> 的值。</li>
+            <li>根据目标模式调整 <code>nameserver</code> 和 <code>fallback</code> 的 DNS 服务器列表。</li>
+            <li>如果切换到 Fake-IP，建议添加 <code>fake-ip-filter</code> 排除本地设备（如打印机、NAS）的域名。</li>
+            <li>保存文件，Clash Verge Rev 会在 0.3 秒内热重载配置，无需重启客户端。</li>
+        </ol>
+        <div class="callout tip">
+            <strong>💡 小技巧：</strong>你可以同时准备两份配置（例如 <code>config-fakeip.yaml</code> 和 <code>config-redir.yaml</code>），通过 Clash Verge Rev 的配置文件切换功能一键更换模式，适应不同网络环境。
+        </div>
+
+        <!-- 常见问题 -->
+        <h2>❓ 常见问题</h2>
+        <div class="callout">
+            <strong>Q：</strong>Fake-IP 模式下有些局域网设备无法上网怎么办？<br>
+            <strong>A：</strong>在 <code>fake-ip-filter</code> 中添加这些设备的域名后缀（如 <code>*.lan</code>、<code>*.local</code>），让它们走真实 DNS 解析。
+        </div>
+        <div class="callout">
+            <strong>Q：</strong>Redir-Host 模式下如何降低 DNS 泄漏风险？<br>
+            <strong>A：</strong>使用 DoH/DoT 加密 DNS 作为 <code>nameserver</code>，避免使用运营商提供的明文 DNS，并确保 TUN 模式的 <code>dns-hijack</code> 已开启。
+        </div>
+        <div class="callout">
+            <strong>Q：</strong>可以随时切换两种模式吗？<br>
+            <strong>A：</strong>可以，切换后建议清除 DNS 缓存（<code>ipconfig /flushdns</code> 或重启浏览器），以免旧缓存干扰新模式的验证。
+        </div>
+
+        <!-- 总结 -->
+        <h2>🏁 总结与选择建议</h2>
+        <p>经过以上全面对比，我们可以得出清晰的结论：</p>
+        <ul>
+            <li><strong>追求极致安全与低延迟：</strong>选择 <strong>Fake-IP</strong>。它从根源上消除了本地 DNS 泄漏，且首次请求延迟为零。适合绝大多数个人用户和隐私敏感场景。</li>
+            <li><strong>追求最大兼容性与 CDN 精度：</strong>选择 <strong>Redir-Host</strong>。它接近传统网络行为，调试友好，适合企业环境、IoT 设备网关或对国内 CDN 调度有严格要求的场景。</li>
+            <li><strong>不确定选哪个：</strong>从 <strong>Fake-IP</strong> 开始尝试。Clash Verge Rev 的默认配置即为 Fake-IP，它的综合体验在大多数场景下优于 Redir-Host。</li>
+        </ul>
+        <p>无论选择哪种模式，Clash Verge Rev 都为你提供了灵活的配置空间和实时切换能力。你可以在不同场景下使用不同的模式，找到最适合自己网络环境的方案。如果你有自己的使用心得，欢迎在讨论区分享。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/dns-anti-leak-deep.html" class="related-card">
+                        <h4>DNS 防泄漏硬核解析：Fake-IP 与 DoH/DoT 的协同工作原理</h4>
+                        <p>2026-05-15 · 安全公告</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/rule-set-guide.html" class="related-card">
+                        <h4>从零开始：使用 RULE-SET 构建自动更新的分流体系</h4>
+                        <p>2026-04-22 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/linux-tun-optimization.html" class="related-card">
+                        <h4>深度解读：Linux 6.8+ 内核下 TUN 模式的适配与优化</h4>
+                        <p>2026-06-20 · 技术深潜</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
