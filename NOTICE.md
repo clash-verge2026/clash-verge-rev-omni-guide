@@ -7,7 +7,7 @@
 [https://github.com/clash-verge2026/clash-verge-rev-omni-guide](https://github.com/clash-verge2026/clash-verge-rev-omni-guide)
 
 ## 版权声明
-- 本指南中涉及的 **Clash Verge Rev** 软件本身遵循其上游项目的 [GNU General Public License v3.0](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/LICENSE) 协议。
+- 本指南中涉及的 **Clash Verge Rev** 软件本身遵循其上游项目的 [GNU General Public License v3.0](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/blob/main/LICENSE) 协议。
 - 本指南中的原创文档、教程和配置示例，除非特别说明，均采用 [知识共享署名-非商业性使用 4.0 国际许可协议 (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.zh) 进行许可。
 
 ## 免责声明
