@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>社区贡献者访谈：一位大学生如何通过参与开源提升网络技术 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="我们采访了 Clash Verge Rev 活跃贡献者 @netstudent，一位计算机专业的大三学生。他分享了自己从代理客户端用户到开源贡献者的转变历程，以及参与项目开发对他网络技术和职业规划的深远影响。" />
+    <meta name="keywords" content="Clash Verge Rev 贡献者, 开源社区, 大学生开源, 网络技术成长, 代理客户端开发, 技术访谈, 开源贡献故事" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/community-interview.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="社区贡献者访谈：一位大学生如何通过参与开源提升网络技术" />
+    <meta property="og:description" content="从用户到贡献者，一名大三学生讲述他参与 Clash Verge Rev 开发的故事。开源如何帮助他构建网络知识体系，并为职业生涯打开新的大门。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/community-interview.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-06T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-06T12:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="社区故事" />
+    <meta property="article:tag" content="贡献者访谈" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="社区贡献者访谈：从用户到贡献者" />
+    <meta name="twitter:description" content="一名大学生如何通过参与 Clash Verge Rev 开发，快速提升网络技术并打开职业道路。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "社区贡献者访谈：一位大学生如何通过参与开源提升网络技术",
+            "description": "我们采访了 Clash Verge Rev 活跃贡献者 @netstudent，一位计算机专业的大三学生。他分享了自己从代理客户端用户到开源贡献者的转变历程，以及参与项目开发对他网络技术和职业规划的深远影响。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-06",
+            "dateModified": "2026-07-06",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/community-interview.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 (与首页完全一致) */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(210,153,29,0.15); color:var(--accent-orange); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-orange); background:rgba(210,153,29,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); font-style:italic; }
+
+        /* 访谈对话样式 */
+        .interview-speech { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:20px; margin:18px 0; }
+        .interview-speech h4 { color:var(--accent-blue); font-size:0.95rem; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+        .interview-speech h4 .q-icon { background:var(--accent-blue); color:#fff; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem; flex-shrink:0; }
+        .interview-speech p { margin:0; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-green); background:rgba(63,185,80,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">社区故事 · 贡献者访谈</span>
+                <h1 class="article-title">社区贡献者访谈：一位大学生如何通过参与开源提升网络技术</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-06</span>
+                    <span>⏱️ 阅读时间约 6 分钟</span>
+                </div>
+                <div class="article-intro">
+                    在 Clash Verge Rev 的贡献者列表中，有一个 GitHub ID 叫 <strong>@netstudent</strong> 的开发者格外活跃。他是一名大三学生，主修计算机科学，从最初的“只会用软件”到如今提交了超过 40 个 PR，他用自己的经历证明了：<strong>参与开源是提升工程能力的最佳路径之一</strong>。我们与他进行了一次深度对话，希望他的故事能给正在观望开源世界的你一些启发。
+                </div>
+            </header>
+
+            <!-- 受访者背景 -->
+            <h2>👤 关于受访者</h2>
+            <p>受访者 GitHub ID <strong>@netstudent</strong>，真名林一峰，就读于华中地区一所理工类大学，网络工程方向大三学生。他从大二开始接触代理工具，2025 年 10 月首次向 Clash Verge Rev 提交 PR，至今已贡献了规则解析优化、TUN 模式兼容修复以及多份文档翻译。</p>
+
+            <!-- 初识项目 -->
+            <h2>🚶 初识 Clash Verge Rev：从“找替代品”开始</h2>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 你是怎么知道 Clash Verge Rev 的？</h4>
+                <p>“最早用的是 Clash for Windows，后来它停止维护了，就在 GitHub 上找替代品。搜到 Clash Verge Rev 时，发现它的 README 写得很详细，还有一套完整的 Omni Guide 文档，就直接下载试用了。当时是 v1.8 版本，印象最深的是它的 TUN 模式一键就能开启，不像其他工具要手动配置路由表，对一个学生来说非常友好。”</p>
+            </div>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 使用了多久之后决定参与贡献？</h4>
+                <p>“大概用了两个月吧。有一次在 Ubuntu 上开启 TUN 模式失败了，去 Issues 里搜，发现有同样的问题但还没人修。我本身对 Linux 内核稍微了解一点，就想能不能自己试着修复一下，于是 fork 了仓库，开始看源代码。”</p>
+            </div>
+
+            <!-- 第一次 PR -->
+            <h2>🛠️ 迈出第一步：第一次提交 PR</h2>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 第一个 PR 是做什么的？</h4>
+                <p>“是修复 Linux 下 TUN 设备创建的一个小问题。内核 6.2 以后有个 ioctl 参数变严格了，旧的代码没有传入那个标志位，导致设备创建失败。我查了内核文档，加了一行代码，测试通过后就提交了。没想到第二天就收到了维护者的 Review，他不仅合并了，还详细解释了这个改动背后的原理，并建议我参考 netlink 接口来进一步优化。那次交流让我第一次感受到开源社区的认真和友善。”</p>
+            </div>
+            <div class="callout tip">
+                <strong>💡 林一峰的感受：</strong>“从发现问题到合并代码，前后只用了三天。这种感觉比通过任何课程考试都更有成就感。因为它实实在在地解决了别人的问题，而且代码被全世界的人使用。”
+            </div>
+
+            <!-- 技术成长 -->
+            <h2>📈 技术成长：调试 TUN 模式的收获</h2>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 参与这个项目对你技术提升最大的是哪方面？</h4>
+                <p>“毫无疑问是网络协议和操作系统底层。为了理解 TUN 虚拟网卡的工作原理，我读了 Linux 的 <code>drivers/net/tun.c</code> 源码，弄清楚了 ioctl、netlink、数据包在内核态和用户态之间的传递路径。这些知识在学校课程里只是简单提及，但当你为了修一个 Bug 去深入剖析时，理解得会扎实得多。后来我又接触了 Fake-IP 机制，对 DNS 协议和路由表的理解也更进了一步。”</p>
+            </div>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 有没有什么印象特别深刻的调试经历？</h4>
+                <p>“有一次为了排查一个 UDP 丢包问题，我用了 Wireshark、tcpdump 和 strace 三管齐下，最后发现是 gVisor 用户空间栈的一个超时参数设置不当。那个问题让我对网络栈的分层模型有了从未有过的直观认识。调试的时候虽然痛苦，但真正定位到根因那一刻，我觉得自己好像突然‘开窍’了。”</p>
+            </div>
+
+            <!-- 社区氛围 -->
+            <h2>🌐 开源社区的氛围与协作</h2>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 你怎么评价 Clash Verge Rev 的社区氛围？</h4>
+                <p>“非常好。维护者很乐意回答技术问题，而且对新人特别耐心。他们会在 PR 里详细解释为什么这样写更好，而不是简单地说‘这个不对’。我刚开始接触时对 Rust 还不熟，代码风格也有问题，他们帮我逐行提出了修改建议。现在回头看我第一个 PR 的代码，确实有很多可以改进的地方，但正是那些 Review 让我飞速成长。”</p>
+            </div>
+
+            <!-- 给新人的建议 -->
+            <h2>📬 给新人的建议</h2>
+            <div class="interview-speech">
+                <h4><span class="q-icon">Q</span> 对于想参与开源但不知从何开始的大学生，你有什么建议？</h4>
+                <p>“我觉得最关键的是迈出第一步。不要觉得一定要精通所有东西才能贡献。你可以从修复文档中的错别字、翻译 Wiki 开始，或者去 Issues 里找标记为 <code>good first issue</code> 的任务。我就是从修一个‘看起来很简单’的 Bug 起步的。另外，不要害怕犯错，开源社区比你想象的要宽容，只要你展现出学习的诚意，大家都会乐意帮助你。Clash Verge Rev 的贡献指南写得很清楚，基本上照着做就能成功提交 PR。”</p>
+            </div>
+
+            <!-- 未来计划 -->
+            <h2>🔮 未来计划</h2>
+            <p>林一峰告诉我们，他正在计划向项目贡献一个“连接质量评分面板”的功能，让用户能直观看到各个代理节点的延迟、丢包率和吞吐量趋势。他还打算将自己在调试过程中积累的经验整理成一系列教程文章，发布在官方博客上，帮助更多新手更快上手。</p>
+            <p>“开源不仅让我学到了技术，还让我认识了很多志同道合的朋友。我现在已经在准备寻找实习机会，而 Clash Verge Rev 的贡献经历无疑是我简历上最亮眼的一笔。有几个面试官甚至也用过这个工具，聊起来特别有共鸣。”</p>
+
+            <!-- 结语 -->
+            <h2>🌟 结语</h2>
+            <p>从一名普通的代理工具用户，到能够深入内核源代码修复 Bug 的贡献者，林一峰用一年时间完成了一次技术跨越。他的故事再次印证了开源世界的魅力：<strong>知识共享、协作成长、代码自由</strong>。无论你处在哪个学习阶段，只要愿意投入，开源社区的大门始终向你敞开。</p>
+            <p>如果你也想参与 Clash Verge Rev 的开发，请访问 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a> 查看贡献指南。任何形式的帮助——代码、文档、翻译、测试反馈——都将被热烈欢迎。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.1-story.html" class="related-card">
+                        <h4>v2.5.1 发布背后的故事：从问题反馈到紧急修复</h4>
+                        <p>2026-06-24 · 版本发布</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/rule-set-guide.html" class="related-card">
+                        <h4>从零开始：使用 RULE-SET 构建自动更新的分流体系</h4>
+                        <p>2026-07-06 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/linux-tun-optimization.html" class="related-card">
+                        <h4>深度解读：Linux 6.8+ 内核下 TUN 模式的适配与优化</h4>
+                        <p>2026-07-06 · 技术深潜</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
