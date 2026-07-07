@@ -112,4 +112,11 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+
+            <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/config-loading-flow.html</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
