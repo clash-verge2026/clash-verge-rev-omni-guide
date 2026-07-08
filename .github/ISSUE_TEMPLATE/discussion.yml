@@ -1,0 +1,142 @@
+name: "💬 Discussion"
+description: "Start a community discussion, share ideas, ask questions, or exchange experiences about Clash Verge Rev."
+title: "[Discussion]: "
+labels:
+  - discussion
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 💬 Community Discussion
+
+        Welcome to the Clash Verge Rev Omni Guide community.
+
+        This template is intended for open discussions, experience sharing, best practices, ideas, recommendations, and community feedback.
+
+        Feel free to start a conversation that helps other users learn and improve.
+
+  - type: input
+    id: topic
+    attributes:
+      label: Discussion Topic
+      description: Enter a short and descriptive title.
+      placeholder: Example: What DNS Configuration Works Best for Daily Use?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Discussion Category
+      description: Select the topic that best matches your discussion.
+      options:
+        - General
+        - Beginner Guide
+        - Installation
+        - Configuration
+        - DNS
+        - Fake-IP
+        - Redir-Host
+        - TUN Mode
+        - Mihomo
+        - YAML
+        - Rule Providers
+        - Proxy Groups
+        - AI Services
+        - Streaming
+        - Performance
+        - Security
+        - Tips & Tricks
+        - Best Practices
+        - Community Resources
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Describe the background or context of your discussion.
+      placeholder: Explain why you started this discussion.
+    validations:
+      required: true
+
+  - type: textarea
+    id: discussion_content
+    attributes:
+      label: Discussion
+      description: Share your ideas, questions, or experiences.
+      placeholder: |
+        Describe your thoughts, questions, or recommendations.
+
+        Feel free to include:
+        - Personal experience
+        - Configuration examples
+        - Suggestions
+        - Questions
+        - Comparisons
+    validations:
+      required: true
+
+  - type: textarea
+    id: opinion
+    attributes:
+      label: Your Opinion
+      description: Share your own conclusions or recommendations.
+      placeholder: Explain what works best for you and why.
+    validations:
+      required: false
+
+  - type: textarea
+    id: community_questions
+    attributes:
+      label: Questions for the Community
+      description: What would you like other users to share?
+      placeholder: |
+        Example:
+        - Which DNS do you use?
+        - Which Rule Provider do you recommend?
+        - Have you compared Fake-IP and Redir-Host?
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Optional documentation or useful links.
+      placeholder: Add documentation or related resources.
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_guides
+    attributes:
+      label: Related Guides
+      description: Link to related documentation.
+      placeholder: |
+        - DNS Configuration Guide
+        - Performance Optimization
+        - FAQ
+        - Troubleshooting Collection
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Community Checklist
+      options:
+        - label: I searched existing discussions before creating this one.
+          required: true
+
+        - label: My discussion is related to Clash Verge Rev or Mihomo.
+          required: true
+
+        - label: I will participate in the discussion and respond to community feedback.
+          required: false
+
+        - label: I agree to follow the project's Code of Conduct.
+          required: true
