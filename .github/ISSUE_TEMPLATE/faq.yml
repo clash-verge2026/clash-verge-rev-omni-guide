@@ -8,42 +8,42 @@ body:
   - type: markdown
     attributes:
       value: |
-        # ❓ Frequently Asked Questions
+        ## Frequently Asked Questions
 
-        Thank you for contributing to the FAQ section.
+        Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        This template is intended for documenting common questions and clear answers to help users quickly resolve issues.
+        Use this template to document common questions and provide clear, accurate answers that help users quickly solve problems.
 
   - type: input
     id: question
     attributes:
       label: Frequently Asked Question
-      description: Enter the question users commonly ask.
-      placeholder: Example: Why are my Proxy Groups empty?
+      description: Enter the question.
+      placeholder: "Why are my Proxy Groups empty?"
     validations:
       required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: FAQ Category
-      description: Select the category that best matches this question.
+      label: Category
+      description: Select the FAQ category.
       options:
         - Installation
-        - Beginner Guide
+        - Getting Started
         - Subscription
         - DNS
-        - Fake-IP
-        - Redir-Host
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
-        - Performance
+        - Fake-IP
+        - Redir-Host
         - AI Services
         - Streaming
-        - Troubleshooting
+        - Performance
+        - Security
         - Windows
         - macOS
         - Linux
@@ -56,24 +56,26 @@ body:
     attributes:
       label: Short Answer
       description: Provide a concise answer.
-      placeholder: Briefly answer the question.
+      placeholder: |
+        Briefly answer the question in one or two sentences.
     validations:
       required: true
 
   - type: textarea
-    id: detailed_explanation
+    id: detailed_answer
     attributes:
       label: Detailed Explanation
-      description: Explain the answer in detail.
-      placeholder: Describe the reason, background, and solution.
+      description: Explain the answer in more detail.
+      placeholder: |
+        Explain why this happens and how users can resolve it.
     validations:
       required: true
 
   - type: textarea
-    id: recommended_solution
+    id: solution
     attributes:
       label: Recommended Solution
-      description: List recommended steps or best practices.
+      description: Provide recommended steps or best practices.
       placeholder: |
         Step 1
 
@@ -84,15 +86,15 @@ body:
       required: true
 
   - type: textarea
-    id: related_guides
+    id: related_docs
     attributes:
-      label: Related Guides
-      description: Link to related documentation.
+      label: Related Documentation
+      description: List related documentation or guides.
       placeholder: |
-        - DNS Configuration Guide
-        - TUN Mode Guide
+        - Installation Guide
+        - DNS Configuration
+        - Troubleshooting
         - Performance Guide
-        - Troubleshooting Collection
     validations:
       required: false
 
@@ -100,8 +102,9 @@ body:
     id: notes
     attributes:
       label: Additional Notes
-      description: Add any useful tips or references.
-      placeholder: Optional notes.
+      description: Optional tips or compatibility notes.
+      placeholder: |
+        Add any extra recommendations or notes.
     validations:
       required: false
 
@@ -116,8 +119,5 @@ body:
         - label: The answer has been verified.
           required: true
 
-        - label: The explanation is clear and easy to understand.
+        - label: The information is clear and easy to understand.
           required: true
-
-        - label: Related documentation has been referenced where appropriate.
-          required: false
