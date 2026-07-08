@@ -1,38 +1,96 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+name: "🐞 Documentation Bug"
+description: "Report incorrect, outdated, or missing information in the documentation."
+title: "[Bug]: "
+labels:
+  - documentation
 
----
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Documentation Bug Report
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+        Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+        Use this template to report incorrect, outdated, or missing documentation.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+  - type: input
+    id: page
+    attributes:
+      label: Affected Page
+      description: Which page or guide contains the problem?
+      placeholder: "DNS Configuration Guide"
+    validations:
+      required: true
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Select the affected documentation category.
+      options:
+        - Documentation
+        - Guide
+        - Tutorial
+        - Configuration
+        - FAQ
+        - Troubleshooting
+        - Performance
+        - AI Services
+        - DNS
+        - TUN Mode
+        - YAML
+        - Other
+    validations:
+      required: true
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+  - type: textarea
+    id: issue
+    attributes:
+      label: Describe the Problem
+      description: Explain what is incorrect or missing.
+      placeholder: |
+        Describe the issue clearly.
+    validations:
+      required: true
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Content
+      description: Describe what you expected to see.
+      placeholder: |
+        Explain the correct information.
+    validations:
+      required: true
 
-**Additional context**
-Add any other context about the problem here.
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Fix
+      description: Describe how the documentation could be improved.
+      placeholder: |
+        Optional.
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Provide links or references if available.
+      placeholder: |
+        Official documentation, screenshots, or other references.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I verified this issue before submitting.
+          required: true
+
+        - label: I searched existing Issues before creating this report.
+          required: true
