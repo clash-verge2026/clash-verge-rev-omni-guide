@@ -1,8 +1,7 @@
 name: "📚 Documentation"
-description: "Create, improve, or update documentation for Clash Verge Rev Omni Guide."
+description: "Create or improve documentation for Clash Verge Rev Omni Guide."
 title: "[Documentation]: "
-labels:
-  - documentation
+labels: ["documentation"]
 
 body:
   - type: markdown
@@ -10,35 +9,35 @@ body:
       value: |
         ## Documentation Contribution
 
-        Thank you for helping improve the Clash Verge Rev Omni Guide.
+        Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-        Please provide as much detail as possible.
+        Please complete the information below before submitting.
 
   - type: input
     id: title
     attributes:
       label: Documentation Title
       description: Enter a short and descriptive title.
-      placeholder: Example: Configure Fake-IP DNS
+      placeholder: Example: DNS Configuration Guide
     validations:
       required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: Documentation Category
+      label: Category
+      description: Select the documentation category.
       options:
         - Installation
-        - Beginner Guide
+        - Getting Started
         - Configuration
         - DNS
         - TUN Mode
         - Mihomo
         - YAML
-        - Rule Provider
-        - Performance
-        - Troubleshooting
         - FAQ
+        - Troubleshooting
+        - Performance
         - AI Services
         - Other
     validations:
@@ -48,17 +47,24 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: Briefly describe what this documentation covers.
-      placeholder: Explain the purpose and expected outcome.
+      description: Briefly describe this documentation.
+      placeholder: Explain what this document covers.
     validations:
       required: true
 
   - type: textarea
-    id: details
+    id: content
     attributes:
-      label: Detailed Content
-      description: Describe the documentation, examples, or improvements in detail.
-      placeholder: Write the complete guide or proposed changes here.
+      label: Documentation Content
+      description: Write the documentation or describe the proposed improvement.
+      placeholder: |
+        ## Overview
+
+        ## Steps
+
+        ## Notes
+
+        ## References
     validations:
       required: true
 
@@ -67,16 +73,18 @@ body:
     attributes:
       label: References
       description: Optional links to official documentation or related resources.
-      placeholder: Paste any helpful references.
+      placeholder: Add related links if available.
 
   - type: checkboxes
     id: checklist
     attributes:
       label: Checklist
       options:
-        - label: I searched existing Issues before creating this one.
+        - label: I searched existing Issues before creating this documentation.
           required: true
-        - label: I verified the information is accurate.
+
+        - label: The information has been verified.
           required: true
-        - label: I am willing to help improve this documentation if needed.
-          required: false
+
+        - label: The content is written in Markdown format.
+          required: true
