@@ -1,5 +1,5 @@
 name: "⚡ Performance"
-description: "Share performance optimization tips, benchmarks, and best practices for Clash Verge Rev."
+description: "Share performance optimizations, benchmarks, and best practices for Clash Verge Rev."
 title: "[Performance]: "
 labels:
   - performance
@@ -8,20 +8,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        # ⚡ Performance Optimization
+        ## Performance Optimization
 
-        Thank you for contributing performance improvements to Clash Verge Rev Omni Guide.
+        Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        This template is intended for documenting optimization techniques, benchmark results, resource usage, startup improvements, routing efficiency, DNS tuning, and real-world performance experiences.
-
-        Please provide as much detail as possible.
+        Use this template to document performance improvements, optimization techniques, benchmark results, and best practices.
 
   - type: input
-    id: title
+    id: optimization_title
     attributes:
       label: Optimization Title
       description: Enter a short and descriptive title.
-      placeholder: Example: Reduce Startup Time by Optimizing Rule Providers
+      placeholder: "Optimize DNS Performance"
     validations:
       required: true
 
@@ -29,24 +27,23 @@ body:
     id: category
     attributes:
       label: Optimization Category
-      description: Select the area this optimization belongs to.
+      description: Select the optimization category.
       options:
-        - Startup Speed
+        - Startup
         - DNS
-        - Fake-IP
-        - Redir-Host
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
+        - Fake-IP
+        - Redir-Host
+        - AI Services
+        - Streaming
         - Memory Usage
         - CPU Usage
-        - Network Latency
-        - Streaming
-        - AI Services
-        - Gaming
-        - Battery Usage
+        - Network
+        - Security
         - Other
     validations:
       required: true
@@ -55,7 +52,7 @@ body:
     id: platform
     attributes:
       label: Platform
-      description: Select the operating system.
+      description: Select the target platform.
       options:
         - Windows
         - macOS
@@ -68,8 +65,9 @@ body:
     id: overview
     attributes:
       label: Overview
-      description: Briefly describe the optimization.
-      placeholder: Explain what this optimization improves.
+      description: Briefly describe this optimization.
+      placeholder: |
+        Explain what this optimization improves and when it should be used.
     validations:
       required: true
 
@@ -79,7 +77,6 @@ body:
       label: Test Environment
       description: Describe the environment used for testing.
       placeholder: |
-        Example:
         Clash Verge Rev Version:
         Mihomo Version:
         Operating System:
@@ -92,7 +89,7 @@ body:
     id: optimization_steps
     attributes:
       label: Optimization Steps
-      description: Describe the optimization process step by step.
+      description: Describe the optimization process.
       placeholder: |
         Step 1
 
@@ -106,16 +103,14 @@ body:
     id: benchmark
     attributes:
       label: Benchmark Results
-      description: Share benchmark results or performance comparisons.
+      description: Share benchmark results or before-and-after comparisons.
       placeholder: |
-        Before Optimization
-
+        Before:
         Startup Time:
         CPU Usage:
         Memory Usage:
 
-        After Optimization
-
+        After:
         Startup Time:
         CPU Usage:
         Memory Usage:
@@ -123,47 +118,38 @@ body:
       required: false
 
   - type: textarea
-    id: expected_benefits
+    id: benefits
     attributes:
       label: Expected Benefits
       description: Describe the expected improvements.
       placeholder: |
-        Example:
         - Faster startup
         - Lower memory usage
-        - Reduced latency
+        - Reduced CPU usage
         - Better DNS response
     validations:
       required: true
 
   - type: textarea
-    id: limitations
-    attributes:
-      label: Limitations
-      description: Describe any known limitations or trade-offs.
-      placeholder: Explain situations where this optimization may not be suitable.
-    validations:
-      required: false
-
-  - type: textarea
-    id: related_guides
-    attributes:
-      label: Related Guides
-      description: Link to related documentation.
-      placeholder: |
-        - DNS Configuration Guide
-        - TUN Mode Guide
-        - YAML Configuration
-        - Troubleshooting Collection
-    validations:
-      required: false
-
-  - type: textarea
-    id: additional_notes
+    id: notes
     attributes:
       label: Additional Notes
-      description: Share extra recommendations or observations.
-      placeholder: Optional notes.
+      description: Optional recommendations, limitations, or compatibility notes.
+      placeholder: |
+        Add any additional information that may help other users.
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_docs
+    attributes:
+      label: Related Documentation
+      description: List related guides or documentation.
+      placeholder: |
+        - Performance Guide
+        - DNS Configuration
+        - FAQ
+        - Troubleshooting
     validations:
       required: false
 
@@ -172,17 +158,11 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I tested this optimization before sharing.
+        - label: I tested this optimization before submitting.
           required: true
 
-        - label: Benchmark results are accurate.
+        - label: The benchmark results are accurate.
           required: true
 
         - label: The optimization can be reproduced by other users.
           required: true
-
-        - label: I included enough information for verification.
-          required: true
-
-        - label: I am willing to update this optimization if better methods become available.
-          required: false
