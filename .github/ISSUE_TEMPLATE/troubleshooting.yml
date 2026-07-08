@@ -1,0 +1,178 @@
+name: "🛠️ Troubleshooting"
+description: "Report, document, or improve solutions for common Clash Verge Rev issues."
+title: "[Troubleshooting]: "
+labels:
+  - troubleshooting
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🛠️ Troubleshooting Guide
+
+        Thank you for helping improve the Clash Verge Rev Omni Guide.
+
+        This template is designed to document common problems, identify root causes, and provide reliable solutions for the community.
+
+        Please complete as many fields as possible.
+
+  - type: input
+    id: issue_title
+    attributes:
+      label: Issue Title
+      description: Enter a short and descriptive title.
+      placeholder: Example: Proxy Groups Are Empty After Updating Subscription
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_category
+    attributes:
+      label: Issue Category
+      description: Select the category that best matches this issue.
+      options:
+        - Installation
+        - Startup
+        - Subscription
+        - Proxy Groups
+        - DNS
+        - Fake-IP
+        - Redir-Host
+        - TUN Mode
+        - Mihomo
+        - YAML
+        - Rule Providers
+        - Performance
+        - AI Services
+        - Streaming
+        - Network
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How serious is this issue?
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Operating System
+      description: Select the affected operating system.
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Cross-platform
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: symptoms
+    attributes:
+      label: Symptoms
+      description: Describe what happened.
+      placeholder: |
+        Example:
+        - Proxy page is empty
+        - Unable to connect
+        - DNS resolution fails
+        - TUN mode cannot be enabled
+    validations:
+      required: true
+
+  - type: textarea
+    id: possible_causes
+    attributes:
+      label: Possible Causes
+      description: Describe the possible reasons for this issue.
+      placeholder: |
+        Example:
+        - Invalid subscription
+        - Incorrect DNS configuration
+        - YAML syntax error
+        - Cache corruption
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution
+      description: Explain how to resolve the issue.
+      placeholder: |
+        Step 1
+
+        Step 2
+
+        Step 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: How can users confirm the issue has been resolved?
+      placeholder: |
+        Example:
+        - Proxy Groups are visible again
+        - DNS works correctly
+        - Internet connection restored
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_guides
+    attributes:
+      label: Related Guides
+      description: Reference related documentation.
+      placeholder: |
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - FAQ
+        - Performance Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: Share any additional observations or recommendations.
+      placeholder: Include logs, screenshots, or useful tips if available.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing Issues before creating this troubleshooting guide.
+          required: true
+
+        - label: I verified that the solution works.
+          required: true
+
+        - label: I included enough details for others to reproduce the issue.
+          required: true
+
+        - label: I referenced related documentation where appropriate.
+          required: false
+
+        - label: I am willing to update this guide if new solutions become available.
+          required: false
