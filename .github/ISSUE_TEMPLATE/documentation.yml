@@ -1,44 +1,82 @@
----
+name: "📚 Documentation"
+description: "Create, improve, or update documentation for Clash Verge Rev Omni Guide."
+title: "[Documentation]: "
+labels:
+  - documentation
 
-name: Documentation Improvement
-about: Report documentation issues or suggest improvements.
-title: "[Docs]: "
-labels: documentation
-assignees: ""
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Documentation Contribution
 
----
+        Thank you for helping improve the Clash Verge Rev Omni Guide.
 
-# Documentation Improvement
+        Please provide as much detail as possible.
 
-## What part of the documentation needs improvement?
+  - type: input
+    id: title
+    attributes:
+      label: Documentation Title
+      description: Enter a short and descriptive title.
+      placeholder: Example: Configure Fake-IP DNS
+    validations:
+      required: true
 
-Please provide the page name, section, or topic.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Documentation Category
+      options:
+        - Installation
+        - Beginner Guide
+        - Configuration
+        - DNS
+        - TUN Mode
+        - Mihomo
+        - YAML
+        - Rule Provider
+        - Performance
+        - Troubleshooting
+        - FAQ
+        - AI Services
+        - Other
+    validations:
+      required: true
 
-Example:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Briefly describe what this documentation covers.
+      placeholder: Explain the purpose and expected outcome.
+    validations:
+      required: true
 
-* Installation Guide
-* FAQ
-* DNS Configuration
-* TUN Mode
-* VMess Guide
-* Trojan Guide
+  - type: textarea
+    id: details
+    attributes:
+      label: Detailed Content
+      description: Describe the documentation, examples, or improvements in detail.
+      placeholder: Write the complete guide or proposed changes here.
+    validations:
+      required: true
 
----
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Optional links to official documentation or related resources.
+      placeholder: Paste any helpful references.
 
-## Describe the issue
-
-Explain what is unclear, incorrect, outdated, or missing.
-
----
-
-## Suggested improvement
-
-Describe how you think the documentation could be improved.
-
----
-
-## Additional information
-
-Add screenshots, links, references, or other helpful information if available.
-
-Thank you for helping improve the documentation of Clash Verge Rev Omni Guide.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing Issues before creating this one.
+          required: true
+        - label: I verified the information is accurate.
+          required: true
+        - label: I am willing to help improve this documentation if needed.
+          required: false
