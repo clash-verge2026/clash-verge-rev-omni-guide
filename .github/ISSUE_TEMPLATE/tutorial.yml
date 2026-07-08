@@ -1,0 +1,133 @@
+name: "🚀 Tutorial"
+description: "Create a beginner-friendly tutorial for Clash Verge Rev Omni Guide."
+title: "[Tutorial]: "
+labels:
+  - tutorial
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🚀 Tutorial Submission
+
+        Thank you for contributing a tutorial.
+
+        Tutorials should focus on helping beginners quickly accomplish a specific task with clear and practical steps.
+
+  - type: input
+    id: tutorial_title
+    attributes:
+      label: Tutorial Title
+      description: Enter a short and descriptive tutorial title.
+      placeholder: Example: Import Your First Subscription
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty Level
+      description: Select the intended audience.
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Select the target operating system.
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Cross-platform
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What will users learn from this tutorial?
+      placeholder: Explain the expected result after completing this tutorial.
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements
+      description: List any prerequisites.
+      placeholder: |
+        Example:
+        - Clash Verge Rev installed
+        - Valid subscription
+        - Internet connection
+    validations:
+      required: false
+
+  - type: textarea
+    id: tutorial_steps
+    attributes:
+      label: Tutorial Steps
+      description: Write the tutorial step by step.
+      placeholder: |
+        Step 1
+
+        Step 2
+
+        Step 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_result
+    attributes:
+      label: Expected Result
+      description: Describe the expected outcome after completing the tutorial.
+      placeholder: Explain what users should see or achieve.
+    validations:
+      required: true
+
+  - type: textarea
+    id: common_mistakes
+    attributes:
+      label: Common Mistakes
+      description: List common mistakes beginners may encounter.
+      placeholder: Explain common errors and how to avoid them.
+    validations:
+      required: false
+
+  - type: textarea
+    id: next_steps
+    attributes:
+      label: Recommended Next Reading
+      description: Suggest related guides.
+      placeholder: |
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - FAQ
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I verified the tutorial works correctly.
+          required: true
+
+        - label: The tutorial is beginner-friendly.
+          required: true
+
+        - label: The steps are complete and easy to follow.
+          required: true
+
+        - label: I am willing to update this tutorial in the future.
+          required: false
