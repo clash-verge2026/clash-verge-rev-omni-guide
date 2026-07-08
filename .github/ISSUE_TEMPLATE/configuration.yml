@@ -1,0 +1,178 @@
+name: "⚙️ Configuration"
+description: "Share, improve, or document Clash Verge Rev configuration examples and best practices."
+title: "[Configuration]: "
+labels:
+  - configuration
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ⚙️ Configuration Guide
+
+        Thank you for contributing configuration examples to Clash Verge Rev Omni Guide.
+
+        This template is intended for DNS settings, YAML examples, routing rules, proxy groups, Mihomo configuration, and other practical configuration topics.
+
+  - type: input
+    id: config_title
+    attributes:
+      label: Configuration Title
+      description: Enter a clear and descriptive title.
+      placeholder: Example: Configure Fake-IP DNS for Better Compatibility
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Configuration Category
+      description: Select the most appropriate category.
+      options:
+        - DNS
+        - Fake-IP
+        - Redir-Host
+        - TUN Mode
+        - Mihomo
+        - YAML
+        - Rule Providers
+        - Proxy Groups
+        - Proxy Providers
+        - Subscription
+        - Script
+        - Sniffer
+        - WireGuard
+        - VMess
+        - VLESS
+        - Trojan
+        - Hysteria2
+        - AI Services
+        - Streaming
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Select the target platform.
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Android
+        - Cross-platform
+    validations:
+      required: true
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: Briefly explain this configuration.
+      placeholder: Describe what this configuration is designed to achieve.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Recommended Use Cases
+      description: Describe when users should use this configuration.
+      placeholder: |
+        Example:
+        - Daily browsing
+        - AI services
+        - Streaming
+        - Gaming
+        - Development
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration Example
+      description: Paste your YAML or configuration example.
+      render: yaml
+      placeholder: |
+        dns:
+          enable: true
+          enhanced-mode: fake-ip
+          nameserver:
+            - https://1.1.1.1/dns-query
+    validations:
+      required: true
+
+  - type: textarea
+    id: explanation
+    attributes:
+      label: Configuration Explanation
+      description: Explain each important option.
+      placeholder: Describe why each setting is used.
+    validations:
+      required: true
+
+  - type: textarea
+    id: optimization
+    attributes:
+      label: Optimization Tips
+      description: Share any recommendations or best practices.
+      placeholder: Explain how to optimize this configuration.
+    validations:
+      required: false
+
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility Notes
+      description: Mention supported versions or limitations.
+      placeholder: Example: Mihomo v1.19+, Clash Verge Rev v2.5+
+    validations:
+      required: false
+
+  - type: textarea
+    id: troubleshooting
+    attributes:
+      label: Common Issues
+      description: Describe common problems and their solutions.
+      placeholder: |
+        Problem:
+        Cause:
+        Solution:
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_guides
+    attributes:
+      label: Related Guides
+      description: Reference related documentation.
+      placeholder: |
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - Rule Provider Guide
+        - YAML Examples
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I tested this configuration before sharing.
+          required: true
+
+        - label: The configuration example is complete.
+          required: true
+
+        - label: I explained the purpose of the important options.
+          required: true
+
+        - label: I verified the configuration works with the selected platform.
+          required: true
+
+        - label: I am willing to maintain this configuration if improvements are needed.
+          required: false
