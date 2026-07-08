@@ -1,0 +1,158 @@
+name: "📖 Guide"
+description: "Create a new step-by-step guide for Clash Verge Rev Omni Guide."
+title: "[Guide]: "
+labels:
+  - guide
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 📖 New Guide
+
+        Thank you for contributing to Clash Verge Rev Omni Guide.
+
+        This template is designed for comprehensive, step-by-step documentation.
+
+        Please complete the following sections to help readers understand the topic clearly.
+
+  - type: input
+    id: guide_title
+    attributes:
+      label: Guide Title
+      description: Enter a concise and descriptive title.
+      placeholder: Example: Configure TUN Mode on Windows
+    validations:
+      required: true
+
+  - type: dropdown
+    id: guide_category
+    attributes:
+      label: Guide Category
+      description: Select the category that best matches this guide.
+      options:
+        - Installation
+        - Beginner Guide
+        - DNS
+        - TUN Mode
+        - Mihomo
+        - Proxy Groups
+        - Rule Providers
+        - YAML Configuration
+        - Performance
+        - AI Services
+        - Streaming
+        - Security
+        - Advanced Configuration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: Briefly explain what this guide is about.
+      placeholder: Describe the purpose of this guide.
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: List any requirements before starting.
+      placeholder: |
+        Example:
+        - Clash Verge Rev installed
+        - Valid subscription
+        - Administrator privileges
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Step-by-Step Instructions
+      description: Write the complete tutorial.
+      placeholder: |
+        Step 1
+
+        Step 2
+
+        Step 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Configuration Example
+      description: Provide example configurations if applicable.
+      placeholder: |
+        proxy-groups:
+          - name: Auto
+            type: select
+    validations:
+      required: false
+
+  - type: textarea
+    id: tips
+    attributes:
+      label: Tips & Best Practices
+      description: Share useful recommendations or optimization tips.
+      placeholder: Explain any useful practices.
+    validations:
+      required: false
+
+  - type: textarea
+    id: troubleshooting
+    attributes:
+      label: Common Problems
+      description: List common issues and solutions.
+      placeholder: |
+        Problem
+
+        Cause
+
+        Solution
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Official documentation or useful links.
+      placeholder: Add reference links if available.
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_guides
+    attributes:
+      label: Related Guides
+      description: Mention related documentation.
+      placeholder: |
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - YAML Examples
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing Issues before creating this guide.
+          required: true
+
+        - label: The information has been verified.
+          required: true
+
+        - label: The guide is written in clear Markdown format.
+          required: true
+
+        - label: I am willing to update this guide in the future.
+          required: false
