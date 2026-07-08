@@ -1,5 +1,5 @@
 name: "📖 Guide"
-description: "Create a new step-by-step guide for Clash Verge Rev Omni Guide."
+description: "Create a comprehensive guide for Clash Verge Rev Omni Guide."
 title: "[Guide]: "
 labels:
   - guide
@@ -8,42 +8,52 @@ body:
   - type: markdown
     attributes:
       value: |
-        # 📖 New Guide
+        ## Guide Contribution
 
-        Thank you for contributing to Clash Verge Rev Omni Guide.
+        Thank you for contributing a guide to **Clash Verge Rev Omni Guide**.
 
-        This template is designed for comprehensive, step-by-step documentation.
-
-        Please complete the following sections to help readers understand the topic clearly.
+        Please provide clear, step-by-step instructions so users can easily follow along.
 
   - type: input
     id: guide_title
     attributes:
       label: Guide Title
-      description: Enter a concise and descriptive title.
-      placeholder: Example: Configure TUN Mode on Windows
+      description: Enter the title of this guide.
+      placeholder: "Enable TUN Mode on Windows"
     validations:
       required: true
 
   - type: dropdown
-    id: guide_category
+    id: category
     attributes:
       label: Guide Category
-      description: Select the category that best matches this guide.
+      description: Select the most appropriate category.
       options:
         - Installation
-        - Beginner Guide
         - DNS
         - TUN Mode
         - Mihomo
-        - Proxy Groups
+        - YAML
         - Rule Providers
-        - YAML Configuration
-        - Performance
+        - Proxy Groups
         - AI Services
         - Streaming
         - Security
-        - Advanced Configuration
+        - Performance
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Select the target platform.
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Cross-platform
         - Other
     validations:
       required: true
@@ -52,8 +62,9 @@ body:
     id: overview
     attributes:
       label: Overview
-      description: Briefly explain what this guide is about.
-      placeholder: Describe the purpose of this guide.
+      description: Briefly describe what this guide covers.
+      placeholder: |
+        Explain the purpose of this guide.
     validations:
       required: true
 
@@ -61,20 +72,20 @@ body:
     id: prerequisites
     attributes:
       label: Prerequisites
-      description: List any requirements before starting.
+      description: List any requirements before getting started.
       placeholder: |
         Example:
         - Clash Verge Rev installed
+        - Administrator permission
         - Valid subscription
-        - Administrator privileges
     validations:
       required: false
 
   - type: textarea
     id: steps
     attributes:
-      label: Step-by-Step Instructions
-      description: Write the complete tutorial.
+      label: Step-by-Step Guide
+      description: Write detailed instructions.
       placeholder: |
         Step 1
 
@@ -85,25 +96,14 @@ body:
       required: true
 
   - type: textarea
-    id: examples
+    id: verification
     attributes:
-      label: Configuration Example
-      description: Provide example configurations if applicable.
+      label: Verification
+      description: Explain how users can verify the guide was completed successfully.
       placeholder: |
-        proxy-groups:
-          - name: Auto
-            type: select
+        Describe the expected result.
     validations:
-      required: false
-
-  - type: textarea
-    id: tips
-    attributes:
-      label: Tips & Best Practices
-      description: Share useful recommendations or optimization tips.
-      placeholder: Explain any useful practices.
-    validations:
-      required: false
+      required: true
 
   - type: textarea
     id: troubleshooting
@@ -111,32 +111,20 @@ body:
       label: Common Problems
       description: List common issues and solutions.
       placeholder: |
-        Problem
-
-        Cause
-
-        Solution
+        Problem:
+        Solution:
     validations:
       required: false
 
   - type: textarea
-    id: references
+    id: related
     attributes:
-      label: References
-      description: Official documentation or useful links.
-      placeholder: Add reference links if available.
-    validations:
-      required: false
-
-  - type: textarea
-    id: related_guides
-    attributes:
-      label: Related Guides
-      description: Mention related documentation.
+      label: Related Documentation
+      description: List related guides or documentation.
       placeholder: |
         - DNS Configuration Guide
-        - TUN Mode Guide
-        - YAML Examples
+        - FAQ
+        - Performance Guide
     validations:
       required: false
 
@@ -145,14 +133,11 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I searched existing Issues before creating this guide.
+        - label: I verified this guide before submitting.
           required: true
 
-        - label: The information has been verified.
+        - label: The guide contains complete steps.
           required: true
 
-        - label: The guide is written in clear Markdown format.
+        - label: The guide is written in Markdown format.
           required: true
-
-        - label: I am willing to update this guide in the future.
-          required: false
