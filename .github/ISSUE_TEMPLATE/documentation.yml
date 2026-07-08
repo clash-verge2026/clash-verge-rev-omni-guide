@@ -1,7 +1,8 @@
 name: "📚 Documentation"
 description: "Create or improve documentation for Clash Verge Rev Omni Guide."
 title: "[Documentation]: "
-labels: ["documentation"]
+labels:
+  - documentation
 
 body:
   - type: markdown
@@ -11,14 +12,14 @@ body:
 
         Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-        Please complete the information below before submitting.
+        Please complete the information below before submitting your documentation.
 
   - type: input
-    id: title
+    id: doc_title
     attributes:
       label: Documentation Title
       description: Enter a short and descriptive title.
-      placeholder: Example: DNS Configuration Guide
+      placeholder: "DNS Configuration Guide"
     validations:
       required: true
 
@@ -48,7 +49,8 @@ body:
     attributes:
       label: Summary
       description: Briefly describe this documentation.
-      placeholder: Explain what this document covers.
+      placeholder: |
+        Briefly explain what this document covers.
     validations:
       required: true
 
@@ -73,7 +75,10 @@ body:
     attributes:
       label: References
       description: Optional links to official documentation or related resources.
-      placeholder: Add related links if available.
+      placeholder: |
+        https://...
+    validations:
+      required: false
 
   - type: checkboxes
     id: checklist
