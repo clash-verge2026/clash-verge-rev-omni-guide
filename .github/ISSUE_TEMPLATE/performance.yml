@@ -1,0 +1,188 @@
+name: "⚡ Performance"
+description: "Share performance optimization tips, benchmarks, and best practices for Clash Verge Rev."
+title: "[Performance]: "
+labels:
+  - performance
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ⚡ Performance Optimization
+
+        Thank you for contributing performance improvements to Clash Verge Rev Omni Guide.
+
+        This template is intended for documenting optimization techniques, benchmark results, resource usage, startup improvements, routing efficiency, DNS tuning, and real-world performance experiences.
+
+        Please provide as much detail as possible.
+
+  - type: input
+    id: title
+    attributes:
+      label: Optimization Title
+      description: Enter a short and descriptive title.
+      placeholder: Example: Reduce Startup Time by Optimizing Rule Providers
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Optimization Category
+      description: Select the area this optimization belongs to.
+      options:
+        - Startup Speed
+        - DNS
+        - Fake-IP
+        - Redir-Host
+        - TUN Mode
+        - Mihomo
+        - YAML
+        - Rule Providers
+        - Proxy Groups
+        - Memory Usage
+        - CPU Usage
+        - Network Latency
+        - Streaming
+        - AI Services
+        - Gaming
+        - Battery Usage
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Select the operating system.
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Cross-platform
+    validations:
+      required: true
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: Briefly describe the optimization.
+      placeholder: Explain what this optimization improves.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Test Environment
+      description: Describe the environment used for testing.
+      placeholder: |
+        Example:
+        Clash Verge Rev Version:
+        Mihomo Version:
+        Operating System:
+        CPU:
+        Memory:
+    validations:
+      required: true
+
+  - type: textarea
+    id: optimization_steps
+    attributes:
+      label: Optimization Steps
+      description: Describe the optimization process step by step.
+      placeholder: |
+        Step 1
+
+        Step 2
+
+        Step 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: benchmark
+    attributes:
+      label: Benchmark Results
+      description: Share benchmark results or performance comparisons.
+      placeholder: |
+        Before Optimization
+
+        Startup Time:
+        CPU Usage:
+        Memory Usage:
+
+        After Optimization
+
+        Startup Time:
+        CPU Usage:
+        Memory Usage:
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected_benefits
+    attributes:
+      label: Expected Benefits
+      description: Describe the expected improvements.
+      placeholder: |
+        Example:
+        - Faster startup
+        - Lower memory usage
+        - Reduced latency
+        - Better DNS response
+    validations:
+      required: true
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations
+      description: Describe any known limitations or trade-offs.
+      placeholder: Explain situations where this optimization may not be suitable.
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_guides
+    attributes:
+      label: Related Guides
+      description: Link to related documentation.
+      placeholder: |
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - YAML Configuration
+        - Troubleshooting Collection
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: Share extra recommendations or observations.
+      placeholder: Optional notes.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I tested this optimization before sharing.
+          required: true
+
+        - label: Benchmark results are accurate.
+          required: true
+
+        - label: The optimization can be reproduced by other users.
+          required: true
+
+        - label: I included enough information for verification.
+          required: true
+
+        - label: I am willing to update this optimization if better methods become available.
+          required: false
