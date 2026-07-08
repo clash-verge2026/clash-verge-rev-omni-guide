@@ -1,0 +1,22 @@
+name: "🗺️ Roadmap"
+description: "Propose, plan, or discuss future documentation, tutorials, and project milestones."
+title: "[Roadmap]: "
+labels:
+  - roadmap
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🗺️ Documentation Roadmap
+
+        Thank you for helping shape the future of Clash Verge Rev Omni Guide.
+
+        This template is intended for proposing new documentation, planning future milestones, improving the knowledge base, and collecting community priorities.
+
+        Every suggestion helps make the documentation more useful for everyone.
+
+  - type: input
+    id: roadmap_title
+    attributes:
+      label: Roadmap
