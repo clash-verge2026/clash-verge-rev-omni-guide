@@ -1,5 +1,5 @@
 name: "⚙️ Configuration"
-description: "Share, improve, or document Clash Verge Rev configuration examples and best practices."
+description: "Share configuration examples, best practices, and setup recommendations for Clash Verge Rev."
 title: "[Configuration]: "
 labels:
   - configuration
@@ -8,18 +8,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        # ⚙️ Configuration Guide
+        ## Configuration Contribution
 
-        Thank you for contributing configuration examples to Clash Verge Rev Omni Guide.
+        Thank you for contributing configuration examples to **Clash Verge Rev Omni Guide**.
 
-        This template is intended for DNS settings, YAML examples, routing rules, proxy groups, Mihomo configuration, and other practical configuration topics.
+        Please provide clear explanations and practical examples that other users can easily follow.
 
   - type: input
     id: config_title
     attributes:
       label: Configuration Title
-      description: Enter a clear and descriptive title.
-      placeholder: Example: Configure Fake-IP DNS for Better Compatibility
+      description: Enter a short and descriptive title.
+      placeholder: "DNS Configuration for Clash Verge Rev"
     validations:
       required: true
 
@@ -27,27 +27,20 @@ body:
     id: category
     attributes:
       label: Configuration Category
-      description: Select the most appropriate category.
+      description: Select the configuration category.
       options:
         - DNS
-        - Fake-IP
-        - Redir-Host
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
-        - Proxy Providers
-        - Subscription
-        - Script
-        - Sniffer
-        - WireGuard
-        - VMess
-        - VLESS
-        - Trojan
-        - Hysteria2
+        - Fake-IP
+        - Redir-Host
         - AI Services
         - Streaming
+        - Performance
+        - Security
         - Other
     validations:
       required: true
@@ -61,7 +54,6 @@ body:
         - Windows
         - macOS
         - Linux
-        - Android
         - Cross-platform
     validations:
       required: true
@@ -71,22 +63,8 @@ body:
     attributes:
       label: Overview
       description: Briefly explain this configuration.
-      placeholder: Describe what this configuration is designed to achieve.
-    validations:
-      required: true
-
-  - type: textarea
-    id: use_case
-    attributes:
-      label: Recommended Use Cases
-      description: Describe when users should use this configuration.
       placeholder: |
-        Example:
-        - Daily browsing
-        - AI services
-        - Streaming
-        - Gaming
-        - Development
+        Describe what this configuration is used for and when it should be applied.
     validations:
       required: true
 
@@ -94,14 +72,12 @@ body:
     id: configuration
     attributes:
       label: Configuration Example
-      description: Paste your YAML or configuration example.
+      description: Paste the configuration or explain the setup process.
       render: yaml
       placeholder: |
         dns:
           enable: true
           enhanced-mode: fake-ip
-          nameserver:
-            - https://1.1.1.1/dns-query
     validations:
       required: true
 
@@ -109,51 +85,45 @@ body:
     id: explanation
     attributes:
       label: Configuration Explanation
-      description: Explain each important option.
-      placeholder: Describe why each setting is used.
+      description: Explain each important option or setting.
+      placeholder: |
+        Describe what each configuration item does and why it is recommended.
     validations:
       required: true
 
   - type: textarea
-    id: optimization
+    id: expected_result
     attributes:
-      label: Optimization Tips
-      description: Share any recommendations or best practices.
-      placeholder: Explain how to optimize this configuration.
-    validations:
-      required: false
-
-  - type: textarea
-    id: compatibility
-    attributes:
-      label: Compatibility Notes
-      description: Mention supported versions or limitations.
-      placeholder: Example: Mihomo v1.19+, Clash Verge Rev v2.5+
-    validations:
-      required: false
-
-  - type: textarea
-    id: troubleshooting
-    attributes:
-      label: Common Issues
-      description: Describe common problems and their solutions.
+      label: Expected Result
+      description: Describe the expected behavior after applying this configuration.
       placeholder: |
-        Problem:
-        Cause:
-        Solution:
+        Example:
+        - DNS resolution is faster.
+        - Streaming services work correctly.
+        - AI services can be accessed normally.
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Optional recommendations, compatibility notes, or warnings.
+      placeholder: |
+        Mention any version requirements, limitations, or best practices.
     validations:
       required: false
 
   - type: textarea
     id: related_guides
     attributes:
-      label: Related Guides
-      description: Reference related documentation.
+      label: Related Documentation
+      description: List related guides or documentation.
       placeholder: |
-        - DNS Configuration Guide
+        - DNS Guide
         - TUN Mode Guide
-        - Rule Provider Guide
-        - YAML Examples
+        - FAQ
+        - Troubleshooting
     validations:
       required: false
 
@@ -162,17 +132,11 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I tested this configuration before sharing.
+        - label: I tested this configuration before submitting.
           required: true
 
-        - label: The configuration example is complete.
+        - label: The configuration is accurate and complete.
           required: true
 
-        - label: I explained the purpose of the important options.
+        - label: The configuration is compatible with Clash Verge Rev.
           required: true
-
-        - label: I verified the configuration works with the selected platform.
-          required: true
-
-        - label: I am willing to maintain this configuration if improvements are needed.
-          required: false
