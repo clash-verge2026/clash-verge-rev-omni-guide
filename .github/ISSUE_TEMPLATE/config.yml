@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 📖 Clash Verge Rev Omni Guide
+    url: https://clash-verge2026.github.io/clash-verge-rev-omni-guide/
+    about: Read the complete documentation before creating a new issue.
+
+  - name: 📚 GitHub Documentation Repository
+    url: https://github.com/clash-verge2026/clash-verge-rev-omni-guide
+    about: Browse documentation, examples, and community guides.
+
+  - name: 💬 Community Discussion
+    url: https://github.com/clash-verge2026/clash-verge-rev-omni-guide/discussions
+    about: Ask questions, share ideas, and participate in community discussions.
