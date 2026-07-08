@@ -1,20 +1,96 @@
----
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+name: "✨ Feature Request"
+description: "Suggest a new documentation topic, tutorial, or feature for Clash Verge Rev Omni Guide."
+title: "[Feature]: "
+labels:
+  - enhancement
 
----
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+        Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+        Use this template to suggest new documentation, tutorials, examples, or project improvements.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+  - type: input
+    id: feature_title
+    attributes:
+      label: Feature Title
+      description: Enter a short and descriptive title.
+      placeholder: "Add a WireGuard Configuration Guide"
+    validations:
+      required: true
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Select the category.
+      options:
+        - Documentation
+        - Guide
+        - Tutorial
+        - Configuration
+        - FAQ
+        - Troubleshooting
+        - Performance
+        - AI Services
+        - DNS
+        - TUN Mode
+        - YAML
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the problem or missing content.
+      placeholder: |
+        Explain why this feature or documentation is needed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution.
+      placeholder: |
+        Explain how this feature or documentation should work.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternatives you have considered.
+      placeholder: |
+        Optional.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Add screenshots, links, or references if available.
+      placeholder: |
+        Optional.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing Issues before submitting.
+          required: true
+
+        - label: This request is related to Clash Verge Rev Omni Guide.
+          required: true
