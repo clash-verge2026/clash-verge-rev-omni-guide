@@ -1,5 +1,5 @@
-name: "🛠️ Troubleshooting"
-description: "Report or document common issues and provide troubleshooting steps for Clash Verge Rev."
+name: "🛠 Troubleshooting"
+description: "Report or document troubleshooting steps for Clash Verge Rev."
 title: "[Troubleshooting]: "
 labels:
   - troubleshooting
@@ -10,41 +10,40 @@ body:
       value: |
         ## Troubleshooting Guide
 
-        Thank you for helping improve **Clash Verge Rev Omni Guide**.
+        Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        This template is used to document common problems, their causes, and practical solutions.
+        Troubleshooting articles should clearly describe the problem, explain possible causes, and provide step-by-step solutions.
 
   - type: input
     id: issue_title
     attributes:
       label: Issue Title
-      description: Enter a short and descriptive title.
-      placeholder: "TUN Mode Cannot Be Enabled"
+      description: Enter a short and descriptive issue title.
+      placeholder: "Example: Proxy Groups Are Empty"
     validations:
       required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: Issue Category
-      description: Select the category that best matches the problem.
+      label: Category
+      description: Select the affected component.
       options:
         - Installation
-        - Startup
         - Subscription
+        - Configuration
         - DNS
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
-        - Network
+        - Fake-IP
+        - Redir-Host
         - Performance
         - AI Services
         - Streaming
-        - Windows
-        - macOS
-        - Linux
+        - Network
         - Other
     validations:
       required: true
@@ -53,7 +52,7 @@ body:
     id: platform
     attributes:
       label: Platform
-      description: Select the affected operating system.
+      description: Select the affected platform.
       options:
         - Windows
         - macOS
@@ -65,26 +64,53 @@ body:
   - type: textarea
     id: symptoms
     attributes:
-      label: Problem Description
-      description: Describe the problem you encountered.
+      label: Symptoms
+      description: Describe what users are experiencing.
       placeholder: |
         Example:
-        - TUN Mode cannot be enabled.
         - Proxy Groups are empty.
-        - DNS resolution fails.
+        - No Internet connection.
+        - Subscription cannot be updated.
     validations:
       required: true
 
   - type: textarea
-    id: possible_causes
+    id: environment
+    attributes:
+      label: Environment
+      description: Describe the environment where the issue occurs.
+      placeholder: |
+        Clash Verge Rev Version:
+        Mihomo Version:
+        Operating System:
+        Configuration Type:
+    validations:
+      required: false
+
+  - type: textarea
+    id: causes
     attributes:
       label: Possible Causes
-      description: List the possible reasons for this issue.
+      description: List possible reasons for the issue.
       placeholder: |
         Example:
-        - Administrator permission is missing.
-        - Invalid subscription.
-        - DNS configuration error.
+        - Invalid subscription URL
+        - DNS configuration error
+        - Firewall blocking connections
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnosis
+    attributes:
+      label: Diagnostic Steps
+      description: Explain how to identify the root cause.
+      placeholder: |
+        Step 1
+
+        Step 2
+
+        Step 3
     validations:
       required: true
 
@@ -92,7 +118,7 @@ body:
     id: solution
     attributes:
       label: Solution
-      description: Explain how to solve the issue step by step.
+      description: Provide detailed steps to resolve the issue.
       placeholder: |
         Step 1
 
@@ -106,24 +132,49 @@ body:
     id: verification
     attributes:
       label: Verification
-      description: Explain how users can confirm the issue has been resolved.
+      description: How can users confirm the issue has been resolved?
       placeholder: |
         Example:
-        - TUN Mode is enabled successfully.
-        - Internet connection works normally.
-        - Proxy traffic is routed correctly.
+        - Proxy Groups display normally.
+        - DNS resolves correctly.
+        - Internet connection is restored.
     validations:
       required: true
 
   - type: textarea
-    id: references
+    id: prevention
+    attributes:
+      label: Prevention
+      description: Share recommendations to avoid this issue in the future.
+      placeholder: |
+        Example:
+        - Keep subscriptions updated.
+        - Verify DNS settings regularly.
+        - Update Mihomo to the latest version.
+    validations:
+      required: false
+
+  - type: textarea
+    id: related_docs
     attributes:
       label: Related Documentation
-      description: Optional links to guides or documentation.
+      description: List related guides or documentation.
       placeholder: |
-        - TUN Mode Guide
-        - DNS Configuration
+        - Configuration Guide
+        - DNS Guide
         - FAQ
+        - Performance Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this troubleshooting article.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -132,11 +183,14 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I verified this solution before submitting.
+        - label: I verified this troubleshooting process before submitting.
           required: true
 
-        - label: The troubleshooting steps are complete.
+        - label: The solution has been tested successfully.
           required: true
 
-        - label: The information is accurate.
+        - label: The troubleshooting steps are clear and reproducible.
+          required: true
+
+        - label: The content is written in Markdown format.
           required: true
