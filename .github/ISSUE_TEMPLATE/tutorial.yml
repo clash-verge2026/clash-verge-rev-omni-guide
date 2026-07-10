@@ -1,5 +1,5 @@
 name: "🚀 Tutorial"
-description: "Create a beginner-friendly tutorial for Clash Verge Rev Omni Guide."
+description: "Create a step-by-step tutorial for Clash Verge Rev Omni Guide."
 title: "[Tutorial]: "
 labels:
   - tutorial
@@ -12,14 +12,14 @@ body:
 
         Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        Tutorials are designed for beginners. Please keep the instructions simple, clear, and easy to follow.
+        Tutorials should provide step-by-step instructions that help users accomplish a specific task.
 
   - type: input
     id: tutorial_title
     attributes:
       label: Tutorial Title
-      description: Enter a short tutorial title.
-      placeholder: "Getting Started with Clash Verge Rev"
+      description: Enter a short and descriptive tutorial title.
+      placeholder: "Example: Enable TUN Mode on Windows"
     validations:
       required: true
 
@@ -48,43 +48,61 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: estimated_time
+    attributes:
+      label: Estimated Completion Time
+      description: Approximately how long does this tutorial take?
+      placeholder: "10 minutes"
+
   - type: textarea
     id: objective
     attributes:
-      label: Tutorial Objective
-      description: What will users learn after completing this tutorial?
+      label: Learning Objective
+      description: What will users accomplish after completing this tutorial?
       placeholder: |
         Example:
-        Learn how to install Clash Verge Rev, import a subscription, and enable the system proxy.
+        - Install Clash Verge Rev
+        - Configure DNS
+        - Enable TUN Mode
     validations:
       required: true
 
   - type: textarea
-    id: requirements
+    id: prerequisites
     attributes:
-      label: Requirements
-      description: List any prerequisites.
+      label: Prerequisites
+      description: What should users prepare before starting?
       placeholder: |
         Example:
         - Clash Verge Rev installed
+        - Mihomo Core
         - Subscription URL
-        - Internet connection
+        - Administrator privileges
     validations:
       required: false
 
   - type: textarea
-    id: steps
+    id: tutorial
     attributes:
-      label: Tutorial Steps
-      description: Provide step-by-step instructions.
+      label: Tutorial Content
+      description: Write the complete tutorial.
       placeholder: |
-        Step 1
+        # Overview
 
-        Step 2
+        ## Step 1
 
-        Step 3
+        ## Step 2
 
-        Step 4
+        ## Step 3
+
+        ## Step 4
+
+        ## Verification
+
+        ## Common Problems
+
+        ## FAQ
     validations:
       required: true
 
@@ -92,36 +110,49 @@ body:
     id: expected_result
     attributes:
       label: Expected Result
-      description: Describe what users should see after completing the tutorial.
+      description: What should users achieve after completing this tutorial?
       placeholder: |
         Example:
-        The proxy is enabled and websites are accessible.
+        - Successfully installed Clash Verge Rev.
+        - Imported a subscription.
+        - Connected to a proxy server.
     validations:
       required: true
 
   - type: textarea
-    id: common_mistakes
+    id: next_steps
     attributes:
-      label: Common Mistakes
-      description: List common mistakes and how to avoid them.
+      label: Next Steps
+      description: What should users learn after finishing this tutorial?
       placeholder: |
-        Example:
-        - Invalid subscription URL
-        - TUN Mode not enabled
-        - DNS configuration errors
+        Recommended reading:
+        - DNS Configuration Guide
+        - TUN Mode Guide
+        - Performance Optimization
     validations:
       required: false
 
   - type: textarea
-    id: related_guides
+    id: related_docs
     attributes:
       label: Related Documentation
-      description: List related guides or documentation.
+      description: List related documentation or guides.
       placeholder: |
         - Installation Guide
-        - DNS Configuration
+        - Configuration Guide
         - FAQ
-        - Troubleshooting
+        - Troubleshooting Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this tutorial.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -133,8 +164,11 @@ body:
         - label: I tested this tutorial before submitting.
           required: true
 
-        - label: The tutorial is suitable for beginners.
+        - label: The tutorial is suitable for the selected difficulty level.
           required: true
 
         - label: The tutorial is written in Markdown format.
+          required: true
+
+        - label: The steps are complete and easy to follow.
           required: true
