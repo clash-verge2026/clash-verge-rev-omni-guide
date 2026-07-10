@@ -12,14 +12,14 @@ body:
 
         Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-        Please complete the information below before submitting your documentation.
+        Documentation Issues are designed as structured knowledge articles. Please provide clear, accurate, and well-organized content.
 
   - type: input
-    id: doc_title
+    id: title
     attributes:
       label: Documentation Title
       description: Enter a short and descriptive title.
-      placeholder: "DNS Configuration Guide"
+      placeholder: "Example: DNS Configuration Guide"
     validations:
       required: true
 
@@ -36,11 +36,27 @@ body:
         - TUN Mode
         - Mihomo
         - YAML
-        - FAQ
-        - Troubleshooting
+        - Rule Providers
         - Performance
         - AI Services
+        - FAQ
+        - Troubleshooting
+        - Repository
+        - Community
         - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is this documentation intended for?
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+        - All Users
     validations:
       required: true
 
@@ -50,33 +66,94 @@ body:
       label: Summary
       description: Briefly describe this documentation.
       placeholder: |
-        Briefly explain what this document covers.
+        Explain what readers will learn from this document.
     validations:
       required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Objectives
+      description: What are the goals of this documentation?
+      placeholder: |
+        Example:
+        - Explain the feature.
+        - Provide configuration examples.
+        - Help users avoid common mistakes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: What should readers prepare before following this documentation?
+      placeholder: |
+        Example:
+        - Clash Verge Rev installed
+        - Mihomo Core
+        - Subscription URL
+    validations:
+      required: false
 
   - type: textarea
     id: content
     attributes:
       label: Documentation Content
-      description: Write the documentation or describe the proposed improvement.
+      description: Write the complete documentation.
       placeholder: |
-        ## Overview
+        # Overview
 
-        ## Steps
+        ## Repository Structure
 
-        ## Notes
+        ## Step 1
 
-        ## References
+        ## Step 2
+
+        ## Best Practices
+
+        ## Common Problems
+
+        ## FAQ
+
+        ## Conclusion
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Outcome
+      description: What should readers be able to do after reading this document?
+      placeholder: |
+        Example:
+        - Understand the repository.
+        - Configure DNS.
+        - Troubleshoot common problems.
     validations:
       required: true
 
   - type: textarea
     id: references
     attributes:
-      label: References
-      description: Optional links to official documentation or related resources.
+      label: Related Documentation
+      description: List related guides or resources.
       placeholder: |
-        https://...
+        - Installation Guide
+        - DNS Guide
+        - FAQ
+        - Performance Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this documentation.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -85,11 +162,14 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I searched existing Issues before creating this documentation.
+        - label: I reviewed existing documentation before creating this issue.
           required: true
 
-        - label: The information has been verified.
+        - label: The information is accurate and technically correct.
           required: true
 
-        - label: The content is written in Markdown format.
+        - label: The content follows Markdown formatting.
+          required: true
+
+        - label: The documentation is written in a clear and structured manner.
           required: true
