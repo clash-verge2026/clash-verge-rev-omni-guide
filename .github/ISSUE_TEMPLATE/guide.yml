@@ -10,51 +10,53 @@ body:
       value: |
         ## Guide Contribution
 
-        Thank you for contributing a guide to **Clash Verge Rev Omni Guide**.
+        Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        Please provide clear, step-by-step instructions so users can easily follow along.
+        Guides explain concepts, best practices, and recommended workflows. Please provide clear explanations and practical examples.
 
   - type: input
     id: guide_title
     attributes:
       label: Guide Title
-      description: Enter the title of this guide.
-      placeholder: "Enable TUN Mode on Windows"
+      description: Enter a short and descriptive guide title.
+      placeholder: "Example: Understanding Rule Providers"
     validations:
       required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: Guide Category
-      description: Select the most appropriate category.
+      label: Category
+      description: Select the guide category.
       options:
         - Installation
+        - Configuration
         - DNS
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
+        - Fake-IP
+        - Redir-Host
         - AI Services
-        - Streaming
-        - Security
         - Performance
+        - Security
+        - Networking
         - Other
     validations:
       required: true
 
   - type: dropdown
-    id: platform
+    id: audience
     attributes:
-      label: Platform
-      description: Select the target platform.
+      label: Target Audience
+      description: Who is this guide intended for?
       options:
-        - Windows
-        - macOS
-        - Linux
-        - Cross-platform
-        - Other
+        - Beginner
+        - Intermediate
+        - Advanced
+        - All Users
     validations:
       required: true
 
@@ -62,9 +64,22 @@ body:
     id: overview
     attributes:
       label: Overview
-      description: Briefly describe what this guide covers.
+      description: Briefly describe this guide.
       placeholder: |
-        Explain the purpose of this guide.
+        Explain what this guide covers and why it is useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Objectives
+      description: What will readers learn?
+      placeholder: |
+        Example:
+        - Understand the feature.
+        - Learn recommended practices.
+        - Avoid common mistakes.
     validations:
       required: true
 
@@ -72,59 +87,99 @@ body:
     id: prerequisites
     attributes:
       label: Prerequisites
-      description: List any requirements before getting started.
+      description: What should readers prepare before following this guide?
       placeholder: |
         Example:
         - Clash Verge Rev installed
-        - Administrator permission
-        - Valid subscription
+        - Mihomo Core
+        - Basic YAML knowledge
     validations:
       required: false
 
   - type: textarea
-    id: steps
+    id: content
     attributes:
-      label: Step-by-Step Guide
-      description: Write detailed instructions.
+      label: Guide Content
+      description: Write the complete guide.
       placeholder: |
-        Step 1
+        # Overview
 
-        Step 2
+        ## Background
 
-        Step 3
+        ## Key Concepts
+
+        ## Recommended Workflow
+
+        ## Best Practices
+
+        ## Common Mistakes
+
+        ## FAQ
+
+        ## Conclusion
     validations:
       required: true
 
   - type: textarea
-    id: verification
+    id: examples
     attributes:
-      label: Verification
-      description: Explain how users can verify the guide was completed successfully.
+      label: Examples
+      description: Provide configuration examples or practical use cases.
       placeholder: |
-        Describe the expected result.
-    validations:
-      required: true
+        Example 1
 
-  - type: textarea
-    id: troubleshooting
-    attributes:
-      label: Common Problems
-      description: List common issues and solutions.
-      placeholder: |
-        Problem:
-        Solution:
+        Example 2
+
+        Example 3
     validations:
       required: false
 
   - type: textarea
-    id: related
+    id: best_practices
+    attributes:
+      label: Best Practices
+      description: Share recommendations and optimization tips.
+      placeholder: |
+        - Keep Mihomo updated.
+        - Use verified configuration examples.
+        - Regularly update rule providers.
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Outcome
+      description: What should readers be able to do after reading this guide?
+      placeholder: |
+        Example:
+        - Understand Rule Providers.
+        - Configure DNS correctly.
+        - Troubleshoot common issues.
+    validations:
+      required: true
+
+  - type: textarea
+    id: related_docs
     attributes:
       label: Related Documentation
-      description: List related guides or documentation.
+      description: List related guides or resources.
       placeholder: |
-        - DNS Configuration Guide
+        - Installation Guide
+        - Configuration Guide
         - FAQ
         - Performance Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this guide.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -133,11 +188,14 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I verified this guide before submitting.
+        - label: I reviewed existing documentation before creating this guide.
           required: true
 
-        - label: The guide contains complete steps.
+        - label: The guide is technically accurate.
           required: true
 
-        - label: The guide is written in Markdown format.
+        - label: The content follows Markdown formatting.
+          required: true
+
+        - label: Practical examples have been included where appropriate.
           required: true
