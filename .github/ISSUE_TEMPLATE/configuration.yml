@@ -1,5 +1,5 @@
 name: "⚙️ Configuration"
-description: "Share configuration examples, best practices, and setup recommendations for Clash Verge Rev."
+description: "Share configuration guides, examples, and best practices for Clash Verge Rev."
 title: "[Configuration]: "
 labels:
   - configuration
@@ -8,18 +8,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Configuration Contribution
+        ## Configuration Guide
 
-        Thank you for contributing configuration examples to **Clash Verge Rev Omni Guide**.
+        Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        Please provide clear explanations and practical examples that other users can easily follow.
+        Configuration Issues should include practical examples, explanations, and best practices.
 
   - type: input
     id: config_title
     attributes:
       label: Configuration Title
       description: Enter a short and descriptive title.
-      placeholder: "DNS Configuration for Clash Verge Rev"
+      placeholder: "Example: DNS Configuration Best Practices"
     validations:
       required: true
 
@@ -58,21 +58,47 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is this configuration intended for?
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+        - All Users
+    validations:
+      required: true
+
   - type: textarea
     id: overview
     attributes:
       label: Overview
-      description: Briefly explain this configuration.
+      description: Briefly describe this configuration.
       placeholder: |
-        Describe what this configuration is used for and when it should be applied.
+        Explain the purpose, use case, and benefits.
     validations:
       required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: What should users prepare before using this configuration?
+      placeholder: |
+        Example:
+        - Clash Verge Rev installed
+        - Mihomo Core
+        - Subscription URL
+    validations:
+      required: false
 
   - type: textarea
     id: configuration
     attributes:
       label: Configuration Example
-      description: Paste the configuration or explain the setup process.
+      description: Paste your YAML or configuration example.
       render: yaml
       placeholder: |
         dns:
@@ -85,45 +111,86 @@ body:
     id: explanation
     attributes:
       label: Configuration Explanation
-      description: Explain each important option or setting.
+      description: Explain each important option.
       placeholder: |
-        Describe what each configuration item does and why it is recommended.
+        Describe what each parameter does and why it is recommended.
     validations:
       required: true
 
   - type: textarea
-    id: expected_result
+    id: verification
     attributes:
-      label: Expected Result
-      description: Describe the expected behavior after applying this configuration.
+      label: Verification Steps
+      description: How can users verify that the configuration works?
       placeholder: |
-        Example:
-        - DNS resolution is faster.
-        - Streaming services work correctly.
-        - AI services can be accessed normally.
+        Step 1
+
+        Step 2
+
+        Step 3
     validations:
       required: true
 
   - type: textarea
-    id: notes
+    id: common_problems
     attributes:
-      label: Additional Notes
-      description: Optional recommendations, compatibility notes, or warnings.
+      label: Common Problems
+      description: Describe common issues and their solutions.
       placeholder: |
-        Mention any version requirements, limitations, or best practices.
+        Problem:
+
+        Cause:
+
+        Solution:
     validations:
       required: false
 
   - type: textarea
-    id: related_guides
+    id: best_practices
+    attributes:
+      label: Best Practices
+      description: Share recommendations and optimization tips.
+      placeholder: |
+        - Keep Mihomo updated.
+        - Use trusted DNS providers.
+        - Test latency regularly.
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      description: What should users achieve after applying this configuration?
+      placeholder: |
+        Users should be able to:
+        - Resolve DNS correctly.
+        - Improve connection stability.
+        - Access AI services.
+    validations:
+      required: true
+
+  - type: textarea
+    id: related_docs
     attributes:
       label: Related Documentation
-      description: List related guides or documentation.
+      description: List related guides or resources.
       placeholder: |
         - DNS Guide
-        - TUN Mode Guide
         - FAQ
-        - Troubleshooting
+        - Performance Guide
+        - TUN Mode Guide
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this configuration.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -139,4 +206,7 @@ body:
           required: true
 
         - label: The configuration is compatible with Clash Verge Rev.
+          required: true
+
+        - label: The YAML syntax has been validated.
           required: true
