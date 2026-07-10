@@ -1,5 +1,5 @@
 name: "⚡ Performance"
-description: "Share performance optimizations, benchmarks, and best practices for Clash Verge Rev."
+description: "Share performance optimization guides, benchmarks, and best practices for Clash Verge Rev."
 title: "[Performance]: "
 labels:
   - performance
@@ -12,36 +12,34 @@ body:
 
         Thank you for contributing to **Clash Verge Rev Omni Guide**.
 
-        Use this template to document performance improvements, optimization techniques, benchmark results, and best practices.
+        Performance articles should explain optimization techniques, benchmark results, and recommended best practices.
 
   - type: input
-    id: optimization_title
+    id: performance_title
     attributes:
-      label: Optimization Title
+      label: Performance Title
       description: Enter a short and descriptive title.
-      placeholder: "Optimize DNS Performance"
+      placeholder: "Example: Optimize Startup Speed"
     validations:
       required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: Optimization Category
+      label: Performance Category
       description: Select the optimization category.
       options:
-        - Startup
+        - Startup Speed
+        - Memory Usage
+        - CPU Usage
         - DNS
         - TUN Mode
         - Mihomo
         - YAML
         - Rule Providers
         - Proxy Groups
-        - Fake-IP
-        - Redir-Host
         - AI Services
         - Streaming
-        - Memory Usage
-        - CPU Usage
         - Network
         - Security
         - Other
@@ -61,13 +59,26 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is this optimization guide intended for?
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+        - All Users
+    validations:
+      required: true
+
   - type: textarea
     id: overview
     attributes:
       label: Overview
-      description: Briefly describe this optimization.
+      description: Briefly describe the optimization topic.
       placeholder: |
-        Explain what this optimization improves and when it should be used.
+        Explain why this optimization is useful and when users should apply it.
     validations:
       required: true
 
@@ -75,18 +86,32 @@ body:
     id: environment
     attributes:
       label: Test Environment
-      description: Describe the environment used for testing.
+      description: Describe the testing environment.
       placeholder: |
+        Operating System:
         Clash Verge Rev Version:
         Mihomo Version:
-        Operating System:
         CPU:
         Memory:
+        Configuration Size:
+    validations:
+      required: false
+
+  - type: textarea
+    id: current_status
+    attributes:
+      label: Current Performance
+      description: Describe the current performance before optimization.
+      placeholder: |
+        Example:
+        - Startup takes 8 seconds.
+        - Memory usage is 300 MB.
+        - CPU spikes during rule updates.
     validations:
       required: true
 
   - type: textarea
-    id: optimization_steps
+    id: optimization
     attributes:
       label: Optimization Steps
       description: Describe the optimization process.
@@ -96,6 +121,8 @@ body:
         Step 2
 
         Step 3
+
+        Step 4
     validations:
       required: true
 
@@ -103,53 +130,79 @@ body:
     id: benchmark
     attributes:
       label: Benchmark Results
-      description: Share benchmark results or before-and-after comparisons.
+      description: Compare performance before and after optimization.
       placeholder: |
         Before:
-        Startup Time:
-        CPU Usage:
-        Memory Usage:
+        Startup: 8s
+        Memory: 300MB
 
         After:
-        Startup Time:
-        CPU Usage:
-        Memory Usage:
+        Startup: 3s
+        Memory: 180MB
     validations:
       required: false
 
   - type: textarea
-    id: benefits
+    id: best_practices
     attributes:
-      label: Expected Benefits
-      description: Describe the expected improvements.
+      label: Best Practices
+      description: Share recommendations for maintaining good performance.
       placeholder: |
-        - Faster startup
-        - Lower memory usage
-        - Reduced CPU usage
-        - Better DNS response
+        - Keep Mihomo updated.
+        - Remove unused subscriptions.
+        - Minimize unnecessary rule providers.
+        - Clean old profiles regularly.
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      description: What improvements should users expect?
+      placeholder: |
+        Example:
+        - Faster startup.
+        - Lower memory usage.
+        - Better DNS response.
+        - Improved stability.
     validations:
       required: true
 
   - type: textarea
-    id: notes
+    id: verification
     attributes:
-      label: Additional Notes
-      description: Optional recommendations, limitations, or compatibility notes.
+      label: Verification
+      description: How can users verify the optimization worked?
       placeholder: |
-        Add any additional information that may help other users.
+        Example:
+        - Measure startup time.
+        - Monitor memory usage.
+        - Test DNS latency.
     validations:
-      required: false
+      required: true
 
   - type: textarea
     id: related_docs
     attributes:
       label: Related Documentation
-      description: List related guides or documentation.
+      description: List related guides or resources.
       placeholder: |
-        - Performance Guide
-        - DNS Configuration
+        - DNS Guide
+        - Configuration Guide
+        - Troubleshooting Guide
         - FAQ
-        - Troubleshooting
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Record updates to this optimization guide.
+      placeholder: |
+        v1.0
+        - Initial version
     validations:
       required: false
 
@@ -158,11 +211,14 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I tested this optimization before submitting.
+        - label: I tested these optimization steps before submitting.
           required: true
 
         - label: The benchmark results are accurate.
           required: true
 
-        - label: The optimization can be reproduced by other users.
+        - label: The guide is written in Markdown format.
+          required: true
+
+        - label: The recommendations are practical and reproducible.
           required: true
