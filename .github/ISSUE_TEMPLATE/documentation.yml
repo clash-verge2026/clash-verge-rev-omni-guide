@@ -23,29 +23,34 @@ body:
     validations:
       required: true
 
-  - type: dropdown
-    id: category
-    attributes:
-      label: Category
-      description: Select the documentation category.
-      options:
-        - Installation
-        - Getting Started
-        - Configuration
-        - DNS
-        - TUN Mode
-        - Mihomo
-        - YAML
-        - Rule Providers
-        - Performance
-        - AI Services
-        - FAQ
-        - Troubleshooting
-        - Repository
-        - Community
-        - Other
-    validations:
-      required: true
+- type: dropdown
+  id: category
+  attributes:
+    label: Category
+    description: Select the documentation category.
+    options:
+      - Repository
+      - Documentation
+      - Getting Started
+      - Installation
+      - Configuration
+      - DNS
+      - TUN Mode
+      - Mihomo
+      - Rule Providers
+      - Proxy Groups
+      - Fake-IP
+      - YAML
+      - Performance
+      - FAQ
+      - Troubleshooting
+      - AI Services
+      - Security
+      - Contribution
+      - Best Practices
+      - Other
+  validations:
+    required: true
 
   - type: dropdown
     id: audience
