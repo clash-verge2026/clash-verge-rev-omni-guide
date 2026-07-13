@@ -12,7 +12,8 @@ body:
 
         Thank you for helping improve **Clash Verge Rev Omni Guide**.
 
-        Documentation Issues are designed as structured knowledge articles. Please provide clear, accurate, and well-organized content.
+        Documentation Issues are designed as structured knowledge articles.
+        Please provide clear, accurate, and well-organized content.
 
   - type: input
     id: title
@@ -23,34 +24,34 @@ body:
     validations:
       required: true
 
-- type: dropdown
-  id: category
-  attributes:
-    label: Category
-    description: Select the documentation category.
-    options:
-      - Repository
-      - Documentation
-      - Getting Started
-      - Installation
-      - Configuration
-      - DNS
-      - TUN Mode
-      - Mihomo
-      - Rule Providers
-      - Proxy Groups
-      - Fake-IP
-      - YAML
-      - Performance
-      - FAQ
-      - Troubleshooting
-      - AI Services
-      - Security
-      - Contribution
-      - Best Practices
-      - Other
-  validations:
-    required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Select the documentation category.
+      options:
+        - Repository
+        - Documentation
+        - Getting Started
+        - Installation
+        - Configuration
+        - DNS
+        - TUN Mode
+        - Mihomo
+        - Rule Providers
+        - Proxy Groups
+        - Fake-IP
+        - YAML
+        - Performance
+        - FAQ
+        - Troubleshooting
+        - AI Services
+        - Security
+        - Contribution
+        - Best Practices
+        - Other
+    validations:
+      required: true
 
   - type: dropdown
     id: audience
@@ -111,9 +112,9 @@ body:
 
         ## Repository Structure
 
-        ## Step 1
+        ## Background
 
-        ## Step 2
+        ## Main Content
 
         ## Best Practices
 
@@ -132,9 +133,9 @@ body:
       description: What should readers be able to do after reading this document?
       placeholder: |
         Example:
-        - Understand the repository.
-        - Configure DNS.
-        - Troubleshoot common problems.
+        - Understand the repository structure.
+        - Configure Clash Verge Rev correctly.
+        - Troubleshoot common issues.
     validations:
       required: true
 
