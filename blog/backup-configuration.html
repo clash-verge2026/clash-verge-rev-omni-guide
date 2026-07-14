@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>配置备份与恢复全攻略：让你的代理环境永不丢失 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="系统掌握 Clash Verge Rev 配置的备份、版本管理、自动同步与灾难恢复。涵盖手动备份策略、自动化脚本示例、Git 版本控制集成、云存储同步方案以及完整的配置文件结构解析。无论你是个人用户还是团队管理者，这份指南都能帮你构建一套可靠的配置灾备体系，确保代理环境永不丢失。" />
+    <meta name="keywords" content="Clash Verge Rev 配置备份, 代理配置恢复, YAML 配置管理, Git 版本控制, 自动化备份脚本, 配置同步, 配置文件结构, 灾难恢复, 配置迁移, 多设备同步" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="配置备份与恢复全攻略：让你的代理环境永不丢失" />
+    <meta property="og:description" content="系统掌握 Clash Verge Rev 配置的备份、版本管理、自动同步与灾难恢复。含自动化脚本、Git 集成与云同步方案。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-14T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-14T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="教程指南" />
+    <meta property="article:tag" content="配置备份" />
+    <meta property="article:tag" content="灾难恢复" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="配置备份与恢复全攻略：让你的代理环境永不丢失" />
+    <meta name="twitter:description" content="手动备份、自动化脚本、Git 版本控制、云端同步——全方位配置灾备方案。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "配置备份与恢复全攻略：让你的代理环境永不丢失",
+            "description": "系统掌握 Clash Verge Rev 配置的备份、版本管理、自动同步与灾难恢复。涵盖手动备份策略、自动化脚本示例、Git 版本控制集成、云存储同步方案以及完整的配置文件结构解析。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-14",
+            "dateModified": "2026-07-14",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(63,185,80,0.15); color:var(--accent-green); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-green); background:rgba(63,185,80,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:600px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+        .callout.danger { border-left-color:#f85149; background:rgba(248,81,73,0.06); }
+
+        /* 步骤卡片 */
+        .step-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:22px; margin:18px 0; transition:all var(--transition-smooth); }
+        .step-card:hover { border-color:rgba(88,166,255,0.35); }
+        .step-card h4 { color:#fff; font-weight:700; font-size:1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+        .step-card h4 .step-num { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0; background:var(--accent-green); color:#fff; }
+        .step-card p { margin:0; }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">教程指南 · 配置管理</span>
+                <h1 class="article-title">配置备份与恢复全攻略：让你的代理环境永不丢失</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-14</span>
+                    <span>⏱️ 阅读时间约 12 分钟</span>
+                </div>
+                <div class="article-intro">
+                    你花了数小时精心调校的代理规则、反复测试的 DNS 配置、精挑细选的节点列表——如果因为一次系统重装、硬盘故障或误操作而全部丢失，那将是巨大的时间和精力损失。Clash Verge Rev 的配置看似只是一个 YAML 文件，但围绕它构建一套完善的<strong>备份、版本管理与灾难恢复体系</strong>，能让你在任何意外面前从容应对。本文将从最基础的手动备份开始，逐步深入到自动化脚本、Git 版本控制、云同步乃至完整的灾备演练方案。
+                </div>
+            </header>
+
+            <!-- 配置存放位置 -->
+            <h2>🗂️ 配置到底存在哪里？认识你的“数据资产”</h2>
+            <p>在开始备份之前，首先要搞清楚 Clash Verge Rev 的配置数据散落在哪些位置。很多人以为只有一个 <code>config.yaml</code>，实际上完整的用户数据包含以下部分：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>位置</th><th>内容</th><th>重要性</th><th>备份建议</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>~/.config/clash-verge-rev/</code></td><td>应用主数据目录（Linux）</td><td>极高</td><td>整体备份</td></tr>
+                        <tr><td><code>%APPDATA%/io.github.clash-verge-rev/</code></td><td>应用主数据目录（Windows）</td><td>极高</td><td>整体备份</td></tr>
+                        <tr><td><code>~/Library/Application Support/io.github.clash-verge-rev/</code></td><td>应用主数据目录（macOS）</td><td>极高</td><td>整体备份</td></tr>
+                        <tr><td><code>config.yaml</code></td><td>主配置文件</td><td>极高</td><td>必须备份</td></tr>
+                        <tr><td><code>profiles/</code></td><td>多配置切换的额外配置文件</td><td>高</td><td>按需备份</td></tr>
+                        <tr><td><code>ruleset/</code></td><td>RULE-SET 缓存文件</td><td>中</td><td>可不备份（可重新下载）</td></tr>
+                        <tr><td><code>logs/</code></td><td>运行日志</td><td>低</td><td>不需要备份</td></tr>
+                        <tr><td><code>cache/</code></td><td>内核缓存与 GeoIP 数据库</td><td>低</td><td>不需要备份</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="callout tip">
+                <strong>💡 核心原则：</strong>最需要保护的是 <code>config.yaml</code> 主配置文件，以及你可能手动修改过的任何 <code>.yaml</code> 文件。RULE-SET 缓存、日志和 GeoIP 数据库都可以在需要时重新下载，无需占用备份空间。
+            </div>
+
+            <!-- 手动备份 -->
+            <h2>📋 方案一：手动备份——最简单也最可控</h2>
+            <p>手动备份适合不频繁修改配置的用户，或者作为自动化方案的补充。Clash Verge Rev 的“配置”面板中提供了<strong>一键导出</strong>功能，可以将当前生效的完整配置（合并了订阅和本地修改后的最终结果）导出为一个 YAML 文件。</p>
+            <div class="step-card">
+                <h4><span class="step-num">1</span> 从 UI 导出配置</h4>
+                <p>打开 Clash Verge Rev → 设置 → 配置 → 点击“导出配置”。选择一个安全的目录（如 <code>Documents/backups/clash/</code>）保存，建议文件名包含日期，如 <code>config-2026-07-15.yaml</code>。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">2</span> 手动复制数据目录</h4>
+                <p>如果你想备份包括订阅缓存、规则集在内的完整环境，可以直接将整个数据目录打包。在终端中执行：<br>
+                <strong>Linux/macOS：</strong><code>tar -czf clash-backup-$(date +%Y%m%d).tar.gz ~/.config/clash-verge-rev/</code><br>
+                <strong>Windows (PowerShell)：</strong><code>Compress-Archive -Path "$env:APPDATA\io.github.clash-verge-rev" -DestinationPath "clash-backup-$(Get-Date -Format 'yyyyMMdd').zip"</code></p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">3</span> 存储到安全位置</h4>
+                <p>将导出的文件复制到至少两个不同的物理位置——例如本地硬盘一份、U 盘或移动硬盘一份。如果你有 NAS，也可以通过网络共享自动同步。</p>
+            </div>
+            <div class="callout warning">
+                <strong>⚠️ 安全提醒：</strong>配置文件中包含你的代理节点信息和订阅地址。备份文件应妥善保管，不要上传到公开的网盘或代码仓库中。如果必须使用云存储，建议先对文件进行加密（见后文）。
+            </div>
+
+            <!-- 自动化脚本 -->
+            <h2>🤖 方案二：自动化脚本——设置一次，永久运行</h2>
+            <p>如果你经常修改配置，手动备份很容易忘记。编写一个简单的自动化脚本，配合操作系统的定时任务，可以做到“无感备份”。</p>
+            <h3>跨平台 Bash 脚本示例</h3>
+            <div class="code-block"><span class="code-comment">#!/bin/bash</span>
+            <span class="code-comment"># clash-backup.sh — 自动备份 Clash Verge Rev 配置</span>
+            BACKUP_DIR="$HOME/Documents/clash-backups"
+            CONFIG_DIR="$HOME/.config/clash-verge-rev"
+            RETENTION_DAYS=30  <span class="code-comment"># 保留最近 30 天的备份</span>
+
+            mkdir -p "$BACKUP_DIR"
+            TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+            tar -czf "$BACKUP_DIR/clash-config-$TIMESTAMP.tar.gz" \
+            "$CONFIG_DIR/config.yaml" \
+            "$CONFIG_DIR/profiles/" 2>/dev/null
+
+            <span class="code-comment"># 清理过期备份</span>
+            find "$BACKUP_DIR" -name "*.tar.gz" -mtime +$RETENTION_DAYS -delete
+
+            echo "✅ 备份完成：clash-config-$TIMESTAMP.tar.gz"</div>
+            <h3>设置定时任务</h3>
+            <p><strong>Linux/macOS (crontab)：</strong>执行 <code>crontab -e</code>，添加一行 <code>0 3 * * * /home/yourname/clash-backup.sh</code>，表示每天凌晨 3 点自动备份。<br>
+            <strong>Windows (任务计划程序)：</strong>打开“任务计划程序” → 创建基本任务 → 触发器设为“每天” → 操作设为“启动程序”，程序填 <code>powershell.exe</code>，参数填你的备份脚本路径。</p>
+            <div class="callout tip">
+                <strong>💡 进阶玩法：</strong>在脚本末尾添加一行 <code>git -C "$BACKUP_DIR" add -A && git -C "$BACKUP_DIR" commit -m "auto backup $TIMESTAMP"</code>，将备份目录本身也纳入 Git 管理，实现备份的版本追踪。
+            </div>
+
+            <!-- Git 版本控制 -->
+            <h2>📜 方案三：Git 版本控制——每一次修改都有据可查</h2>
+            <p>配置文件本质上就是文本文件，天然适合用 Git 管理。每次修改后提交一次，你就拥有了完整的变更历史，可以随时回退到任意历史版本。</p>
+            <div class="step-card">
+                <h4><span class="step-num">1</span> 初始化 Git 仓库</h4>
+                <p>在配置目录下初始化一个私有的 Git 仓库：<code>cd ~/.config/clash-verge-rev && git init</code>。注意：这个仓库只应该存在于你的本地机器上，<strong>绝对不要推送到公共 GitHub</strong>。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">2</span> 编写 .gitignore</h4>
+                <p>排除不需要版本控制的文件，创建 <code>.gitignore</code>：</p>
+            </div>
+            <div class="code-block"><span class="code-comment"># Clash Verge Rev .gitignore</span>
+            logs/
+            cache/
+            ruleset/         <span class="code-comment"># 可重新下载，无需追踪</span>
+            *.db             <span class="code-comment"># 数据库文件</span></div>
+            <div class="step-card">
+                <h4><span class="step-num">3</span> 建立提交习惯</h4>
+                <p>每次修改配置后执行：<code>git add config.yaml && git commit -m "优化 ChatGPT 路由规则"</code>。清晰的 commit message 能让你在数月后依然明白当时为什么这样改。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">4</span> （可选）推送到私有远程仓库</h4>
+                <p>如果你需要在多台设备间同步配置，可以创建一个<strong>私有</strong> GitHub 仓库，或使用自建的 Gitea/GitLab 实例。在推送前请务必确认 <code>.gitignore</code> 已排除了敏感信息，或使用 <code>git-crypt</code> 对敏感文件加密。</p>
+            </div>
+            <div class="callout danger">
+                <strong>🚨 严重警告：</strong>永远不要将包含真实节点信息和订阅地址的配置文件推送到公共仓库。即使用私有仓库，也建议对订阅地址和密码字段进行脱敏处理，或使用 Git 的 <code>smudge/clean</code> 过滤器自动替换敏感值。
+            </div>
+
+            <!-- 云同步 -->
+            <h2>☁️ 方案四：云端同步——多设备无缝切换</h2>
+            <p>对于在台式机、笔记本和 VPS 上同时使用 Clash Verge Rev 的用户，云同步方案可以让配置在设备间保持一致。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>同步方案</th><th>优点</th><th>缺点</th><th>推荐场景</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Syncthing</strong></td><td>点对点加密、无中心服务器、实时同步</td><td>需要设备同时在线</td><td>多设备局域网同步</td></tr>
+                        <tr><td><strong>私有 Git 仓库</strong></td><td>版本历史、冲突解决、跨互联网</td><td>需手动 pull/push</td><td>开发者、有 Git 使用习惯</td></tr>
+                        <tr><td><strong>加密云盘（如 Cryptomator + Dropbox）</strong></td><td>端到端加密、大容量、多平台</td><td>依赖第三方服务</td><td>注重隐私的普通用户</td></tr>
+                        <tr><td><strong>iCloud Drive / OneDrive</strong></td><td>系统内置、零配置</td><td>明文存储、隐私风险</td><td>对隐私要求不高的用户</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>我个人推荐 <strong>Syncthing + 私有 Git 仓库</strong> 的组合：Syncthing 负责实时同步配置文件到所有设备，Git 仓库负责保留历史版本和变更记录。两者互补，兼顾便捷性和可追溯性。</p>
+
+            <!-- 加密 -->
+            <h2>🔐 安全加密：保护你的节点信息</h2>
+            <p>无论使用哪种备份方案，只要备份文件离开你的本地设备（上传到云端、复制到 U 盘），都应该进行加密。以下是两种实用的加密方法：</p>
+            <h3>方法一：GPG 对称加密</h3>
+            <div class="code-block"><span class="code-comment"># 加密（输入密码）</span>
+            gpg --symmetric --cipher-algo AES256 clash-config.tar.gz
+            <span class="code-comment"># 解密</span>
+            gpg --decrypt clash-config.tar.gz.gpg > clash-config.tar.gz</div>
+            <h3>方法二：age 现代加密工具</h3>
+            <p><code>age</code> 是一个更简洁的现代加密工具，使用密码短语即可加密文件：</p>
+            <div class="code-block"><span class="code-comment"># 加密</span>
+            age -p -o clash-config.tar.gz.age clash-config.tar.gz
+            <span class="code-comment"># 解密</span>
+            age -d -o clash-config.tar.gz clash-config.tar.gz.age</div>
+            <div class="callout tip">
+                <strong>💡 最佳实践：</strong>将加密后的备份文件存储到云端（如 Google Drive、Dropbox），即使云服务商的数据泄露，攻击者也无法在没有密码的情况下解密你的配置。
+            </div>
+
+            <!-- 灾难恢复 -->
+            <h2>🆘 灾难恢复：从零开始重建</h2>
+            <p>备份的真正价值在恢复时才能体现。下面是完整的恢复流程，建议在安全的环境中<strong>实际演练一次</strong>，确保在真正需要时不会手忙脚乱。</p>
+            <div class="step-card">
+                <h4><span class="step-num">1</span> 安装 Clash Verge Rev</h4>
+                <p>从<a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" style="color:var(--accent-blue);">下载页面</a>获取最新版本并完成安装。首次启动后，客户端会生成一个默认的空白配置文件。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">2</span> 解密备份文件（如果加密了）</h4>
+                <p>使用 <code>gpg --decrypt</code> 或 <code>age -d</code> 解密备份文件。如果是 Git 仓库，直接 <code>git clone</code> 到配置目录即可。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">3</span> 还原配置文件</h4>
+                <p>关闭 Clash Verge Rev，将备份的 <code>config.yaml</code> 和 <code>profiles/</code> 目录复制到对应的数据目录中。重新启动客户端，配置即生效。</p>
+            </div>
+            <div class="step-card">
+                <h4><span class="step-num">4</span> 验证与修复</h4>
+                <p>启动后，检查“日志”面板是否有错误信息。由于 RULE-SET 缓存可能已过期，建议在设置中点击“刷新规则集”，让内核重新下载最新的规则文件。确认代理功能正常后，恢复完成。</p>
+            </div>
+            <div class="callout warning">
+                <strong>⚠️ 演练建议：</strong>至少每季度进行一次“灾备演练”——在虚拟机或备用电脑上尝试从备份完全恢复配置。这不仅验证了备份文件的完整性，也让你熟悉恢复流程，避免真实灾难时的手足无措。
+            </div>
+
+            <!-- 最佳实践 -->
+            <h2>🏆 最佳实践总结</h2>
+            <p>将以上方案组合起来，就形成了一套完整的配置灾备体系：</p>
+            <ul>
+                <li><strong>每日：</strong>自动化脚本定时打包配置文件，保留最近 30 天的历史备份。</li>
+                <li><strong>每次修改后：</strong>使用 Git 提交变更，附带清晰的 commit message。</li>
+                <li><strong>每周：</strong>将加密后的备份文件同步到云端或 NAS。</li>
+                <li><strong>每月：</strong>检查备份文件的完整性，清理过期备份。</li>
+                <li><strong>每季度：</strong>执行一次完整的灾难恢复演练。</li>
+            </ul>
+            <p>这套体系投入的时间成本极低——初次设置大约需要 30 分钟，之后几乎全自动运行。但它在关键时刻能为你节省数小时甚至数天的重新配置时间，更重要的是，它保护了你精心积累的配置经验和调优成果。</p>
+
+            <!-- 总结 -->
+            <h2>🏁 结语</h2>
+            <p>配置备份不是一个“可选”的操作，而是每一位重度用户都应该纳入日常习惯的基础实践。Clash Verge Rev 本身提供了便捷的导出功能，配合 Git 版本控制、自动化脚本和加密云同步，你可以轻松构建一套可靠的配置灾备体系。希望这篇文章能帮助你建立起对配置管理的系统性认知，让你的代理环境真正实现“永不丢失”。</p>
+            <p>如果你有自己独特的备份方案或工具推荐，欢迎在讨论区分享。社区的力量就在于每个人贡献一点经验，最终所有人都能受益。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/config-loading-flow.html" class="related-card">
+                        <h4>配置加载流程深度解析：从启动到代理就绪的完整生命周期</h4>
+                        <p>2026-06-28 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/rule-set-guide.html" class="related-card">
+                        <h4>从零开始：使用 RULE-SET 构建自动更新的分流体系</h4>
+                        <p>2026-04-22 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/chatgpt-routing.html" class="related-card">
+                        <h4>ChatGPT 路由深度优化：让 AI 对话永远流畅在线</h4>
+                        <p>2026-07-12 · 教程指南</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
