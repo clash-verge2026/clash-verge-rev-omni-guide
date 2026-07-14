@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash Verge Rev 进程名匹配深度指南：精准控制每个应用的代理行为 ｜ 官方博客</title>
+    <meta name="description" content="全面掌握 Clash Verge Rev 的 PROCESS-NAME 规则，实现基于应用进程名的精准代理分流。从进程名获取方法、跨平台差异到实战案例，覆盖游戏、浏览器、开发工具和系统服务，让你的每一款软件都走对代理路线。含常见陷阱与性能优化建议。" />
+    <meta name="keywords" content="Clash Verge Rev, PROCESS-NAME, 进程名匹配, 应用代理分流, 代理规则, 游戏加速, 浏览器分流, 开发工具代理, TUN 模式, 进程识别" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/process-name-matching.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash Verge Rev 进程名匹配深度指南：精准控制每个应用的代理行为" />
+    <meta property="og:description" content="掌握 PROCESS-NAME 规则，实现基于应用进程名的精准代理分流。从原理到实战，覆盖全平台。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/process-name-matching.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-14T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-14T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="教程指南" />
+    <meta property="article:tag" content="PROCESS-NAME" />
+    <meta property="article:tag" content="进程名匹配" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Verge Rev 进程名匹配深度指南" />
+    <meta name="twitter:description" content="掌握 PROCESS-NAME 规则，实现基于应用进程名的精准代理分流。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash Verge Rev 进程名匹配深度指南：精准控制每个应用的代理行为",
+            "description": "全面掌握 Clash Verge Rev 的 PROCESS-NAME 规则，实现基于应用进程名的精准代理分流。从进程名获取方法、跨平台差异到实战案例，覆盖游戏、浏览器、开发工具和系统服务。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-14",
+            "dateModified": "2026-07-14",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/process-name-matching.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(88,166,255,0.15); color:var(--accent-blue); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:600px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">教程指南 · 进程控制</span>
+                <h1 class="article-title">Clash Verge Rev 进程名匹配深度指南：精准控制每个应用的代理行为</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-14</span>
+                    <span>⏱️ 阅读时间约 11 分钟</span>
+                </div>
+                <div class="article-intro">
+                    大多数代理规则只关心“目标地址”，比如根据域名或 IP 判断流量该走直连还是代理。但如果你想让 Steam 下载走直连而 Epic Games Store 走代理，或者让 VS Code 的远程开发流量走高速节点，而让浏览器的普通流量走日常代理——仅凭域名规则很难做到。Clash Verge Rev 的 <strong>PROCESS-NAME</strong> 规则为你打开了这扇门：它允许你根据发起网络连接的<strong>应用程序进程名</strong>来精确匹配流量。本文将带你从基础到高级，掌握这项强大但被低估的规则编写技巧。
+                </div>
+            </header>
+
+            <!-- 基础语法 -->
+            <h2>📘 基础语法：一条规则搞定一个应用</h2>
+            <p>PROCESS-NAME 规则的写法与域名规则几乎一致，唯一不同的是匹配对象变成了进程名。它的基本格式是：</p>
+            <div class="code-block">PROCESS-NAME, &lt;进程名&gt;, &lt;策略组&gt;</div>
+            <p>例如，让 <code>curl</code> 命令的流量走代理：</p>
+            <div class="code-block">- PROCESS-NAME, curl, 🚀 代理</div>
+            <p>让 Windows 上的微信直连：</p>
+            <div class="code-block">- PROCESS-NAME, WeChat.exe, DIRECT</div>
+            <p>进程名是<strong>大小写敏感</strong>的，必须与操作系统中实际运行的可执行文件名完全一致。在 Windows 上通常带有 <code>.exe</code> 后缀，而在 macOS 和 Linux 上通常没有后缀。</p>
+            <div class="callout warning">
+                <strong>⚠️ 关键提醒：</strong>PROCESS-NAME 规则只有在 <strong>TUN 模式</strong> 下才能生效。如果你使用的是系统代理模式，流量来源是系统代理服务本身，而不是原始应用，因此进程名始终是 Clash 客户端自身。要发挥 PROCESS-NAME 的全部威力，请确保 TUN 模式已开启。
+            </div>
+
+            <!-- 如何获取进程名 -->
+            <h2>🔍 找到准确的进程名：三个平台的实战方法</h2>
+            <p>错误的进程名是 PROCESS-NAME 规则失效的最常见原因。下面介绍如何在不同操作系统上精准获取应用的进程名。</p>
+            <h3>Windows：使用任务管理器或 PowerShell</h3>
+            <p>打开任务管理器（Ctrl+Shift+Esc），在“详细信息”标签页中可以看到所有进程的 <strong>名称</strong> 列。右键点击列标题 → “选择列”，确保“进程名称”已勾选。你需要的是 <code>chrome.exe</code>、<code>steam.exe</code> 这样的名称，而不是“Google Chrome”这样的显示名称。</p>
+            <p>或者使用 PowerShell 命令：</p>
+            <div class="code-block">Get-Process | Select-Object ProcessName</div>
+            <h3>macOS：使用活动监视器或终端</h3>
+            <p>打开“活动监视器”，在“CPU”标签页中查看“进程名称”列。或者通过终端更精确：</p>
+            <div class="code-block">ps -eo comm | sort -u</div>
+            <p>注意 macOS 的进程名通常不包含路径，例如 <code>Google Chrome</code> 的进程名是 <code>Google Chrome</code>（中间有空格，需要引号包围或使用通配符，见后文）。</p>
+            <h3>Linux：使用 <code>ps</code> 或 <code>htop</code></h3>
+            <div class="code-block">ps -e -o comm= | sort -u</div>
+            <p>Linux 进程名通常与可执行文件名相同，例如 <code>firefox</code>、<code>steam</code>、<code>code</code>（VS Code）。</p>
+
+            <!-- 实战案例 -->
+            <h2>🎮 实战案例集：让应用各走各路</h2>
+            <h3>案例一：游戏平台分流</h3>
+            <p>Steam 下载通常不限速，而且国内有完美世界代理的 CDN，走直连更快。但 Epic Games Store 的某些更新源需要代理。可以这样写：</p>
+            <div class="code-block">- PROCESS-NAME, steam.exe, DIRECT
+            - PROCESS-NAME, EpicGamesLauncher.exe, 🚀 代理</div>
+            <h3>案例二：开发工具单独路由</h3>
+            <p>VS Code 的远程开发扩展需要低延迟连接，而本地终端只需要跟随系统规则。可以将 VS Code 和终端进程区分：</p>
+            <div class="code-block">- PROCESS-NAME, Code.exe, 🚀 开发专线
+            - PROCESS-NAME, WindowsTerminal.exe, DIRECT
+            - PROCESS-NAME, wsl.exe, DIRECT</div>
+            <h3>案例三：浏览器分身术</h3>
+            <p>你可能希望 Chrome 的日常浏览走代理，但 Firefox 用于内网办公直连：</p>
+            <div class="code-block">- PROCESS-NAME, chrome.exe, 🚀 代理
+            - PROCESS-NAME, firefox.exe, DIRECT</div>
+            <h3>案例四：容器与虚拟机</h3>
+            <p>Docker 容器的网络请求通常经由 <code>dockerd</code> 或 <code>vpnkit</code> 进程，因此可以通过匹配这些进程来控制整个 Docker 网络的代理行为：</p>
+            <div class="code-block">- PROCESS-NAME, dockerd, 🚀 代理
+            - PROCESS-NAME, vpnkit.exe, 🚀 代理</div>
+            <div class="callout tip">
+                <strong>💡 技巧：</strong>如果你不确定某个应用的进程名，可以临时将所有规则清空，只留一条 <code>MATCH, 🚀 代理</code>，然后打开 Clash Verge Rev 的“连接”面板，查看目标应用产生的连接，面板上会显示对应的“进程”列，那就是你需要的进程名。
+            </div>
+
+            <!-- 进阶：通配符与多进程 -->
+            <h2>🧩 进阶技巧：通配符、多进程匹配与优先级</h2>
+            <h3>通配符支持</h3>
+            <p>PROCESS-NAME 规则支持使用 <code>*</code> 和 <code>?</code> 通配符，这在进程名包含空格、版本号或不固定后缀时非常有用：</p>
+            <div class="code-block"># 匹配所有以 "Google" 开头的进程（Google Chrome、Google Drive 等）
+            - PROCESS-NAME, Google*, 🚀 代理
+            # 匹配 macOS 上可能的带空格进程名
+            - PROCESS-NAME, "Google Chrome", 🚀 代理</div>
+            <h3>多进程列表</h3>
+            <p>如果你需要让多个应用共享同一策略，不必为每个进程名单独写一条规则，可以用逗号分隔：</p>
+            <div class="code-block">- PROCESS-NAME, chrome.exe, firefox.exe, msedge.exe, 🚀 浏览器组</div>
+            <h3>规则优先级</h3>
+            <p>与所有规则一样，PROCESS-NAME 也遵循从上到下匹配的顺序。建议将更具体的进程规则放在通用域名规则之前，以避免被后者的兜底规则吃掉。例如：</p>
+            <div class="code-block">rules:
+            - PROCESS-NAME, steam.exe, DIRECT
+            - DOMAIN-SUFFIX, steampowered.com, 🚀 代理
+            - MATCH, 🚀 默认代理</div>
+            <p>在这个例子中，Steam 的所有流量（包括向 <code>steampowered.com</code> 发起的请求）都会被第一条规则捕获并直连，因为 PROCESS-NAME 的优先级高于后面的 DOMAIN 规则。这正是我们想要的效果。</p>
+
+            <!-- 与 TUN 协同 -->
+            <h2>⚡ 与 TUN 模式协同：内核级进程识别</h2>
+            <p>PROCESS-NAME 规则依赖 TUN 模式提供的<strong>套接字所有权信息</strong>。当流量通过 TUN 虚拟网卡时，Linux/Windows 内核能够在网络栈中记录数据包的来源进程，Mihomo 内核再通过特定接口（如 Linux 的 <code>SO_ORIGINAL_DST</code> 或 Windows 的 <code>WFP</code>）读取这些信息。因此在 TUN 模式下，无论应用使用什么协议、连接到什么 IP，内核都能准确溯源。</p>
+            <p>在 macOS 上，由于系统限制，进程识别依赖于 utun 接口的辅助信息，准确性略低于 Linux/Windows，但通常足以应对常见场景。</p>
+            <div class="callout warning">
+                <strong>⚠️ 局限：</strong>如果应用通过其他代理（如内嵌的 SOCKS5 客户端）发起连接，或者流量经过了另一层 NAT（如 Docker 的桥接网络），进程信息可能会丢失。此时 PROCESS-NAME 规则将无法匹配，流量会降级到后续规则处理。
+            </div>
+
+            <!-- 性能与注意事项 -->
+            <h2>🧠 性能影响与最佳实践</h2>
+            <p>每条 PROCESS-NAME 规则都需要在连接建立时进行一次进程名查找，这个操作的开销极小（微秒级），通常不会对整体吞吐量产生可感知的影响。但在极少数场景下——例如你有数十条进程规则且同时有数千个短连接——可以考虑以下优化：</p>
+            <ul>
+                <li><strong>合并规则：</strong>将多个进程名合并到同一条规则中，减少匹配迭代次数。</li>
+                <li><strong>使用通配符：</strong>一条 <code>PROCESS-NAME, Game*, 🎮 游戏</code> 替代分别列出 <code>game1.exe</code>、<code>game2.exe</code>。</li>
+                <li><strong>避免过度匹配：</strong>不要为每个小工具都创建进程规则。对于那些只需跟随默认策略的应用，不必单独列出，让它们直接落到 MATCH 或最后的域名规则即可。</li>
+            </ul>
+
+            <!-- 常见问题 -->
+            <h2>🔧 常见问题与排查</h2>
+            <div class="callout">
+                <strong>Q：</strong>规则写好了但完全没生效？<br>
+                <strong>A：</strong>首先确认 TUN 模式已开启。然后检查进程名是否精确（注意大小写和后缀）。最后在“连接”面板中观察对应连接是否被 PROCESS-NAME 规则命中。
+            </div>
+            <div class="callout">
+                <strong>Q：</strong>Windows 上带空格的进程名怎么处理？<br>
+                <strong>A：</strong>使用双引号包围，如 <code>PROCESS-NAME, "Google Drive", DIRECT</code>。或者使用通配符 <code>PROCESS-NAME, Google*, DIRECT</code>。
+            </div>
+            <div class="callout">
+                <strong>Q：</strong>某些应用有多个子进程，需要全部列出吗？<br>
+                <strong>A：</strong>通常只需匹配主进程即可，因为网络连接一般由主进程发起。但像 Chrome 这样的多进程浏览器，网络请求可能由 <code>chrome.exe</code> 发起（在 Windows 上），所以一个条目就够了。如果发现某些连接未命中，在连接面板中查看具体是哪个子进程发起的，然后补充规则。
+            </div>
+            <div class="callout">
+                <strong>Q：</strong>进程名规则和域名规则冲突时谁优先？<br>
+                <strong>A：</strong>规则列表从上到下顺序匹配，先写谁谁优先。通常建议将进程规则放在域名规则之前，以实现“整应用分流”的目标。
+            </div>
+
+            <!-- 总结 -->
+            <h2>🏁 总结</h2>
+            <p>PROCESS-NAME 规则为你提供了传统域名和 IP 规则无法实现的<strong>应用维度</strong>控制能力。结合 TUN 模式，你可以轻松实现游戏直连加速、开发工具专属通道、浏览器按需求分流等高级场景。记住三个关键点：<strong>开启 TUN 模式</strong>、<strong>精准获取进程名</strong>、<strong>合理排列规则优先级</strong>，就能让 Clash Verge Rev 真正做到“物尽其用，流尽其路”。</p>
+            <p>如果你有独特的进程匹配技巧或有趣的实战案例，欢迎在讨论区分享。开源社区的力量就在于每个人贡献一点经验，最终所有人都能受益。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/tun-mode-guide.html" class="related-card">
+                        <h4>TUN 模式深度解析：系统级代理的实现原理与调优</h4>
+                        <p>2026-06-18 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/sniffer-configuration.html" class="related-card">
+                        <h4>Sniffer 深度配置指南：让流量识别精准到应用层</h4>
+                        <p>2026-07-08 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/chatgpt-routing.html" class="related-card">
+                        <h4>ChatGPT 路由深度优化：让 AI 对话永远流畅在线</h4>
+                        <p>2026-07-12 · 教程指南</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
