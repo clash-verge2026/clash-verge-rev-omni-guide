@@ -134,5 +134,26 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+
+    <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-meta-architecture.html</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+      <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/process-name-matching.html</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+      <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   
 </urlset>
