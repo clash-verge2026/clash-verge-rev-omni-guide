@@ -40,7 +40,7 @@ TUN global traffic interception · DNS anti-leakage · Fake-IP architecture · I
 
 | Entry | Link |
 |--------|------|
-| 📦 **Latest Stable v2.5.1** | [Download Now](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1) |
+| 📦 **Latest Stable v2.6.1** | [Download Now](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.1) |
 | 📚 **Full Wiki** | [Documentation Center](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki) |
 | 🔧 **Setup Tutorials** | [Installation](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Installation) · [Configuration Essentials](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials) |
 
@@ -131,7 +131,7 @@ This project is intended **only** for network technology learning, research, dev
 
 | 入口 | 链接 |
 |------|------|
-| 📦 **最新稳定版 v2.5.1** | [立即下载](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.5.1) |
+| 📦 **最新稳定版 v2.6.1** | [立即下载](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases/tag/v2.6.1) |
 | 📚 **完整文档 Wiki** | [进入文档中心](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki) |
 | 🔧 **安装与配置教程** | [从零安装](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Installation) ｜ [配置精要](https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials) |
 
