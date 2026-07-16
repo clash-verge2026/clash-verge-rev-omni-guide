@@ -155,5 +155,12 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+
+        <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.6.1-release.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   
 </urlset>
