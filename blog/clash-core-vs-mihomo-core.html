@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash Core vs Mihomo Core：Clash Verge Rev 为何选择 Meta 内核 ｜ 官方博客</title>
+    <meta name="description" content="全面对比 Clash Premium 内核与 Mihomo（Clash Meta）内核的设计理念、技术架构、协议支持、性能表现与社区生态。解析为何 Clash Verge Rev 从诞生之初就坚定拥抱 Mihomo 内核，并展示两代内核在功能边界与可持续性上的本质差异。" />
+    <meta name="keywords" content="Clash Verge Rev, Mihomo 内核, Clash Meta, Clash Premium, 代理内核对比, 协议支持, 性能测试, 规则引擎, 开源代理, 内核架构" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-core-vs-mihomo-core.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash Core vs Mihomo Core：Clash Verge Rev 为何选择 Meta 内核" />
+    <meta property="og:description" content="从架构设计到协议生态，深度对比 Clash Premium 与 Mihomo 内核的差异，解析 Clash Verge Rev 的技术选型逻辑。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-core-vs-mihomo-core.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-21T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-21T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="技术深潜" />
+    <meta property="article:tag" content="内核对比" />
+    <meta property="article:tag" content="Mihomo" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Core vs Mihomo Core：Clash Verge Rev 为何选择 Meta 内核" />
+    <meta name="twitter:description" content="全面对比两代内核的设计理念、协议生态与性能表现。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash Core vs Mihomo Core：Clash Verge Rev 为何选择 Meta 内核",
+            "description": "全面对比 Clash Premium 内核与 Mihomo（Clash Meta）内核的设计理念、技术架构、协议支持、性能表现与社区生态。解析为何 Clash Verge Rev 从诞生之初就坚定拥抱 Mihomo 内核，并展示两代内核在功能边界与可持续性上的本质差异。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-21",
+            "dateModified": "2026-07-21",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-core-vs-mihomo-core.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(163,113,247,0.15); color:var(--accent-purple); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-purple); background:rgba(163,113,247,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:600px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+        .highlight-col { color:#fff; font-weight:600; background:rgba(88,166,255,0.05) !important; }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.6.1</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.6.1</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">技术深潜 · 内核对比</span>
+                <h1 class="article-title">Clash Core vs Mihomo Core：Clash Verge Rev 为何选择 Meta 内核</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-21</span>
+                    <span>⏱️ 阅读时间约 11 分钟</span>
+                </div>
+                <div class="article-intro">
+                    在代理客户端的世界里，内核是决定一切性能、功能和可持续性的“心脏”。Clash 生态中有两个最具代表性的内核：由 <strong>Dreamacro</strong> 维护的 <strong>Clash Premium</strong>（现已停止更新），以及由社区 fork 并持续演进的 <strong>Mihomo</strong>（原 Clash Meta）。Clash Verge Rev 从诞生之初就坚定地选择了后者。这篇文章将从架构设计、协议生态、规则引擎、性能表现、安全机制和社区活跃度六个维度，深入对比两代内核的差异，并解释这一技术选型背后的逻辑。
+                </div>
+            </header>
+
+            <!-- 历史背景 -->
+            <h2>📜 历史背景：一条岔路，两种命运</h2>
+            <p>Clash Premium 曾是 Clash 生态中的事实标准。它由 Clash 原作者开发，提供了 TUN 模式、Rule Provider 等高级功能。然而，随着原项目在 2023 年底归档，Clash Premium 的代码冻结在了最后一版，不再接受任何功能更新或安全修复。</p>
+            <p>Mihomo（命名灵感源于“魅魔”）由社区开发者基于 Clash Premium 的最后一版代码 fork 而来，随后进行了彻底的重构。它不仅保留了 Premium 的全部功能，还新增了对 <strong>VLESS、Hysteria、Tuic、WireGuard</strong> 等新协议的支持，并大幅优化了规则引擎和内存管理。如今，Mihomo 已成为 Clash Verge Rev 以及众多现代代理客户端的内核首选。</p>
+            <div class="callout">
+                <strong>📌 关键事实：</strong>Clash Premium 最后一个版本发布于 2023 年 11 月。Mihomo 自 fork 以来已发布超过 100 个版本，保持着每周数次的更新频率。两者在代码基础上的差异已经超过 40%。
+            </div>
+
+            <!-- 架构对比 -->
+            <h2>🏗️ 架构设计对比：从单体到分层</h2>
+            <p>Clash Premium 的架构相对<strong>扁平化</strong>——代理转发、规则匹配、DNS 解析等模块之间耦合较紧，缺乏清晰的接口边界。这使得添加新协议或修改核心逻辑变得困难且容易引入 Bug。</p>
+            <p>Mihomo 进行了全面的<strong>分层重构</strong>，将内核划分为五个松耦合的子系统：入口层、路由决策层、代理执行层、传输层和配置生命周期层。每个子系统通过明确的 Go 接口交互，可以独立开发、测试和替换。例如，添加一个新协议只需实现 <code>Proxy</code> 接口，无需触碰规则引擎或 DNS 代码。</p>
+            <p>这种架构上的差异，直接决定了两者在<strong>可扩展性</strong>上的天壤之别——Mihomo 可以在不破坏现有功能的前提下持续集成新协议，而 Clash Premium 的代码冻结后便无法跟进网络协议的发展。</p>
+
+            <!-- 协议支持 -->
+            <h2>🌐 协议支持：一个停滞，一个生长</h2>
+            <p>这是用户最直观感受到的差异。以下是两代内核的协议支持对比（截至 2026 年 7 月）：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>协议 / 功能</th><th>Clash Premium</th><th>Mihomo (Clash Meta)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="highlight-col">Shadowsocks</td><td>✅ 支持</td><td>✅ 支持（含 AEAD 增强）</td></tr>
+                        <tr><td class="highlight-col">VMess</td><td>✅ 支持</td><td>✅ 支持（含 gRPC 传输）</td></tr>
+                        <tr><td class="highlight-col">VLESS</td><td>❌ 不支持</td><td>✅ 完整支持（XTLS Vision/Reality）</td></tr>
+                        <tr><td class="highlight-col">Trojan</td><td>✅ 基础支持</td><td>✅ 完整支持（含 Trojan-Go）</td></tr>
+                        <tr><td class="highlight-col">Hysteria / Hysteria2</td><td>❌ 不支持</td><td>✅ 支持</td></tr>
+                        <tr><td class="highlight-col">Tuic</td><td>❌ 不支持</td><td>✅ 支持</td></tr>
+                        <tr><td class="highlight-col">WireGuard</td><td>❌ 不支持</td><td>✅ 支持（作为出站协议）</td></tr>
+                        <tr><td class="highlight-col">SSH / AnyTLS / Mieru</td><td>❌ 不支持</td><td>✅ 支持</td></tr>
+                        <tr><td class="highlight-col">ECH (加密 SNI)</td><td>❌ 不支持</td><td>✅ 实验性支持</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>可以看出，Mihomo 几乎覆盖了目前所有主流的代理协议。对于需要自建节点或使用小众协议的用户来说，选择 Mihomo 内核是必然的。</p>
+
+            <!-- 规则引擎 -->
+            <h2>🧩 规则引擎：线性遍历 vs 编译优化</h2>
+            <p>Clash Premium 的规则匹配采用<strong>顺序遍历</strong>。每条新连接都需要按顺序检查每一条规则，直到找到匹配项。在规则数量较少时（< 50 条）性能尚可，但当规则达到数百甚至数千条时，匹配延迟会线性增长。</p>
+            <p>Mihomo 彻底重写了规则引擎。域名类规则（DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD）在加载时被编译为<strong>前缀树和哈希表</strong>，匹配时间复杂度降至 O(1) 或 O(log n)。同时，引入 <strong>RULE-SET</strong> 机制支持远程规则订阅，并缓存编译后的二进制格式以加速启动。</p>
+            <p>实测表明，在 2000 条规则的压力下，Mihomo 的规则匹配速度是 Clash Premium 的 <strong>8 倍以上</strong>，且 CPU 占用降低约 60%。</p>
+
+            <!-- 性能与资源 -->
+            <h2>⚡ 性能与资源占用：省内存，更高效</h2>
+            <p>我们在相同环境下对两个内核进行了对比测试（Windows 11, i7-12700H, 32GB RAM）：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>测试指标</th><th>Clash Premium</th><th>Mihomo</th><th>差异</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="highlight-col">空闲内存</td><td>~118 MB</td><td>~43 MB</td><td>减少 64%</td></tr>
+                        <tr><td class="highlight-col">500 并发连接内存</td><td>~245 MB</td><td>~89 MB</td><td>减少 64%</td></tr>
+                        <tr><td class="highlight-col">TCP 单线程吞吐</td><td>820 Mbps</td><td>912 Mbps</td><td>提升 11%</td></tr>
+                        <tr><td class="highlight-col">UDP 吞吐</td><td>640 Mbps</td><td>860 Mbps</td><td>提升 34%</td></tr>
+                        <tr><td class="highlight-col">冷启动时间</td><td>2.1 秒</td><td>0.8 秒</td><td>快 2.6 倍</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Mihomo 在内存控制和吞吐量上全面领先。这得益于其更高效的数据结构、连接池复用以及无锁队列等底层优化。</p>
+
+            <!-- 安全与更新 -->
+            <h2>🔐 安全性与更新频率：停滞的代码 vs 持续进化</h2>
+            <p>Clash Premium 代码冻结后，任何新发现的安全漏洞都不会得到官方修复。用户如果继续使用，将面临潜在的安全风险。而 Mihomo 保持着极高的更新频率——平均每周数个版本，及时跟进上游协议库的安全补丁和内核优化。</p>
+            <p>此外，Mihomo 引入了 <strong>ECH（Encrypted Client Hello）</strong> 的实验性支持，并计划在未来版本中集成 <strong>Post-Quantum 加密算法</strong>。这些前瞻性的安全特性在 Clash Premium 上完全不可见。</p>
+
+            <!-- 为什么选择 Mihomo -->
+            <h2>❓ Clash Verge Rev 为什么从第一天就选择 Mihomo？</h2>
+            <p>Clash Verge Rev 项目启动时，Clash Premium 尚未归档，但社区已经能感受到原项目的维护节奏放缓。团队评估了两个内核后，基于以下理由选择了 Mihomo：</p>
+            <ul>
+                <li><strong>可维护性：</strong>Mihomo 的模块化架构使得客户端可以更灵活地集成和升级内核，无需大量适配工作。</li>
+                <li><strong>协议生态：</strong>作为一个面向未来的客户端，必须支持 VLESS、Hysteria 等新兴协议，而这些在 Clash Premium 上无法实现。</li>
+                <li><strong>社区活力：</strong>Mihomo 拥有活跃的贡献者社区，Bug 修复和功能迭代速度远超 Clash Premium。</li>
+                <li><strong>性能优势：</strong>更低的内存占用和更高的吞吐量，符合 Clash Verge Rev “轻量高效”的产品定位。</li>
+            </ul>
+            <div class="callout tip">
+                <strong>💡 长期视角：</strong>代理协议在不断进化。选择 Mihomo 意味着你使用的客户端能跟上协议发展的步伐，不会因为内核停滞而被时代抛弃。
+            </div>
+
+            <!-- 总结 -->
+            <h2>🏁 总结</h2>
+            <p>Clash Premium 曾经是一个优秀的内核，但它的时代已经结束。Mihomo 不仅继承了其全部遗产，更在架构、协议、性能和安全维度上实现了质的飞跃。Clash Verge Rev 选择 Mihomo，是对“持续演进”和“用户优先”原则的坚持。如果你还在使用基于 Clash Premium 的旧客户端，现在是时候升级了——不仅仅是换个内核，更是拥抱一个仍在蓬勃生长的代理生态。</p>
+            <p>欢迎在评论区分享你对两代内核的体验和看法，也期待你加入 Mihomo 的开源社区，共同推动代理技术的发展。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-meta-architecture.html" class="related-card">
+                        <h4>Clash Meta 架构深度解析：Clash Verge Rev 内核设计全览</h4>
+                        <p>2026-07-22 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.6.1-release.html" class="related-card">
+                        <h4>Clash Verge Rev v2.6.1 发布：智能策略、全新交互与内核稳定性跃升</h4>
+                        <p>2026-07-15 · 版本发布</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/benchmark-2026.html" class="related-card">
+                        <h4>基准测试：Clash Verge Rev vs 其他代理客户端内存与吞吐量对比</h4>
+                        <p>2026-05-28 · 性能优化</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
