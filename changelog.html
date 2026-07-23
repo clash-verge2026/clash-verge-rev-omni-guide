@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>更新日志 ｜ Clash Verge Rev · 版本历史 · 功能迭代 · 问题修复</title>
-    <meta name="description" content="Clash Verge Rev 完整的更新日志与版本历史。记录每一次功能迭代、性能优化、漏洞修复与兼容性改进。涵盖 v2.5.1、v2.4.0、v2.3.0 等全部重要版本，开源透明，持续进化。" />
+    <meta name="description" content="Clash Verge Rev 完整的更新日志与版本历史。记录每一次功能迭代、性能优化、漏洞修复与兼容性改进。涵盖 v2.5.2、v2.5.1、v2.4.0 等全部重要版本，开源透明，持续进化。" />
     <meta name="keywords" content="Clash Verge Rev更新日志, 版本历史, 功能迭代, 问题修复, 代理客户端更新, TUN模式更新, DNS防泄漏更新, AI分流更新" />
     <meta name="theme-color" content="#0d1117" />
     <meta name="author" content="Clash Verge Rev Community" />
@@ -169,7 +169,7 @@
                 <a href="index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
                     <span class="logo-icon">🧠</span>
                     <span class="logo-text">Clash Verge Rev</span>
-                    <span class="logo-badge">v2.5.1</span>
+                    <span class="logo-badge">v2.5.2</span>
                 </a>
                 <nav class="main-nav" aria-label="主导航">
                     <span class="nav-separator"></span>
@@ -186,7 +186,7 @@
             <div class="header-right">
                 <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索更新…" id="headerSearch" /></div>
                 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
-                <a href="download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.1</a>
+                <a href="download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
             </div>
             <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -206,7 +206,7 @@
                 <h1 class="page-title">更新日志</h1>
                 <p class="page-subtitle">这里记录了 Clash Verge Rev 从诞生至今的每一次蜕变。我们坚持高频迭代，快速响应社区反馈，确保每个版本都更稳定、更强大、更易用。所有历史版本均可在 GitHub Releases 下载。</p>
                 <div class="stats-mini">
-                    <div class="stat-item"><div class="stat-value">200+</div><div class="stat-label">累计版本</div></div>
+                    <div class="stat-item"><div class="stat-value">210+</div><div class="stat-label">累计版本</div></div>
                     <div class="stat-item"><div class="stat-value">20+</div><div class="stat-label">活跃贡献者</div></div>
                     <div class="stat-item"><div class="stat-value">500+</div><div class="stat-label">已关闭 Issues</div></div>
                     <div class="stat-item"><div class="stat-value">14</div><div class="stat-label">平均发布周期(天)</div></div>
@@ -216,8 +216,36 @@
 
         <section class="page-section">
             <div class="container">
+                <!-- v2.5.2 -->
+                <div class="version-card" id="v2.5.2">
+                    <div class="version-header">
+                        <div class="version-tag-large">🔖 v2.5.2 <span class="version-date">2026-07-22</span></div>
+                        <div class="badge-group">
+                            <span class="badge badge-fix">🔧 40+ 项修复</span>
+                            <span class="badge badge-feat">✨ 新功能</span>
+                            <span class="badge badge-perf">⚡ 优化</span>
+                            <span class="badge badge-compat">🔄 兼容</span>
+                        </div>
+                    </div>
+                    <ul class="changelog-details">
+                        <li><span class="cl-icon fix">🔧</span> <strong>连接与入站：</strong>修复局域网代理失效及接口不显示、Windows TUN 启动 30 秒延迟、Fake-IP IPv6 范围缺失等问题。</li>
+                        <li><span class="cl-icon fix">🔧</span> <strong>订阅与导入：</strong>修复 gzip 订阅被误判为无效 YAML、空密码认证异常、ss:// 链接崩溃、VLESS xhttp 解析错误及自动更新任务未生效。</li>
+                        <li><span class="cl-icon fix">🔧</span> <strong>macOS 专项：</strong>修复内存压力下 WebView 白屏与主进程泄漏、托盘图标闪烁、窗口激活失败、App Translocation 服务异常及 Monterey 兼容性。</li>
+                        <li><span class="cl-icon fix">🔧</span> <strong>UI 与交互：</strong>修复流量统计不准、代理状态不同步、URLTest 组缺失、日志强制滚动、CORS 焦点丢失、前端内存泄漏及 JS 脚本验证失败等十余项问题。</li>
+                        <li><span class="cl-icon feat">✨</span> <strong>内核升级：</strong>Mihomo 内核升级至 v1.19.29，增强连接稳定性与协议兼容性。</li>
+                        <li><span class="cl-icon feat">✨</span> <strong>新协议支持：</strong>新增 TrustTunnel、OpenVPN、Tailscale、GostRelay 节点展示与基础配置。</li>
+                        <li><span class="cl-icon feat">✨</span> <strong>DNS 可视化：</strong>支持在界面中直接配置 fake-ip-range6，完善 Fake-IP 双栈能力。</li>
+                        <li><span class="cl-icon feat">✨</span> <strong>代理组工具：</strong>新增筛选、排序、延迟测试与快速定位，首页自动过滤隐藏代理组。</li>
+                        <li><span class="cl-icon perf">⚡</span> <strong>稳定性与性能：</strong>重构 Mihomo API 通信及服务生命周期管理，优化订阅切换激活逻辑与 WebSocket 后台降级，大量订阅卡拖拽性能提升，Provider 节点延迟检测现已支持。</li>
+                        <li><span class="cl-icon compat">🔄</span> <strong>界面样式：</strong>改进 Sticky Groups 吸顶阴影与展开效果，优化代理组工具栏紧凑布局，Linux 无边框窗口支持拖拽调整大小。</li>
+                    </ul>
+                    <div class="cl-highlight">
+                        <strong>📌 升级建议：</strong> 强烈推荐所有用户升级。本版本重点解决了局域网共享、订阅兼容性、macOS 稳定性等长期痛点，并带来了新协议支持与 40+ 项细节修复，显著提升日常代理体验。
+                    </div>
+                </div>
+
                 <!-- v2.5.1 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.5.1">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.5.1 <span class="version-date">2026-06-25</span></div>
                         <div class="badge-group">
@@ -241,7 +269,7 @@
                 </div>
 
                 <!-- v2.4.0 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.4.0">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.4.0 <span class="version-date">2026-05-08</span></div>
                         <div class="badge-group">
@@ -260,7 +288,7 @@
                 </div>
 
                 <!-- v2.3.1 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.3.1">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.3.1 <span class="version-date">2026-04-18</span></div>
                         <div class="badge-group">
@@ -276,7 +304,7 @@
                 </div>
 
                 <!-- v2.3.0 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.3.0">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.3.0 <span class="version-date">2026-03-22</span></div>
                         <div class="badge-group">
@@ -292,7 +320,7 @@
                 </div>
 
                 <!-- v2.2.0 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.2.0">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.2.0 <span class="version-date">2026-02-14</span></div>
                         <div class="badge-group">
@@ -308,7 +336,7 @@
                 </div>
 
                 <!-- v2.1.0 -->
-                <div class="version-card">
+                <div class="version-card" id="v2.1.0">
                     <div class="version-header">
                         <div class="version-tag-large">🔖 v2.1.0 <span class="version-date">2026-01-05</span></div>
                         <div class="badge-group">
@@ -325,7 +353,7 @@
 
                 <!-- 更多历史版本入口 -->
                 <div style="text-align:center; margin:30px 0;">
-                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" target="_blank" class="header-btn" style="display:inline-flex;">📦 查看全部历史版本 (v1.0 ~ v2.5.1)</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" target="_blank" class="header-btn" style="display:inline-flex;">📦 查看全部历史版本 (v1.0 ~ v2.5.2)</a>
                 </div>
 
                 <!-- 未来路线图 -->
