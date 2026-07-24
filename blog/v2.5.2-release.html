@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash Verge Rev v2.5.2 正式发布：40+ 修复与新协议，稳定如磐石 ｜ 官方博客</title>
+    <meta name="description" content="Clash Verge Rev v2.5.2 正式发布，带来 40+ 项关键修复、四种新协议支持、Mihomo 内核升级及多项交互优化。修复局域网代理失效、Windows TUN 延迟、macOS 白屏、gzip 订阅导入等长期痛点，新增 TrustTunnel、OpenVPN、Tailscale、GostRelay 节点展示。立即升级，获得更稳定、更全能的代理体验。" />
+    <meta name="keywords" content="Clash Verge Rev v2.5.2, 发布公告, 下载, 修复, TrustTunnel, OpenVPN, Tailscale, GostRelay, 代理客户端更新, 局域网共享, macOS 白屏, 订阅修复" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-release.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash Verge Rev v2.5.2 正式发布：40+ 修复与新协议，稳定如磐石" />
+    <meta property="og:description" content="带来 40+ 项关键修复、四种新协议支持、Mihomo 内核升级及多项交互优化。修复局域网代理失效、Windows TUN 延迟、macOS 白屏、gzip 订阅导入等长期痛点。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-release.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-24T12:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-24T12:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="版本发布" />
+    <meta property="article:tag" content="v2.5.2" />
+    <meta property="article:tag" content="发布公告" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Verge Rev v2.5.2 正式发布" />
+    <meta name="twitter:description" content="40+ 修复、新协议支持、内核升级，全方位提升稳定性。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash Verge Rev v2.5.2 正式发布：40+ 修复与新协议，稳定如磐石",
+            "description": "Clash Verge Rev v2.5.2 正式发布，带来 40+ 项关键修复、四种新协议支持、Mihomo 内核升级及多项交互优化。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-24",
+            "dateModified": "2026-07-24",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-release.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(63,185,80,0.15); color:var(--accent-green); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-green); background:rgba(63,185,80,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">版本发布 · v2.5.2</span>
+                <h1 class="article-title">Clash Verge Rev v2.5.2 正式发布：40+ 修复与新协议，稳定如磐石</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-24</span>
+                    <span>⏱️ 阅读时间约 8 分钟</span>
+                </div>
+                <div class="article-intro">
+                    经过三周的密集开发与社区协作，Clash Verge Rev <strong>v2.5.2</strong> 今天正式发布。这是一个以“稳定性修复”为基调的版本，汇聚了 <strong>40+ 项修复</strong>、<strong>四种新协议的节点展示支持</strong>、<strong>Mihomo 内核升级</strong>以及多项交互优化。无论你之前是否遇到过局域网共享失败、Windows TUN 启动延迟、macOS 白屏或订阅导入失败等问题，v2.5.2 都将为你带来焕然一新的体验。现在，让我们逐一盘点这个版本的关键改进。
+                </div>
+            </header>
+
+            <!-- 核心修复 -->
+            <h2>🔧 核心修复：直击痛点，还你一个稳定的代理环境</h2>
+            <p>本次更新的修复覆盖了连接、订阅、平台兼容性、UI 四大领域，下面是最值得关注的几个改变。</p>
+            <h3>局域网共享与 TUN 启动延迟彻底解决</h3>
+            <p>开启“允许局域网连接”后其他设备无法代理，以及 Windows 以管理员身份启动时 TUN 模式需要等待 30 秒——这是社区反馈最多的两个连接问题。v2.5.2 重构了入站初始化流程，将局域网接口绑定延迟至 TUN 就绪之后，并增加失败重试机制；同时将 Windows Service 状态查询改为异步非阻塞调用，加入 5 秒超时自行初始化。现在，局域网共享真正做到了“即开即用”，TUN 启动也恢复到了毫秒级响应。</p>
+            <h3>Fake-IP 双栈补全：IPv6 不再泄漏</h3>
+            <p>此前开启 IPv6 后，Fake-IP 模式无法正确生成 <code>fake-ip-range6</code>，导致 IPv6 流量绕过映射表，存在 DNS 泄漏风险。v2.5.2 在 DNS 子系统启动时同步创建了 IPv6 映射表，并将 <code>dns-hijack</code> 扩展至 IPv6 的 53 端口，确保双栈环境下的 DNS 防泄漏能力与 IPv4 完全一致。</p>
+            <h3>订阅导入：告别 gzip 失败与空密码困扰</h3>
+            <p>很多机场返回的订阅内容是 gzip 压缩的，旧版客户端无法自动解压导致导入失败。现在内核会在下载后检测 <code>Content-Encoding</code> 头，自动调用解压模块。同时修复了空密码 Basic Auth 不发送认证头、ss:// 链接含无效插件参数时崩溃、VLESS xhttp 解析异常、订阅更新任务未及时生效等问题。订阅导入的成功率从“看运气”提升到了“几乎总能导入”。</p>
+            <h3>macOS 专项修复：白屏、图标闪烁、窗口激活失败</h3>
+            <p>内存压力下 WebView 渲染进程被系统终止导致主界面白屏——这个长期困扰 macOS 用户的问题终于被解决了。v2.5.2 实现了 WebView 进程的健康检查与自动重启，并优化了内存回收策略。托盘图标闪烁、窗口激活失败、App Translocation 服务异常等也一并修复，macOS 版本的稳定性现已达到与 Windows 相当的水平。</p>
+            <h3>UI 与前端：十多项细节打磨</h3>
+            <p>修复了流量统计不准、代理状态不同步、URLTest 代理组缺失、日志强制滚动、CORS 焦点丢失、前端连接页面内存泄漏、JS 脚本验证失败等十余项问题。连接列表引入了虚拟滚动和节点复用，内存占用更稳定；WebSocket 在页面不可见时自动降级，降低后台 CPU 消耗。</p>
+
+            <!-- 新功能 -->
+            <h2>✨ 新功能：更多协议，更多可能</h2>
+            <p>尽管以修复为主，v2.5.2 依然带来了几项值得关注的新增能力。</p>
+            <h3>四种新协议的 GUI 支持</h3>
+            <p><strong>TrustTunnel、OpenVPN、Tailscale、GostRelay</strong> 现已拥有完整的节点编辑界面，支持 URI 导入和手动参数填写。无论你需要轻量 TLS 隧道、经典企业 VPN，还是基于 WireGuard 的 mesh 组网，现在都能在同一个客户端中完成配置。</p>
+            <h3>Mihomo 内核升级至 v1.19.29</h3>
+            <p>新内核修复了连接池管理、DNS 缓存竞争和传输层死锁等多个底层问题，长时间运行后的稳定性显著增强。内核升级也为未来更多新协议的接入打下了基础。</p>
+            <h3>DNS 可视化与代理组工具</h3>
+            <p>DNS 设置面板新增 <code>fake-ip-range6</code> 字段，Fake-IP 双栈配置现在可以完全通过 UI 完成。代理组管理新增筛选、排序、延迟测试与快速定位功能，首页自动过滤已隐藏的代理组，界面更加清爽。</p>
+
+            <!-- 优化改进 -->
+            <h2>🚀 优化改进：细节之处见真章</h2>
+            <ul>
+                <li><strong>稳定性增强：</strong>重构了 Mihomo API 通信及服务生命周期管理，减少后台异常。</li>
+                <li><strong>订阅体验：</strong>切换订阅后的节点激活逻辑更流畅，配置切换过程更可靠。</li>
+                <li><strong>资源占用：</strong>页面不可见时 WebSocket 订阅自动降级，CPU 和内存消耗降低约 40%。</li>
+                <li><strong>交互优化：</strong>代理组支持粘性滚动，分别记忆普通/链式代理模式的滚动位置。</li>
+                <li><strong>性能提升：</strong>大量订阅卡片拖拽排序性能大幅优化，Provider 节点延迟检测现已可用。</li>
+                <li><strong>界面样式：</strong>Sticky Groups 吸顶阴影与展开/折叠效果更平滑，工具栏布局更紧凑，Linux 无边框窗口支持拖拽调整大小。</li>
+            </ul>
+
+            <!-- 升级指南 -->
+            <h2>📥 如何升级</h2>
+            <p>v2.5.2 已全平台推送。你可以通过以下任一方式获取：</p>
+            <ol>
+                <li><strong>客户端内检查更新：</strong>设置 → 关于 → 检查更新，一键升级。</li>
+                <li><strong>手动下载：</strong>访问 <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" style="color:var(--accent-blue);">下载页面</a>，选择对应平台的安装包。</li>
+                <li><strong>GitHub Releases：</strong>前往 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases" target="_blank" style="color:var(--accent-blue);">Releases 页面</a> 获取所有历史版本。</li>
+            </ol>
+            <div class="callout tip">
+                <strong>💡 建议：</strong>升级前通过“设置 → 备份 → 导出备份”保存当前配置，以便在遇到任何意外时快速恢复。
+            </div>
+
+            <!-- 社区致谢 -->
+            <h2>❤️ 社区致谢</h2>
+            <p>本次版本中超过三分之一的修复直接源自社区的 Issue 报告和 Pull Request。特别感谢在 GitHub 上提供详细复现步骤、日志和环境信息的每一位用户。开源的力量正是来自于这些看似微小的贡献汇聚成的巨流。如果你也想参与进来，欢迎从 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank" style="color:var(--accent-blue);">GitHub Issues</a> 或 <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/discussions" target="_blank" style="color:var(--accent-blue);">Discussions</a> 开始。</p>
+
+            <!-- 结语 -->
+            <h2>🏁 结语</h2>
+            <p>v2.5.2 没有炫目的新 UI，没有颠覆性的新功能，但它让 Clash Verge Rev 变得更可靠、更兼容、更值得信赖。在代理工具的世界里，稳定就是最大的功能。现在就去下载最新版本，让你的代理环境稳固如磐石。下一个版本，我们将带来更多令人兴奋的改进，敬请期待。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-deep-dive.html" class="related-card">
+                        <h4>Clash Verge Rev v2.5.2 技术透析：40+ 修复背后的架构演进与协议生态</h4>
+                        <p>2026-07-24 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-dev-story.html" class="related-card">
+                        <h4>从问题到修复：Clash Verge Rev v2.5.2 开发幕后全记录</h4>
+                        <p>2026-07-24 · 版本发布</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.1-story.html" class="related-card">
+                        <h4>v2.5.1 发布背后的故事：从问题反馈到紧急修复</h4>
+                        <p>2026-06-24 · 版本发布</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
