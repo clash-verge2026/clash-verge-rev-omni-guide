@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决 ｜ 官方博客</title>
+    <meta name="description" content="全面对比 Clash Verge Rev / Mihomo 内核中 DOMAIN 与 DOMAIN-SUFFIX 规则的工作原理、匹配逻辑、性能差异与实战场景。从精确匹配到子域名泛域名，掌握正确的规则编写技巧，避免常见分流错误，让你的代理配置更精准、更高效。" />
+    <meta name="keywords" content="Clash Verge Rev, DOMAIN 规则, DOMAIN-SUFFIX 规则, 规则对比, 代理分流, Mihomo 内核, 域名匹配, 规则编写" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/domain-vs-domain-suffix.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决" />
+    <meta property="og:description" content="深入对比 DOMAIN 与 DOMAIN-SUFFIX 规则的匹配逻辑与实战应用，提升代理配置精度。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/domain-vs-domain-suffix.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-07-27T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-07-27T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="教程指南" />
+    <meta property="article:tag" content="DOMAIN" />
+    <meta property="article:tag" content="DOMAIN-SUFFIX" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决" />
+    <meta name="twitter:description" content="精确匹配 vs 泛域名匹配，掌握正确的规则编写技巧。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决",
+            "description": "全面对比 Clash Verge Rev / Mihomo 内核中 DOMAIN 与 DOMAIN-SUFFIX 规则的工作原理、匹配逻辑、性能差异与实战场景。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-07-27",
+            "dateModified": "2026-07-27",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/domain-vs-domain-suffix.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(88,166,255,0.15); color:var(--accent-blue); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">教程指南 · 规则详解</span>
+                <h1 class="article-title">Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-07-27</span>
+                    <span>⏱️ 阅读时间约 10 分钟</span>
+                </div>
+                <div class="article-intro">
+                    在 Clash Verge Rev 的规则列表中，<strong>DOMAIN</strong> 和 <strong>DOMAIN-SUFFIX</strong> 是使用频率最高的两种匹配方式。许多用户在编写配置时，往往会凭感觉选择其中一个，却忽略了它们在匹配逻辑上的本质区别——以及这种区别对分流精度和性能的影响。本文将用大量实例，将这两个看似相似的规则类型放到显微镜下对比，帮助你写出更精准、更高效的代理规则。
+                </div>
+            </header>
+
+            <!-- 基本定义 -->
+            <h2>📖 基本定义：精确与模糊</h2>
+            <p>从字面意义上看，两者区别明显：</p>
+            <ul>
+                <li><strong>DOMAIN：</strong>精确匹配一个完整的域名。规则 <code>DOMAIN, google.com, 🚀 代理</code> 只会匹配 <code>google.com</code> 这个域名本身，不会匹配 <code>www.google.com</code> 或 <code>mail.google.com</code>。</li>
+                <li><strong>DOMAIN-SUFFIX：</strong>匹配域名后缀，即域名及其所有子域名。规则 <code>DOMAIN-SUFFIX, google.com, 🚀 代理</code> 会匹配 <code>google.com</code>、<code>www.google.com</code>、<code>mail.google.com</code>、<code>a.b.c.google.com</code> 等所有以 <code>.google.com</code> 结尾的域名。</li>
+            </ul>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>规则类型</th><th>示例</th><th>匹配 google.com</th><th>匹配 www.google.com</th><th>匹配 mail.google.com</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>DOMAIN</code></td><td><code>DOMAIN, google.com, Proxy</code></td><td>✅</td><td>❌</td><td>❌</td></tr>
+                        <tr><td><code>DOMAIN-SUFFIX</code></td><td><code>DOMAIN-SUFFIX, google.com, Proxy</code></td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>理解这个基本差异后，我们进一步探讨它们在实战中的表现。</p>
+
+            <!-- DOMAIN 的独特价值 -->
+            <h2>🎯 DOMAIN 的独特价值：精确打击</h2>
+            <p>在大多数场景下，<code>DOMAIN-SUFFIX</code> 因其“一次编写，覆盖所有子域名”的便利性而更受欢迎。但 <code>DOMAIN</code> 在某些关键场景中是不可替代的：</p>
+            <h3>场景一：只代理主站，不代理 CDN</h3>
+            <p>某些网站的主站可能需要代理才能访问，但其静态资源 CDN 在国内有节点，直连更快。例如：</p>
+            <div class="code-block">- DOMAIN, example.com, 🚀 代理
+            - DOMAIN-SUFFIX, cdn.example.com, DIRECT</div>
+            <p>这里如果使用 <code>DOMAIN-SUFFIX, example.com, 🚀 代理</code>，会导致 <code>cdn.example.com</code> 也被代理。通过 <code>DOMAIN</code> 精确锁定主站，再配合另一条 <code>DOMAIN-SUFFIX</code> 让 CDN 直连，可以达到最佳效果。</p>
+            <h3>场景二：避免误伤根域名</h3>
+            <p>某些顶级域名（如 <code>.ai</code>、<code>.io</code>）属于国家/地区顶级域，但同时也是许多网站的实际域名后缀。例如规则 <code>DOMAIN-SUFFIX, ai, 🚀 代理</code> 会让所有 <code>.ai</code> 结尾的域名都走代理，包括一些国内合法的 .ai 网站。这种情况下，应该用 <code>DOMAIN</code> 精确列出需要代理的特定域名。</p>
+
+            <!-- DOMAIN-SUFFIX 的优势 -->
+            <h2>🌐 DOMAIN-SUFFIX 的优势：泛域名覆盖</h2>
+            <p>绝大多数互联网公司的服务都分布在多个子域名下。以 OpenAI 为例，除了 <code>openai.com</code>，还有 <code>api.openai.com</code>、<code>cdn.oaistatic.com</code>、<code>auth0.openai.com</code> 等。使用 <strong>DOMAIN-SUFFIX</strong> 可以一次性覆盖所有这些域名，避免遗漏：</p>
+            <div class="code-block">- DOMAIN-SUFFIX, openai.com, 🚀 代理
+            - DOMAIN-SUFFIX, oaistatic.com, 🚀 代理</div>
+            <p>这种“一对多”的覆盖能力是 DOMAIN 无法做到的。正因如此，在社区维护的 RULE-SET 中，绝大多数条目都采用 DOMAIN-SUFFIX。</p>
+
+            <!-- 匹配逻辑深入 -->
+            <h2>🧬 匹配逻辑的细节：. 符号与 TLD 陷阱</h2>
+            <p>一个容易被忽略的细节是，<code>DOMAIN-SUFFIX</code> 匹配时会自动在传入的字符串前添加一个 <code>.</code> 号。这意味着：</p>
+            <ul>
+                <li><code>DOMAIN-SUFFIX, google.com</code> 实际匹配的是 <code>.google.com</code>。</li>
+                <li>因此它能匹配 <code>www.google.com</code>（因为 <code>www.google.com</code> 包含 <code>.google.com</code>），也能匹配 <code>google.com</code>（内核特殊处理）。</li>
+            </ul>
+            <p>但也正是因为这个机制，写 <code>DOMAIN-SUFFIX, com</code> 会把所有 <code>.com</code> 结尾的域名都匹配进去——这显然不是我们想要的。因此，<strong>DOMAIN-SUFFIX 的值至少应该包含二级域名</strong>。</p>
+            <div class="callout warning">
+                <strong>⚠️ 常见错误：</strong> 将 <code>DOMAIN-SUFFIX</code> 用于顶级域或公共后缀（如 <code>com</code>、<code>co.uk</code>），会导致大量无关联域名被误匹配。建议使用浏览器公共后缀列表（Public Suffix List）作为参考，确保后缀至少为“注册域名”级别。
+            </div>
+
+            <!-- 性能差异 -->
+            <h2>⚡ 性能差异：DOMAIN 比 DOMAIN-SUFFIX 更快吗？</h2>
+            <p>在 Mihomo 内核中，两种规则都经过了高度优化。DOMAIN 规则被编译为<strong>哈希表</strong>，查询时间复杂度为 O(1)。DOMAIN-SUFFIX 规则被编译为<strong>紧凑的前缀树</strong>，查询时间复杂度为 O(log n)，其中 n 是规则数量。</p>
+            <p>在规则数量较少（< 100 条）的情况下，两者的性能差异几乎无法察觉。当规则数量达到数千条时，DOMAIN 的哈希查找理论上更快，但 DOMAIN-SUFFIX 的前缀树优化也非常出色，实际差异在微秒级别。因此，<strong>不必因为性能原因刻意选择 DOMAIN 或 DOMAIN-SUFFIX</strong>，应该根据匹配需求来决定。</p>
+
+            <!-- 组合使用 -->
+            <h2>🧩 最佳实践：DOMAIN 与 DOMAIN-SUFFIX 的组合策略</h2>
+            <p>在实际配置中，我们建议按照以下思路组合使用这两种规则：</p>
+            <ol>
+                <li><strong>优先使用 DOMAIN-SUFFIX：</strong>对于拥有多个子域名的服务（如各大互联网公司），使用 DOMAIN-SUFFIX 一次性覆盖。</li>
+                <li><strong>用 DOMAIN 做精确例外：</strong>当某个子域名需要不同的分流策略时，用 DOMAIN 精确覆盖。利用规则优先级（先匹配先生效），将 DOMAIN 写在 DOMAIN-SUFFIX 之前。</li>
+                <li><strong>避免过度使用 DOMAIN：</strong>如果每个子域名都单独写一条 DOMAIN，会导致规则数量爆炸，拖慢配置加载和匹配速度。</li>
+                <li><strong>善用 RULE-SET：</strong>将大量重复性的 DOMAIN-SUFFIX 规则放入远程 RULE-SET，只在本地区配置少量 DOMAIN 例外。</li>
+            </ol>
+            <div class="code-block"><span class="code-comment"># 推荐写法：DOMAIN 精确例外在前，DOMAIN-SUFFIX 泛域名在后</span>
+            rules:
+            - DOMAIN, static.example.com, DIRECT
+            - DOMAIN-SUFFIX, example.com, 🚀 代理</div>
+
+            <!-- 常见错误 -->
+            <h2>❌ 常见错误与纠正</h2>
+            <div class="callout">
+                <strong>错误 1：</strong> 想代理 <code>www.google.com</code>，写成了 <code>DOMAIN, www.google.com</code>，结果 <code>google.com</code> 本身不走代理。<br>
+                <strong>纠正：</strong> 如果需要同时代理主域和子域，应使用 <code>DOMAIN-SUFFIX, google.com</code>。
+            </div>
+            <div class="callout">
+                <strong>错误 2：</strong> 使用 <code>DOMAIN-SUFFIX, api.openai.com</code> 以为只会匹配 <code>api.openai.com</code>，实际却匹配了 <code>v1.api.openai.com</code>。<br>
+                <strong>纠正：</strong> 这其实不是错误，而是 DOMAIN-SUFFIX 的预期行为。如果只想匹配 <code>api.openai.com</code>，应该使用 <code>DOMAIN, api.openai.com</code>。
+            </div>
+            <div class="callout">
+                <strong>错误 3：</strong> 在一个大型配置中混用数百条 DOMAIN 和 DOMAIN-SUFFIX，导致规则顺序混乱，匹配结果不可预期。<br>
+                <strong>纠正：</strong> 保持规则列表的结构清晰——将 DOMAIN 例外放在最前面，然后是 DOMAIN-SUFFIX 泛域名，最后是 GEOIP 和 MATCH。
+            </div>
+
+            <!-- 总结 -->
+            <h2>🏁 总结</h2>
+            <p>DOMAIN 和 DOMAIN-SUFFIX 并非“谁更好”的关系，而是<strong>分工不同</strong>的搭档。DOMAIN 擅长精确打击，DOMAIN-SUFFIX 擅长泛域名覆盖。理解它们的匹配逻辑，并按照“例外在前、泛域名在后”的原则组织规则，是写出高效、可维护的 Clash Verge Rev 配置的关键。如果你对规则编写还有更多疑问，欢迎在 GitHub Discussions 中与我们交流。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/rule-set-guide.html" class="related-card">
+                        <h4>从零开始：使用 RULE-SET 构建自动更新的分流体系</h4>
+                        <p>2026-04-22 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/what-is-clash.html" class="related-card">
+                        <h4>What Is Clash? 面向初学者的 Clash Verge Rev 入门指南</h4>
+                        <p>2026-07-27 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-meta-architecture.html" class="related-card">
+                        <h4>Clash Meta 架构深度解析：Clash Verge Rev 内核设计全览</h4>
+                        <p>2026-07-22 · 技术深潜</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
