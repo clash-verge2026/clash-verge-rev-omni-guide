@@ -169,5 +169,40 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+
+     <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-release.html</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+       <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-dev-story.html</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+       <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-deep-dive.html</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   
+    <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/domain-vs-domain-suffix.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+   <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/what-is-clash.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
