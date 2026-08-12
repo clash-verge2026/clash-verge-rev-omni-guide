@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOCKS5 深度解析：Clash Verge Rev 中的灵活代理网关 ｜ 官方博客</title>
+    <meta name="description" content="全面解析 SOCKS5 协议在 Clash Verge Rev 中的角色与配置方法。从协议基础、认证方式、与 HTTP 代理的对比，到入站/出站实战和性能优化，帮助你彻底掌握 SOCKS5 并在代理客户端中发挥其最大价值。" />
+    <meta name="keywords" content="Clash Verge Rev SOCKS5, SOCKS5 代理, HTTP 代理对比, 代理协议, Mihomo SOCKS5, 端口转发, 链式代理" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/socks5-deep-dive.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="SOCKS5 深度解析：Clash Verge Rev 中的灵活代理网关" />
+    <meta property="og:description" content="协议基础、认证方式、与 HTTP 代理对比、入站/出站实战和性能优化。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/socks5-deep-dive.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-08-12T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-08-12T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="技术深潜" />
+    <meta property="article:tag" content="SOCKS5" />
+    <meta property="article:tag" content="代理协议" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SOCKS5 深度解析：Clash Verge Rev 中的灵活代理网关" />
+    <meta name="twitter:description" content="从协议原理到实战配置，彻底掌握 SOCKS5。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "SOCKS5 深度解析：Clash Verge Rev 中的灵活代理网关",
+            "description": "全面解析 SOCKS5 协议在 Clash Verge Rev 中的角色与配置方法。从协议基础、认证方式、与 HTTP 代理的对比，到入站/出站实战和性能优化。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-08-12",
+            "dateModified": "2026-08-12",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/socks5-deep-dive.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(57,210,192,0.15); color:var(--accent-cyan); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-cyan); background:rgba(57,210,192,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">技术深潜 · 协议解析</span>
+                <h1 class="article-title">SOCKS5 深度解析：Clash Verge Rev 中的灵活代理网关</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-08-12</span>
+                    <span>⏱️ 阅读时间约 11 分钟</span>
+                </div>
+                <div class="article-intro">
+                    SOCKS5 是网络代理领域最“安静”的协议之一——它不显山露水，却支撑着无数应用的底层通信。从浏览器的代理设置到命令行工具的环境变量，从游戏加速器到企业内部网络，SOCKS5 的身影无处不在。在 Clash Verge Rev 中，SOCKS5 既可作为<strong>入站端口</strong>接受外部连接，也可作为<strong>出站协议</strong>转发到代理节点。本文将深入解析 SOCKS5 的工作原理、配置方法以及在 Clash Verge Rev 生态系统中的最佳实践。
+                </div>
+            </header>
+
+            <!-- SOCKS5 基础 -->
+            <h2>📖 SOCKS5 协议基础：不只是“端口转发”</h2>
+            <p>SOCKS5 是 SOCKS 协议的第 5 个版本，定义于 RFC 1928。与 HTTP 代理只能处理 HTTP/HTTPS 流量不同，SOCKS5 工作在<strong>会话层</strong>，可以透明地转发任何基于 TCP 或 UDP 的应用数据——无论它是 HTTP、SSH、FTP、SMTP 还是游戏协议。这种“协议无关性”正是 SOCKS5 最大的优势。</p>
+            <p>SOCKS5 的连接流程包括三个关键步骤：</p>
+            <ol>
+                <li><strong>认证协商：</strong>客户端发送支持的认证方法列表（通常为“无认证”或“用户名/密码”），服务器选择一个方法并回复。</li>
+                <li><strong>请求建立：</strong>客户端发送目标地址（可以是域名或 IP）和端口。服务器建立到目标的连接，并返回绑定地址。</li>
+                <li><strong>数据中继：</strong>客户端和服务器之间开始透明地转发数据，直到连接关闭。</li>
+            </ol>
+            <p>对于 UDP 流量，SOCKS5 使用<strong>UDP 关联（UDP ASSOCIATE）</strong>机制：客户端先通过 TCP 控制连接请求一个 UDP 端口，随后通过该端口转发 UDP 数据报。这使得 SOCKS5 能完整支持游戏、语音通话等对 UDP 有强依赖的应用。</p>
+
+            <!-- SOCKS5 vs HTTP -->
+            <h2>⚖️ SOCKS5 vs HTTP 代理：何时选谁？</h2>
+            <p>Clash Verge Rev 默认同时提供 HTTP 代理和 SOCKS5 代理端口（默认分别为 7890 和 7891）。许多用户好奇：这两者到底有什么区别，我应该用哪个？</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>特性</th><th>HTTP 代理</th><th>SOCKS5 代理</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>工作层级</td><td>应用层（HTTP）</td><td>会话层（TCP/UDP）</td></tr>
+                        <tr><td>协议支持</td><td>仅 HTTP/HTTPS</td><td>所有 TCP/UDP 协议</td></tr>
+                        <tr><td>域名解析</td><td>由代理服务器解析</td><td>可选客户端或服务器解析</td></tr>
+                        <tr><td>UDP 支持</td><td>不支持（需 HTTP/3 CONNECT）</td><td>原生支持 UDP ASSOCIATE</td></tr>
+                        <tr><td>认证方式</td><td>Basic/Digest</td><td>无认证 / 用户名密码</td></tr>
+                        <tr><td>性能开销</td><td>需解析 HTTP 头</td><td>几乎无协议解析开销</td></tr>
+                        <tr><td>兼容性</td><td>浏览器、部分应用</td><td>几乎所有支持代理的应用</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>简单总结：如果你只需要让浏览器或支持 HTTP 代理的工具访问网页，HTTP 代理足以胜任。如果你需要让 SSH、游戏、数据库客户端、Docker 守护进程等通过代理，<strong>SOCKS5 是唯一选择</strong>。在 Clash Verge Rev 中，两个端口都默认开启，你可以根据应用需求选择使用。</p>
+            <div class="callout tip">
+                <strong>💡 最佳实践：</strong>大多数场景下推荐使用 Clash Verge Rev 的 TUN 模式代替手动配置 SOCKS5 代理。TUN 模式在系统层面接管所有流量，无需为每个应用单独设置代理，且同样支持 TCP/UDP。SOCKS5 端口更适用于需要精确控制的场景，或者在不支持 TUN 的系统上使用。
+            </div>
+
+            <!-- Clash Verge Rev 中的 SOCKS5 -->
+            <h2>🖥️ Clash Verge Rev 中的 SOCKS5 配置</h2>
+            <h3>入站（Inbound）：作为代理服务器</h3>
+            <p>Clash Verge Rev 默认监听一个 SOCKS5 入站端口（7891）。你可以在设置中修改端口号，或开启/关闭 SOCKS5 入站。任何支持 SOCKS5 代理的应用都可以通过配置 <code>127.0.0.1:7891</code> 来使用 Clash 的代理能力。常见场景包括：</p>
+            <ul>
+                <li><strong>命令行工具：</strong>如 <code>curl --socks5 127.0.0.1:7891 https://example.com</code>。</li>
+                <li><strong>数据库客户端：</strong>如 MongoDB Compass、DBeaver 等支持 SOCKS5 代理连接远程数据库。</li>
+                <li><strong>SSH 跳板：</strong>通过 ProxyCommand 使用 SOCKS5 连接跳板机。</li>
+            </ul>
+            <h3>出站（Outbound）：将 SOCKS5 作为上游代理</h3>
+            <p>如果你已经有一个 SOCKS5 代理服务器（例如自建的 Dante 或通过 SSH 动态转发创建的本地 SOCKS5 端口），可以将其作为 Clash Verge Rev 的一个<strong>出站节点</strong>。在配置文件中添加：</p>
+            <div class="code-block">proxies:
+            - name: "本地SOCKS5"
+            type: socks5
+            server: 127.0.0.1
+            port: 1080
+            username: ""
+            password: ""</div>
+            <p>这允许 Clash 将部分流量通过这个 SOCKS5 节点转发，实现链式代理。例如，你可以让 ChatGPT 的流量先经过 Clash，再转发到本地 SOCKS5 隧道，构建多层防护。</p>
+
+            <!-- 高级用法 -->
+            <h2>🧬 高级用法：SOCKS5 与 TUN 的协同</h2>
+            <p>在同时开启了 TUN 模式和 SOCKS5 入站的 Clash Verge Rev 中，有一个有趣的现象：某些应用可能同时通过系统代理设置指向 SOCKS5 端口，同时又被 TUN 模式捕获。这种双重代理并不可怕，因为 Mihomo 内核会智能处理——来自本机的连接在到达 TUN 接口之前就已经被 SOCKS5 端口接管，不会出现重复代理的情况。</p>
+            <p>更高级的用法是将 Clash 作为<strong>局域网网关</strong>。开启“允许局域网连接”后，其他设备（如手机、平板、游戏主机）可以将 Wi-Fi 代理设置为 Clash 所在设备的 IP 和 SOCKS5 端口，从而共享代理。相比 TUN 共享，SOCKS5 共享更轻量，适合仅需代理特定应用的场景。</p>
+
+            <!-- 安全与性能 -->
+            <h2>🔐 安全与性能考量</h2>
+            <p>SOCKS5 协议本身不提供加密——它只是转发原始数据。如果你通过 SOCKS5 端口连接到 Clash，而 Clash 的出站节点使用了加密协议（如 Shadowsocks、VLESS），那么数据在公网上的传输仍然是加密的。但如果你将 Clash 的 SOCKS5 端口暴露在公网上且未设置防火墙，则存在安全风险。</p>
+            <p>在性能方面，SOCKS5 的开销极低。由于它不解析应用层协议，仅做地址协商和透明转发，额外延迟通常在 1ms 以内，吞吐量接近直接连接。这也是为什么许多高性能代理方案选择 SOCKS5 作为中间跳板的原因。</p>
+
+            <!-- 常见问题 -->
+            <h2>🔧 常见问题与排查</h2>
+            <div class="callout">
+                <strong>Q：</strong>SOCKS5 连接正常但无法解析域名？<br>
+                <strong>A：</strong>在 SOCKS5 握手过程中，客户端可以选择将域名发送给服务器解析，或者自己先解析成 IP 再连接。如果客户端发送的是域名，而 Clash 的 DNS 配置有问题，就会导致解析失败。可以尝试在客户端设置中使用“远端 DNS”或“通过代理解析域名”。
+            </div>
+            <div class="callout">
+                <strong>Q：</strong>某些应用连接 SOCKS5 端口后提示“连接被拒绝”？<br>
+                <strong>A：</strong>检查 Clash Verge Rev 的 SOCKS5 端口是否已开启（默认 7891），以及防火墙是否放行了该端口。同时确认应用配置的地址是 <code>127.0.0.1</code> 而非 <code>localhost</code>（某些系统上两者解析不同）。
+            </div>
+            <div class="callout">
+                <strong>Q：</strong>UDP 流量通过 SOCKS5 代理后延迟变高？<br>
+                <strong>A：</strong>SOCKS5 UDP 需要额外的控制通道开销，但通常延迟增加不超过 10ms。如果延迟明显偏高，检查 Clash 的出站节点是否对 UDP 友好（某些协议如 VMess 对 UDP 的处理效率较低，建议使用 Shadowsocks 或 VLESS 作为 UDP 出口）。
+            </div>
+
+            <!-- 总结 -->
+            <h2>🏁 总结</h2>
+            <p>SOCKS5 是一个古老而强大的协议，它的简洁设计赋予了它惊人的灵活性和兼容性。在 Clash Verge Rev 中，SOCKS5 既是你连接外部世界的“万能接口”，也是你构建多层代理链的“乐高积木”。理解它、用好它，能让你在复杂的网络需求中游刃有余。如果你对 SOCKS5 还有更多疑问，或想分享你的独特用法，欢迎在 GitHub Discussions 中告诉我们。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/what-is-clash.html" class="related-card">
+                        <h4>What Is Clash? 面向初学者的 Clash Verge Rev 入门指南</h4>
+                        <p>2026-07-27 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/domain-vs-domain-suffix.html" class="related-card">
+                        <h4>Clash Verge Rev 规则详解：DOMAIN 与 DOMAIN-SUFFIX 的精准对决</h4>
+                        <p>2026-07-27 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-meta-architecture.html" class="related-card">
+                        <h4>Clash Meta 架构深度解析：Clash Verge Rev 内核设计全览</h4>
+                        <p>2026-07-22 · 技术深潜</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
