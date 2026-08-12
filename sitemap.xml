@@ -205,4 +205,17 @@
     <priority>0.7</priority>
   </url>
 
+    <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/maintenance-checklist.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+      <url>
+    <loc>https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/socks5-deep-dive.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
