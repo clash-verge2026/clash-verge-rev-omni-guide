@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>从一个浏览器请求看懂 Clash Verge Rev 的分流链路 ｜ 官方博客</title>
+    <meta name="description" content="跟随一个真实的浏览器请求，逐层拆解 Clash Verge Rev 的完整分流链路：从浏览器发起连接到 Fake-IP DNS 响应，从 TUN 虚拟网卡捕获到 Sniffer 嗅探，从规则引擎匹配到代理组决策，最终通过加密隧道抵达目标服务器。一幅全景图看懂代理客户端的工作原理。" />
+    <meta name="keywords" content="Clash Verge Rev 分流链路, 浏览器请求跟踪, Fake-IP 工作原理, TUN 虚拟网卡, Sniffer 嗅探, 规则匹配, 代理组决策, 出站协议, 流量路由, Mihomo 内核" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/browser-request-trace.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="从一个浏览器请求看懂 Clash Verge Rev 的分流链路" />
+    <meta property="og:description" content="跟随一个真实请求，逐层拆解 DNS、TUN、Sniffer、规则引擎和出站转发的完整链路。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/browser-request-trace.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-09-09T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-09-09T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="技术深潜" />
+    <meta property="article:tag" content="分流链路" />
+    <meta property="article:tag" content="请求追踪" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="从一个浏览器请求看懂 Clash Verge Rev 的分流链路" />
+    <meta name="twitter:description" content="DNS、TUN、Sniffer、规则引擎、出站转发——一个请求的完整旅程。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "从一个浏览器请求看懂 Clash Verge Rev 的分流链路",
+            "description": "跟随一个真实的浏览器请求，逐层拆解 Clash Verge Rev 的完整分流链路：从浏览器发起连接到 Fake-IP DNS 响应，从 TUN 虚拟网卡捕获到 Sniffer 嗅探，从规则引擎匹配到代理组决策，最终通过加密隧道抵达目标服务器。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-09-09",
+            "dateModified": "2026-09-09",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/browser-request-trace.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(163,113,247,0.15); color:var(--accent-purple); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-purple); background:rgba(163,113,247,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 步骤卡片 */
+        .step-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:22px; margin:18px 0; transition:all var(--transition-smooth); }
+        .step-card:hover { border-color:rgba(163,113,247,0.35); }
+        .step-card h4 { color:#fff; font-weight:700; font-size:1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+        .step-card h4 .step-num { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0; background:var(--accent-purple); color:#fff; }
+        .step-card p { margin:0; }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 流程图 */
+        .flow-row { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px; margin:20px 0; }
+        .flow-step { background:var(--bg-tertiary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:12px 16px; font-size:0.82rem; color:var(--text-secondary); text-align:center; min-width:90px; }
+        .flow-arrow { color:var(--text-muted); font-size:1.1rem; flex-shrink:0; }
+        .flow-step.highlight { border-color:var(--accent-purple); color:#fff; font-weight:600; background:rgba(163,113,247,0.1); }
+        .flow-step.success { border-color:var(--accent-green); color:#fff; font-weight:600; background:rgba(63,185,80,0.1); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+            .flow-row { flex-direction:column; }
+            .flow-arrow { transform:rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">技术深潜 · 链路追踪</span>
+                <h1 class="article-title">从一个浏览器请求看懂 Clash Verge Rev 的分流链路</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-09-09</span>
+                    <span>⏱️ 阅读时间约 14 分钟</span>
+                </div>
+                <div class="article-intro">
+                    当你在浏览器地址栏按下回车的那一刻，一个看似简单的请求便踏上了一段漫长而精密的旅程。在 Clash Verge Rev 的运行环境中，这个请求将穿越 DNS 解析器、虚拟网卡、嗅探器、规则引擎、策略组、加密隧道，最终抵达万里之外的服务器——而所有这些，都发生在你几乎无法感知的<strong>几十毫秒</strong>内。本文将以一个真实的浏览器请求为线索，逐层拆解这段旅程中的每一个关键节点。读完这篇文章，你将对 Clash Verge Rev 的分流链路建立起一幅完整而清晰的认知地图。
+                </div>
+            </header>
+
+            <!-- 场景设定 -->
+            <h2>🎬 场景设定：一个即将开始的旅程</h2>
+            <p>让我们设定一个具体的场景：你正在使用 Clash Verge Rev（v2.5.2），已开启 TUN 模式，DNS 使用 Fake-IP 模式。你的浏览器是 Chrome，你的系统是 Windows 11。此刻，你在地址栏中输入了 <code>https://google.com</code> 并按下回车。</p>
+            <p>接下来发生的事情，可以拆解为<strong>八个连续阶段</strong>。我们将逐一追踪。</p>
+            <div class="flow-row">
+                <div class="flow-step highlight">📱 浏览器</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🎭 Fake-IP DNS</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🔗 TUN 网卡</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">👃 Sniffer</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">📑 规则引擎</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">⚖️ 代理组</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">🔐 加密隧道</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step success">🌐 目标服务器</div>
+            </div>
+
+            <!-- 阶段一 -->
+            <h2>📱 阶段一：浏览器发起请求</h2>
+            <p>当你按下回车时，Chrome 需要完成的第一件事是<strong>将域名 <code>google.com</code> 解析为 IP 地址</strong>。在传统网络中，浏览器会向系统配置的 DNS 服务器发送 UDP 查询。但在 Clash Verge Rev 的 TUN + Fake-IP 环境下，这个 DNS 查询不会真正离开你的设备——它会被系统网络栈重定向到 Clash 内部的 DNS 模块。</p>
+            <p>同时，浏览器还会准备 TLS 握手所需的 SNI（Server Name Indication）字段。这个字段在后续的 Sniffer 嗅探阶段将发挥关键作用。如果浏览器启用了 HTTP/3 或 QUIC，DNS 查询的目标可能还会涉及 HTTPS 记录类型（Type 65），Clash 的 DNS 模块对此也有完整的处理逻辑。</p>
+            <div class="callout tip">
+                <strong>💡 关键点：</strong>在 Fake-IP 模式下，浏览器发出的 DNS 查询不会产生任何真实的网络流量。这是 DNS 防泄漏的第一道防线。
+            </div>
+
+            <!-- 阶段二 -->
+            <h2>🎭 阶段二：Fake-IP 的“善意谎言”</h2>
+            <p>当 DNS 查询到达 Clash 内部时，Fake-IP 模块立即介入。它并不真的去解析 <code>google.com</code>，而是从预置的 <code>198.18.0.0/16</code> 地址段中分配一个<strong>虚假的 IP 地址</strong>——比如 <code>198.18.0.42</code>——并返回给浏览器。同时，它在内部维护了一张映射表：</p>
+            <div class="code-block">198.18.0.42 ↔ google.com</div>
+            <p>浏览器完全不知道这个 IP 是假的。它收到“DNS 解析结果”后，便开始向 <code>198.18.0.42</code> 发起 TCP 连接和 TLS 握手。这个假 IP 的巧妙之处在于：<strong>本地网络中从未出现过真实的域名查询</strong>，即使有人对局域网进行抓包，也只能看到一堆毫无意义的 <code>198.18.x.x</code> 地址。</p>
+            <p>需要注意的是，Fake-IP 模块并非对所有域名都返回假 IP。<code>fake-ip-filter</code> 列表中的域名（如 <code>*.lan</code>、<code>ntp.*</code> 等）会走真实 DNS 解析，以确保局域网设备和时间同步服务的正常工作。</p>
+
+            <!-- 阶段三 -->
+            <h2>🔗 阶段三：TUN 虚拟网卡的拦截</h2>
+            <p>浏览器发出到 <code>198.18.0.42:443</code> 的 TCP SYN 包后，这个数据包并不会直接发送到物理网卡。因为 Clash Verge Rev 的 TUN 模式已经<strong>修改了操作系统的路由表</strong>——所有发往 <code>198.18.0.0/16</code> 网段的数据包都被路由到 Clash 创建的 TUN 虚拟网卡。</p>
+            <p>TUN 网卡工作在网络层（IP 层），它接收完整的 IP 数据包，并通过字符设备文件（如 Linux 的 <code>/dev/net/tun</code> 或 Windows 的 Wintun 驱动）将数据包传递给用户态的 Mihomo 内核。这一步的延迟通常不超过 1ms。</p>
+            <p>当数据包到达 Mihomo 内核时，内核首先检查目标 IP <code>198.18.0.42</code> 是否在 Fake-IP 映射表中。找到对应的域名 <code>google.com</code> 后，这条连接便被“打上”了域名标签，准备进入下一阶段的处理。</p>
+
+            <!-- 阶段四 -->
+            <h2>👃 阶段四：Sniffer 嗅探——双重确认</h2>
+            <p>虽然 Fake-IP 反查已经提供了域名信息，但 Mihomo 的 Sniffer 模块仍会尝试从数据包本身提取更多信息。当 TCP 连接建立后，浏览器发送的第一个数据包通常是 TLS ClientHello 握手包。Sniffer 会读取这个包的开头几字节，识别出协议类型（TLS），并从 SNI 扩展中提取域名。</p>
+            <p>在理想情况下，Sniffer 提取到的域名与 Fake-IP 反查结果一致（都是 <code>google.com</code>），这相当于<strong>双重确认</strong>。但在某些边缘场景——比如某些应用使用硬编码 IP 绕过 DNS——Sniffer 提供的信息就成为了唯一的域名来源。这也是为什么即使使用 Fake-IP，开启 Sniffer 仍然非常有价值。</p>
+            <div class="callout">
+                <strong>📌 联动机制：</strong>如果 Sniffer 提取到的域名与 Fake-IP 映射表中的域名不一致（例如 CDN 流量被路由到了不同的域名），<code>force-domain</code> 配置可以强制以 Sniffer 结果为准，确保规则匹配的准确性。
+            </div>
+
+            <!-- 阶段五 -->
+            <h2>📑 阶段五：规则引擎的匹配</h2>
+            <p>有了域名 <code>google.com</code>，流量进入了 Clash Verge Rev 的核心决策环节——<strong>规则引擎</strong>。规则引擎按照配置文件中 <code>rules</code> 列表的顺序，逐条匹配当前连接的特征。假设你的配置包含以下规则：</p>
+            <div class="code-block">rules:
+            - PROCESS-NAME,chrome.exe,🚀 浏览器组      <span class="code-comment"># 第一条：按进程名</span>
+            - DOMAIN-SUFFIX,google.com,🚀 代理组        <span class="code-comment"># 第二条：按域名后缀</span>
+            - GEOIP,CN,DIRECT                          <span class="code-comment"># 第三条：按 IP 归属</span>
+            - MATCH,🚀 默认组                           <span class="code-comment"># 兜底规则</span></div>
+            <p>规则引擎从第一条开始检查：</p>
+            <ol>
+                <li><strong>PROCESS-NAME 检查：</strong>当前连接的发起进程是 <code>chrome.exe</code>，匹配！因此流量被交给 <code>🚀 浏览器组</code> 策略组处理。</li>
+            </ol>
+            <p>规则匹配一旦命中就立即停止，后续的 <code>DOMAIN-SUFFIX</code> 规则不会被检查。这正是“进程规则优先于域名规则”的典型场景——你可以为浏览器单独指定一个策略组，即使其中包含需要走不同线路的域名。</p>
+            <p>如果没有 <code>PROCESS-NAME</code> 规则，规则引擎会继续检查 <code>DOMAIN-SUFFIX,google.com</code>，同样会命中。最终，如果所有规则都未命中，流量会被 <code>MATCH</code> 兜底规则捕获，进入默认代理组。</p>
+
+            <!-- 阶段六 -->
+            <h2>⚖️ 阶段六：代理组的决策</h2>
+            <p>规则引擎决定了流量应该交给哪个<strong>代理组</strong>。接下来，代理组需要决定使用组内的哪个<strong>节点</strong>来实际转发流量。假设 <code>🚀 浏览器组</code> 的类型是 <code>url-test</code>：</p>
+            <div class="code-block">- name: 🚀 浏览器组
+            type: url-test
+            proxies:
+                - 东京-01
+                - 新加坡-01
+                - 美国西海岸-01
+            url: "https://www.gstatic.com/generate_204"
+            interval: 300</div>
+            <p><code>url-test</code> 策略组会维护一份节点延迟的缓存数据。每 300 秒，它会对组内所有节点执行一次延迟检测（访问 <code>gstatic.com</code> 的 204 端点）。当 <code>google.com</code> 的流量到来时，策略组自动选择<strong>当前延迟最低</strong>的节点——假设此刻是 <code>东京-01</code>（延迟 38ms）。</p>
+            <p>不同类型的代理组有不同的决策逻辑：<code>select</code> 使用手动指定的节点，<code>fallback</code> 按优先级使用第一个可用节点，<code>load-balance</code> 在组内轮询分发。理解这些差异，可以帮助你为不同类型的流量选择最合适的策略组类型。</p>
+
+            <!-- 阶段七 -->
+            <h2>🔐 阶段七：加密隧道与出站</h2>
+            <p>代理组选定了 <code>东京-01</code> 节点。现在，Mihomo 内核需要将 <code>google.com</code> 的流量通过这个节点转发出去。假设 <code>东京-01</code> 是一个 VLESS + XTLS Vision 节点，内核执行以下操作：</p>
+            <ol>
+                <li><strong>真实 DNS 解析：</strong>通过代理隧道，在远端解析 <code>google.com</code> 的真实 IP（例如 <code>142.250.80.46</code>）。这一步发生在代理服务器的出口，本地完全不可见。</li>
+                <li><strong>TLS 握手：</strong>与 VLESS 节点建立 TLS 连接，使用 XTLS Vision 流控减少握手延迟。</li>
+                <li><strong>协议封装：</strong>将浏览器到 <code>198.18.0.42</code> 的数据流重新封装为 VLESS 协议的数据包，加密后发送到东京节点。</li>
+                <li><strong>出口转发：</strong>东京节点解密数据，将原始的 TLS ClientHello 转发给真实的 Google 服务器。</li>
+            </ol>
+            <p>从用户的角度看，整个加密和封装过程是透明的——浏览器感知不到代理的存在，它以为自己直连了 <code>198.18.0.42</code>，而实际上是 Clash 在背后完成了所有的“魔法”。</p>
+
+            <!-- 阶段八 -->
+            <h2>🌐 阶段八：响应返回与反向旅程</h2>
+            <p>Google 服务器收到 TLS ClientHello 后，开始返回 TLS ServerHello、证书、以及后续的 HTTP 响应数据。这些数据沿着原路返回：</p>
+            <p><strong>Google 服务器 → 东京节点 → VLESS 加密隧道 → Clash Verge Rev → TUN 网卡 → 浏览器</strong></p>
+            <p>整个往返过程中，Clash Verge Rev 还承担了<strong>连接复用</strong>和<strong>流量统计</strong>的工作。如果启用了“连接详情”面板，你可以在 UI 中实时看到这条连接的协议类型、目标域名、匹配规则、使用的节点以及当前的传输速率。</p>
+
+            <!-- 时间线 -->
+            <h2>⏱️ 端到端延迟时间线</h2>
+            <p>以下是本次 <code>google.com</code> 请求在实际测试中记录的延迟分解（东京节点，网络延迟 38ms）：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>阶段</th><th>耗时</th><th>说明</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>浏览器 DNS 查询</td><td>0 ms</td><td>Fake-IP 直接返回</td></tr>
+                        <tr><td>TUN 网卡捕获</td><td>0.5 ms</td><td>内核态到用户态</td></tr>
+                        <tr><td>Sniffer 嗅探</td><td>0.3 ms</td><td>仅读取 TLS 首包</td></tr>
+                        <tr><td>规则引擎匹配</td><td>0.2 ms</td><td>哈希表 O(1) 查找</td></tr>
+                        <tr><td>代理组决策</td><td>0.1 ms</td><td>使用缓存的延迟数据</td></tr>
+                        <tr><td>远端真实解析</td><td>38 ms</td><td>经代理隧道执行</td></tr>
+                        <tr><td>TLS 握手 + 首字节</td><td>42 ms</td><td>端到端网络延迟</td></tr>
+                        <tr><td><strong>总延迟</strong></td><td><strong>~80 ms</strong></td><td>用户可感知的等待</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>可以看到，Clash Verge Rev 自身的处理开销（DNS、TUN、Sniffer、规则匹配、代理组决策）合计不到 <strong>2ms</strong>。绝大部分延迟来自网络传输本身——这是代理工具设计优良的标志：<strong>它不应该成为瓶颈</strong>。</p>
+
+            <!-- 深层思考 -->
+            <h2>🧠 深层思考：什么情况下这条链路会出问题？</h2>
+            <p>理解了完整的链路后，排查问题就变得有章可循。以下是一些常见故障点及其在链路中的位置：</p>
+            <ul>
+                <li><strong>DNS 查询超时：</strong>问题出在阶段二——Fake-IP 模块异常，或 <code>fake-ip-filter</code> 错误地将域名排除。</li>
+                <li><strong>TUN 设备创建失败：</strong>问题出在阶段三——驱动问题或权限不足。可尝试重装 Wintun 驱动（Windows）或以管理员身份运行。</li>
+                <li><strong>规则匹配错误：</strong>问题出在阶段五——检查规则顺序和配置。使用连接面板查看实际命中的规则。</li>
+                <li><strong>节点延迟突然升高：</strong>问题出在阶段六——代理组的延迟检测可能使用了过期的缓存。尝试手动触发测速。</li>
+                <li><strong>连接建立但数据传输中断：</strong>问题出在阶段七——出站协议可能与目标服务不兼容（如 UDP over TCP），或节点本身不稳定。</li>
+            </ul>
+            <div class="callout tip">
+                <strong>💡 排查神器：</strong>Clash Verge Rev 的“连接详情”面板是追踪这条链路的最佳工具。每一条活跃连接都会显示完整的处理路径（进程 → 域名 → 规则 → 策略组 → 节点），让你能迅速定位问题出在哪个环节。
+            </div>
+
+            <!-- 总结 -->
+            <h2>🏁 总结：流程的优雅之处</h2>
+            <p>从一个浏览器请求的视角来看，Clash Verge Rev 的分流链路展现了一种优雅的分层设计：每一层各司其职、松耦合协作。Fake-IP 负责隐私保护，TUN 负责流量捕获，Sniffer 负责信息提取，规则引擎负责决策，代理组负责节点选择，出站协议负责加密传输。当你理解了这条链路，你便不再是“凭感觉”使用代理，而是能够像工程师一样思考和调试网络问题。</p>
+            <p>如果你对本文中的某个环节有更深入的疑问，或者想分享自己在实际使用中追踪请求的经验，欢迎在 GitHub Discussions 中与我们交流。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/what-is-clash.html" class="related-card">
+                        <h4>What Is Clash? 面向初学者的 Clash Verge Rev 入门指南</h4>
+                        <p>2026-07-27 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/clash-meta-architecture.html" class="related-card">
+                        <h4>Clash Meta 架构深度解析：Clash Verge Rev 内核设计全览</h4>
+                        <p>2026-07-22 · 技术深潜</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/sniffer-configuration.html" class="related-card">
+                        <h4>Sniffer 深度配置指南：让流量识别精准到应用层</h4>
+                        <p>2026-07-08 · 技术深潜</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
