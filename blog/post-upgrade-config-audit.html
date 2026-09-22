@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>升级新版本之后，哪些旧配置最值得重新检查 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="Clash Verge Rev 升级新版本后，旧配置往往隐藏着不易察觉的隐患。本文系统梳理 DNS、TUN 模式、Sniffer、规则顺序、代理组参数、订阅间隔、性能设置与安全选项等八大类最值得重新检查的配置项，附带版本演进背景、问题现象与修正方案，帮你避免升级后的性能退化与隐蔽故障。" />
+    <meta name="keywords" content="Clash Verge Rev 升级配置, 旧配置检查, DNS 配置更新, TUN 模式参数, Sniffer 配置, 规则顺序, 代理组优化, 订阅间隔, 性能调优, 安全审计" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/post-upgrade-config-audit.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="升级新版本之后，哪些旧配置最值得重新检查" />
+    <meta property="og:description" content="八大类最值得重新检查的旧配置项，附带版本演进背景、问题现象与修正方案。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/post-upgrade-config-audit.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-09-22T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-09-22T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="教程指南" />
+    <meta property="article:tag" content="配置审计" />
+    <meta property="article:tag" content="版本升级" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="升级新版本之后，哪些旧配置最值得重新检查" />
+    <meta name="twitter:description" content="DNS、TUN、Sniffer、规则、代理组——升级后必查的八项配置。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "升级新版本之后，哪些旧配置最值得重新检查",
+            "description": "Clash Verge Rev 升级新版本后，旧配置往往隐藏着不易察觉的隐患。本文系统梳理 DNS、TUN 模式、Sniffer、规则顺序、代理组参数、订阅间隔、性能设置与安全选项等八大类最值得重新检查的配置项。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-09-22",
+            "dateModified": "2026-09-22",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/post-upgrade-config-audit.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(210,153,29,0.15); color:var(--accent-orange); margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid var(--accent-orange); background:rgba(210,153,29,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 审计卡片 */
+        .audit-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:24px; margin:18px 0; transition:all var(--transition-smooth); }
+        .audit-card:hover { border-color:rgba(210,153,29,0.35); }
+        .audit-card h4 { color:#fff; font-weight:700; font-size:1.05rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+        .audit-card h4 .audit-num { width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0; background:var(--accent-orange); color:#fff; }
+        .audit-card p { margin-bottom:10px; }
+        .audit-card p:last-child { margin-bottom:0; }
+        .risk-tag { font-size:0.7rem; font-weight:600; padding:2px 8px; border-radius:8px; }
+        .risk-high { background:rgba(248,81,73,0.15); color:#f85149; }
+        .risk-mid { background:rgba(210,153,29,0.15); color:#d2991d; }
+        .risk-low { background:rgba(63,185,80,0.15); color:#3fb950; }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:500px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">教程指南 · 配置审计</span>
+                <h1 class="article-title">升级新版本之后，哪些旧配置最值得重新检查</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-09-22</span>
+                    <span>⏱️ 阅读时间约 13 分钟</span>
+                </div>
+                <div class="article-intro">
+                    你刚刚点击了“检查更新”，Clash Verge Rev 顺利升级到了新版本。界面上没有报错，代理也能正常工作——一切看起来都很完美。但你可能没有意识到：<strong>那些从旧版本继承下来的配置，此刻可能正在悄悄拖累你的体验</strong>。有的参数在新内核中已经改变了默认语义，有的规则顺序在新版规则引擎下产生了不同的匹配结果，有的 DNS 设置在 Fake-IP 双栈补全后变得不再最优。本文将系统梳理升级后最值得重新检查的八大类配置，帮你把“看起来正常”变成“真正最优”。
+                </div>
+            </header>
+
+            <!-- 为什么要审计 -->
+            <h2>🤔 为什么升级后需要配置审计？</h2>
+            <p>软件升级通常有两种类型：<strong>功能性升级</strong>（新增功能）和<strong>行为性升级</strong>（改变现有功能的默认行为或实现方式）。后者往往更加隐蔽——它不会在界面上提示你，却可能让原本精心调优的配置产生微妙的变化。</p>
+            <p>以 Clash Verge Rev 的近期版本为例，v2.5.2 中就有多项改动会影响旧配置的行为：</p>
+            <ul>
+                <li><strong>Fake-IP 双栈补全：</strong>IPv6 映射表现在会被创建，但如果你旧的 <code>fake-ip-filter</code> 没有为 IPv6 环境做出调整，部分域名可能走错路径。</li>
+                <li><strong>TUN 启动流程异步化：</strong>启动时序改变意味着某些依赖“TUN 就绪后才执行”的配置需要重新验证。</li>
+                <li><strong>订阅下载层的编码检测：</strong>gzip 解压现在自动进行，但如果你之前手动添加了 <code>User-Agent</code> 伪装来规避问题，这个伪装可能反而导致服务器返回意外内容。</li>
+                <li><strong>Sniffer 与 Fake-IP 的协作逻辑微调：</strong>两者的优先级在某些边界情况下发生了变化。</li>
+            </ul>
+            <p>因此，升级后的配置审计不是“多此一举”，而是保证体验一致性的必要步骤。下面我们按重要程度逐一展开。</p>
+
+            <!-- 1. DNS 配置 -->
+            <h2>🛡️ 检查一：DNS 配置——最容易“静默退化”的一环</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">1</span> DNS 增强模式与 Fake-IP 范围 <span class="risk-tag risk-high">高优先级</span></h4>
+                <p>DNS 是代理链路中最复杂也最容易出问题的环节。升级后，请优先检查以下几点：</p>
+                <ul>
+                    <li><strong>确认 <code>enhanced-mode</code> 仍然是 <code>fake-ip</code>：</strong>某些旧配置可能在迁移过程中被重置为 <code>redir-host</code>，导致 DNS 防泄漏能力下降。</li>
+                    <li><strong>检查 <code>fake-ip-range6</code>：</strong>如果你在使用 IPv6，新版本支持了 <code>fake-ip-range6</code> 的可视化配置。确认它存在且不与 IPv4 范围冲突（默认 <code>fc00::/18</code>）。</li>
+                    <li><strong>审查 <code>fake-ip-filter</code>：</strong>新增的 IPv6 映射意味着某些原本只考虑 IPv4 的排除规则可能不再充分。例如，局域网设备如果通过 IPv6 访问，可能需要在过滤列表中补充对应的域名后缀。</li>
+                </ul>
+                <div class="code-block"><span class="code-comment"># 推荐的 DNS 配置片段</span>
+                dns:
+                enable: true
+                enhanced-mode: fake-ip
+                fake-ip-range: 198.18.0.1/16
+                fake-ip-range6: fc00::/18
+                fake-ip-filter:
+                    - '*.lan'
+                    - '*.localdomain'
+                    - 'ntp.*'
+                    - 'time.*'
+                    - '*.pool.ntp.org'</div>
+            </div>
+            <div class="audit-card">
+                <h4><span class="audit-num">2</span> DoH/DoT 端点有效性 <span class="risk-tag risk-mid">中优先级</span></h4>
+                <p>互联网上的公共 DNS 服务并非永久稳定。一些曾经流行的 DoH 端点可能已经变更地址、调整了认证策略，甚至停止服务。升级后建议逐个验证：</p>
+                <ul>
+                    <li>国内 DNS 是否仍能正常响应（如 <code>https://doh.pub/dns-query</code>）。</li>
+                    <li>国外 DNS 是否仍能通过代理隧道访问（如 <code>https://dns.google/dns-query</code>）。</li>
+                    <li><code>fallback-filter</code> 中的 <code>geoip-code</code> 和 <code>ipcidr</code> 是否与当前网络环境匹配。</li>
+                </ul>
+                <p>验证方法：在连接面板中观察 DNS 查询的连接是否成功建立，或者访问 <a href="https://dnsleaktest.com" target="_blank" rel="noopener" style="color:#58a6ff;">dnsleaktest.com</a> 确认解析路径。</p>
+            </div>
+
+            <!-- 2. TUN 模式 -->
+            <h2>🔗 检查二：TUN 模式参数——启动时序改变后的重新验证</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">3</span> stack 与 auto-route 组合 <span class="risk-tag risk-high">高优先级</span></h4>
+                <p>v2.5.2 将 TUN 启动流程改为异步事件驱动后，某些参数组合的行为可能发生细微变化：</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>参数</th><th>旧版本行为</th><th>新版本建议</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>stack</code></td><td>system / gvisor / mixed</td><td>推荐 <code>mixed</code>，TCP 走系统栈、UDP 走 gVisor</td></tr>
+                            <tr><td><code>auto-route</code></td><td>同步配置路由表</td><td>保持 <code>true</code>，但确认未与其他 VPN 冲突</td></tr>
+                            <tr><td><code>auto-detect-interface</code></td><td>同步检测</td><td>保持 <code>true</code>，避免多网卡环境下路由错误</td></tr>
+                            <tr><td><code>strict-route</code></td><td>可选</td><td>建议开启，防止流量绕过 TUN 接口</td></tr>
+                            <tr><td><code>dns-hijack</code></td><td><code>["any:53"]</code></td><td>确认包含 IPv6 劫持（新版已支持）</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>特别需要注意的是 <code>auto-detect-interface</code>。如果你在笔记本上经常切换 Wi-Fi 和有线网络，升级后建议重新测试 TUN 是否能在切换后正确恢复。</p>
+            </div>
+            <div class="audit-card">
+                <h4><span class="audit-num">4</span> 局域网共享设置 <span class="risk-tag risk-mid">中优先级</span></h4>
+                <p>v2.5.2 修复了局域网共享的核心问题（入站接口创建与广播逻辑），但这也意味着<strong>你之前为了绕过该问题而做的一些临时调整可能已经不再需要</strong>：</p>
+                <ul>
+                    <li>如果你曾手动关闭“允许局域网连接”以规避问题，现在可以重新开启。</li>
+                    <li>如果你曾添加过特殊的路由规则来强制局域网接口工作，建议移除这些规则，让内核自动处理。</li>
+                    <li>重新验证其他设备（手机、平板）是否能通过你的 IP 和代理端口正常上网。</li>
+                </ul>
+            </div>
+
+            <!-- 3. Sniffer -->
+            <h2>👃 检查三：Sniffer 配置——与 Fake-IP 的协作边界</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">5</span> sniffing 协议列表与 force-domain <span class="risk-tag risk-mid">中优先级</span></h4>
+                <p>Sniffer 是流量识别的“第二道防线”。升级后建议检查：</p>
+                <ul>
+                    <li><strong><code>sniffing</code> 列表是否过于宽泛：</strong>如果你之前开启了全部协议（tls、http、quic、ssh、ftp），但实际只使用 HTTPS，可以精简为 <code>tls</code> 和 <code>http</code>，减少不必要的首包分析开销。</li>
+                    <li><strong><code>force-domain</code> 列表是否仍准确：</strong>某些域名可能已经变更了 CDN 或服务架构，强制覆盖可能导致分流错误。建议逐条验证。</li>
+                    <li><strong><code>port-whitelist</code> 是否覆盖了常用端口：</strong>确认 443、8443、80 等端口在列表中，避免 HTTPS 流量无法被嗅探。</li>
+                </ul>
+                <div class="callout tip">
+                    <strong>💡 验证方法：</strong>在连接面板中查看使用 IP 直连的流量，确认它们被 Sniffer 正确识别到了域名。如果显示的域名是 IP 而非域名，说明 Sniffer 未生效或需要调整配置。
+                </div>
+            </div>
+
+            <!-- 4. 规则顺序 -->
+            <h2>📑 检查四：规则顺序与规则集更新</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">6</span> 规则优先级与 PROCESS-NAME 位置 <span class="risk-tag risk-high">高优先级</span></h4>
+                <p>新版规则引擎在匹配效率上有显著优化，但<strong>规则的语义顺序要求没有改变</strong>——从上到下匹配，命中即停止。升级后请重点检查：</p>
+                <ul>
+                    <li><strong>PROCESS-NAME 规则是否仍在前部：</strong>如果你新增了域名规则但没有放在进程规则之前，可能导致进程规则被“吃掉”，应用级分流失效。</li>
+                    <li><strong>DOMAIN 与 DOMAIN-SUFFIX 的相对位置：</strong>精确规则应在泛域名规则之前，否则精确规则永远不会被匹配。</li>
+                    <li><strong>RULE-SET 的引入位置：</strong>远程规则集通常包含大量 DOMAIN-SUFFIX，建议放在自定义精确规则之后、GEOIP 之前。</li>
+                </ul>
+                <div class="code-block"><span class="code-comment"># 推荐的规则顺序结构</span>
+                rules:
+                - PROCESS-NAME, chrome.exe, 🚀 浏览器组      <span class="code-comment"># 1. 进程规则最优先</span>
+                - DOMAIN, api.openai.com, 🔑 API专线        <span class="code-comment"># 2. 精确域名例外</span>
+                - RULE-SET, ai-services, 🚀 AI-Proxy       <span class="code-comment"># 3. 远程规则集</span>
+                - DOMAIN-SUFFIX, google.com, 🚀 代理         <span class="code-comment"># 4. 泛域名规则</span>
+                - GEOIP,CN,DIRECT                          <span class="code-comment"># 5. 地理分流</span>
+                - MATCH,🚀 默认代理                          <span class="code-comment"># 6. 兜底</span></div>
+            </div>
+            <div class="audit-card">
+                <h4><span class="audit-num">7</span> RULE-SET 更新间隔与缓存 <span class="risk-tag risk-low">低优先级</span></h4>
+                <p>新版本对 RULE-SET 的加载和缓存做了优化。建议检查：</p>
+                <ul>
+                    <li><code>interval</code> 是否设置合理（推荐 86400 秒，即每天更新一次）。</li>
+                    <li>远程规则集的 URL 是否仍然有效（某些社区维护的规则集可能已经迁移仓库）。</li>
+                    <li><code>path</code> 指向的本地缓存目录是否有写入权限。</li>
+                </ul>
+            </div>
+
+            <!-- 5. 代理组 -->
+            <h2>⚖️ 检查五：代理组参数与节点列表</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">8</span> 策略组类型与测速 URL <span class="risk-tag risk-mid">中优先级</span></h4>
+                <p>升级后，代理组的行为逻辑可能因内核优化而略有变化。请检查：</p>
+                <ul>
+                    <li><strong>url-test 的测速 URL 是否仍可访问：</strong>一些老旧的测速端点（如 <code>http://www.gstatic.com/generate_204</code>）在某些网络环境下可能不稳定，建议使用 <code>https://www.gstatic.com/generate_204</code>。</li>
+                    <li><strong>interval 是否过于频繁：</strong>如果设置为 60 秒或更短，会导致频繁测速消耗流量。建议 300 秒起步。</li>
+                    <li><strong>tolerance 容差值：</strong>如果你之前为了“锁定最优节点”设置了很小的容差，可能导致节点频繁切换。新版建议适当放宽至 50-100ms。</li>
+                </ul>
+            </div>
+            <div class="audit-card">
+                <h4><span class="audit-num">9</span> 节点列表中是否存在已失效节点 <span class="risk-tag risk-low">低优先级</span></h4>
+                <p>订阅更新可能会带入新的节点，但旧节点的残留也可能导致问题：</p>
+                <ul>
+                    <li>长期超时的节点会拖慢策略组的测速过程。</li>
+                    <li>名称重复的节点可能导致规则引用混乱。</li>
+                    <li>某些节点的协议在新内核中已不再推荐使用（如旧版 VMess 的某些传输方式）。</li>
+                </ul>
+                <p>建议在代理页面中筛选出连续多次测速失败的节点，从策略组中移除。</p>
+            </div>
+
+            <!-- 6. 性能参数 -->
+            <h2>⚡ 检查六：性能相关参数</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">10</span> geodata-mode 与缓存策略 <span class="risk-tag risk-low">低优先级</span></h4>
+                <p>如果你之前为了降低内存占用而设置了 <code>geodata-mode: memconservative</code>，升级后可以重新评估：</p>
+                <ul>
+                    <li>新版内核在 GeoIP 数据加载上做了优化，<code>memconservative</code> 的必要性可能降低。</li>
+                    <li>如果设备内存充足（≥8GB），使用默认的 <code>standard</code> 模式可以获得更快的 IP 归属判断速度。</li>
+                    <li>检查 <code>profile</code> 中的 <code>store-selected</code> 和 <code>store-fake-ip</code> 是否开启——它们能让重启后保留节点选择和 Fake-IP 映射。</li>
+                </ul>
+            </div>
+            <div class="audit-card">
+                <h4><span class="audit-num">11</span> 端口与入站监听 <span class="risk-tag risk-mid">中优先级</span></h4>
+                <p>检查 HTTP、SOCKS5、混合端口的配置是否与你的其他软件冲突：</p>
+                <ul>
+                    <li>确认 <code>port</code>（HTTP）、<code>socks-port</code>（SOCKS5）、<code>mixed-port</code>（混合）没有重复。</li>
+                    <li>确认 <code>allow-lan</code> 是否仅在需要时开启。</li>
+                    <li>如果你之前修改过 <code>bind-address</code>，确认新版本没有改变默认绑定行为。</li>
+                </ul>
+            </div>
+
+            <!-- 7. 安全 -->
+            <h2>🔐 检查七：安全相关配置</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">12</span> 外部控制器与密钥 <span class="risk-tag risk-high">高优先级</span></h4>
+                <p>如果你使用了 Clash Verge Rev 的“外部控制器”（External Controller）功能，用于第三方工具或面板连接，请务必检查：</p>
+                <ul>
+                    <li><strong><code>external-controller</code> 是否绑定在 <code>127.0.0.1</code>：</strong>绑定在 <code>0.0.0.0</code> 会让局域网内任何设备都能访问控制接口，存在严重安全风险。</li>
+                    <li><strong><code>secret</code> 是否设置了强密码：</strong>如果为空，任何能访问该端口的人都可以修改你的代理配置。</li>
+                    <li><strong>CORS 配置是否过于宽松：</strong>避免使用 <code>*</code> 作为允许来源。</li>
+                </ul>
+                <div class="callout warning">
+                    <strong>⚠️ 安全提醒：</strong>升级后如果默认配置发生了变化，外部控制器的绑定地址可能被重置。请在“设置 → 外部控制”中确认一次。
+                </div>
+            </div>
+
+            <!-- 8. 界面与偏好 -->
+            <h2>🎨 检查八：界面偏好与通知设置</h2>
+            <div class="audit-card">
+                <h4><span class="audit-num">13</span> 主题、托盘与快捷键 <span class="risk-tag risk-low">低优先级</span></h4>
+                <p>新版可能新增或调整了界面选项，值得花两分钟重新审视：</p>
+                <ul>
+                    <li><strong>托盘菜单：</strong>新版支持禁用在托盘中显示特定代理组。如果你有多个代理组，可以精简托盘列表。</li>
+                    <li><strong>通知弹窗位置：</strong>如果你之前觉得通知总是遮挡内容，现在可以自定义弹窗位置（四个角落任选）。</li>
+                    <li><strong>全局快捷键：</strong>检查是否有快捷键与你的其他软件冲突。</li>
+                    <li><strong>主题色与圆角：</strong>如果你追求个性化，新版提供了更丰富的主题定制选项。</li>
+                </ul>
+            </div>
+
+            <!-- 审计清单速查表 -->
+            <h2>📋 审计清单速查表</h2>
+            <p>为了便于执行，我们将上述所有检查项整理为一张可打印的清单：</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>检查项</th><th>优先级</th><th>预计耗时</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>DNS 增强模式与 Fake-IP 范围</td><td><span class="risk-tag risk-high">高</span></td><td>2 分钟</td></tr>
+                        <tr><td>2</td><td>DoH/DoT 端点有效性</td><td><span class="risk-tag risk-mid">中</span></td><td>2 分钟</td></tr>
+                        <tr><td>3</td><td>TUN stack 与 auto-route 组合</td><td><span class="risk-tag risk-high">高</span></td><td>3 分钟</td></tr>
+                        <tr><td>4</td><td>局域网共享设置</td><td><span class="risk-tag risk-mid">中</span></td><td>2 分钟</td></tr>
+                        <tr><td>5</td><td>Sniffer 协议列表与 force-domain</td><td><span class="risk-tag risk-mid">中</span></td><td>2 分钟</td></tr>
+                        <tr><td>6</td><td>规则优先级与 PROCESS-NAME 位置</td><td><span class="risk-tag risk-high">高</span></td><td>3 分钟</td></tr>
+                        <tr><td>7</td><td>RULE-SET 更新间隔与缓存</td><td><span class="risk-tag risk-low">低</span></td><td>1 分钟</td></tr>
+                        <tr><td>8</td><td>策略组类型与测速 URL</td><td><span class="risk-tag risk-mid">中</span></td><td>2 分钟</td></tr>
+                        <tr><td>9</td><td>节点列表中的失效节点</td><td><span class="risk-tag risk-low">低</span></td><td>2 分钟</td></tr>
+                        <tr><td>10</td><td>geodata-mode 与缓存策略</td><td><span class="risk-tag risk-low">低</span></td><td>1 分钟</td></tr>
+                        <tr><td>11</td><td>端口与入站监听</td><td><span class="risk-tag risk-mid">中</span></td><td>2 分钟</td></tr>
+                        <tr><td>12</td><td>外部控制器与密钥</td><td><span class="risk-tag risk-high">高</span></td><td>2 分钟</td></tr>
+                        <tr><td>13</td><td>界面偏好与通知设置</td><td><span class="risk-tag risk-low">低</span></td><td>2 分钟</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>完整执行一遍大约需要 <strong>26 分钟</strong>。建议在每次大版本升级（如 v2.4 → v2.5）后完整执行一次，小版本升级（如 v2.5.1 → v2.5.2）只需重点检查高优先级项。</p>
+
+            <!-- 自动化建议 -->
+            <h2>🤖 让审计自动化：建立基线配置</h2>
+            <p>如果你不想每次升级都手动检查，一个更聪明的做法是：<strong>建立一份“基线配置”</strong>。</p>
+            <ol>
+                <li>在每次确认配置最优后，导出一次备份，命名为 <code>baseline-v2.5.2.tar.gz</code>。</li>
+                <li>升级新版本后，先导出当前配置，与基线配置进行<strong>差异对比</strong>（可以使用 <code>diff</code> 命令或 Git）。</li>
+                <li>只关注差异部分——新版是否重置了某些字段？订阅是否带入了新的规则集？你手动修改的项是否被覆盖？</li>
+            </ol>
+            <div class="code-block"><span class="code-comment"># 对比两份配置文件的差异（Linux/macOS）</span>
+            tar -xzf baseline-v2.5.2.tar.gz -C /tmp/baseline
+            tar -xzf current-config.tar.gz -C /tmp/current
+            diff -u /tmp/baseline/config.yaml /tmp/current/config.yaml</div>
+            <p>这种方法能让你在几分钟内定位到所有变化，而不是逐项手动检查。</p>
+
+            <!-- 结语 -->
+            <h2>🏁 结语：升级是起点，审计是保障</h2>
+            <p>软件升级从来不是“点一下按钮就完事”的操作。真正负责任的升级流程应该包括：<strong>升级 → 审计 → 验证 → 备份</strong>。本文梳理的 13 项检查覆盖了 DNS、TUN、Sniffer、规则、代理组、性能、安全和界面八大类配置，每一项都源自真实的版本演进经验。希望它能让你的每一次升级都平稳无忧。</p>
+            <p>如果你在审计过程中发现了有趣的问题，或者总结出了自己的检查清单，欢迎在 GitHub Discussions 中分享。社区的经验汇聚，才是最好的升级指南。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/maintenance-checklist.html" class="related-card">
+                        <h4>Clash Verge Rev 系统维护清单：让你的代理环境永葆活力</h4>
+                        <p>2026-08-12 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html" class="related-card">
+                        <h4>配置备份与恢复全攻略：让你的代理环境永不丢失</h4>
+                        <p>2026-07-15 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/v2.5.2-release.html" class="related-card">
+                        <h4>Clash Verge Rev v2.5.2 正式发布：40+ 修复与新协议，稳定如磐石</h4>
+                        <p>2026-07-24 · 版本发布</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
