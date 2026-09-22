@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash 配置文件中的隐私边界应该在哪里 ｜ Clash Verge Rev 官方博客</title>
+    <meta name="description" content="深入探讨 Clash Verge Rev 配置文件中的隐私边界问题。从订阅链接、节点凭据、DNS 服务器到规则集与日志，系统梳理配置文件中每一项数据的敏感程度、泄露风险与实际后果。附三层次分享框架与脱敏实践，帮你在求助、协作与备份时守住隐私底线。" />
+    <meta name="keywords" content="Clash Verge Rev 隐私, 配置文件安全, 订阅链接泄露, 节点凭据, 配置脱敏, 隐私边界, 代理客户端安全, 分享配置风险" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta name="author" content="Clash Verge Rev Community" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/config-privacy-boundary.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Clash 配置文件中的隐私边界应该在哪里" />
+    <meta property="og:description" content="从订阅链接到节点凭据，从 DNS 到规则集——系统梳理配置文件中的敏感数据与分享边界。" />
+    <meta property="og:url" content="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/config-privacy-boundary.html" />
+    <meta property="og:site_name" content="Clash Verge Rev" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/clash-verge2026/clash-verge-rev-omni-guide" />
+    <meta property="article:published_time" content="2026-09-22T08:00:00+08:00" />
+    <meta property="article:modified_time" content="2026-09-22T10:00:00+08:00" />
+    <meta property="article:author" content="Clash Verge Rev 核心团队" />
+    <meta property="article:section" content="技术深潜" />
+    <meta property="article:tag" content="隐私保护" />
+    <meta property="article:tag" content="配置安全" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clash 配置文件中的隐私边界应该在哪里" />
+    <meta name="twitter:description" content="配置文件的每一项数据敏感度分析，以及三层次分享框架。" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Clash 配置文件中的隐私边界应该在哪里",
+            "description": "深入探讨 Clash Verge Rev 配置文件中的隐私边界问题。从订阅链接、节点凭据、DNS 服务器到规则集与日志，系统梳理配置文件中每一项数据的敏感程度、泄露风险与实际后果。",
+            "author": { "@type": "Organization", "name": "Clash Verge Rev 核心团队" },
+            "publisher": { "@type": "Organization", "name": "Clash Verge Rev Community" },
+            "datePublished": "2026-09-22",
+            "dateModified": "2026-09-22",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": "https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/config-privacy-boundary.html" }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2129;
+            --border-default: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d2991d;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d2c0;
+            --btn-primary-bg: #238636;
+            --btn-primary-hover: #2ea043;
+            --btn-outline-bg: #21262d;
+            --btn-outline-hover: #30363d;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-elevated: 0 8px 24px rgba(0,0,0,0.4);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:80px; }
+        body {
+            background:var(--bg-primary); color:var(--text-primary);
+            font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height:1.7; -webkit-font-smoothing:antialiased; min-height:100vh;
+        }
+        a { text-decoration:none; color:inherit; }
+        .container { width:90%; max-width:960px; margin:0 auto; }
+
+        /* 页眉 */
+        .site-header { background:var(--bg-secondary); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); transition:box-shadow var(--transition-fast); }
+        .site-header.scrolled { box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
+        .header-left { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .logo-link { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.05rem; color:var(--text-primary); white-space:nowrap; padding:6px 4px; border-radius:var(--radius-sm); transition:background var(--transition-fast); }
+        .logo-link:hover { background:var(--btn-outline-bg); }
+        .logo-icon { width:28px; height:28px; background:linear-gradient(135deg, #58a6ff, #a371f7); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .logo-text { letter-spacing:-0.01em; }
+        .logo-badge { font-size:0.7rem; background:var(--border-default); color:var(--text-secondary); padding:2px 7px; border-radius:10px; font-weight:500; letter-spacing:0.02em; }
+        .main-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
+        .main-nav a { display:flex; align-items:center; gap:5px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; position:relative; }
+        .main-nav a:hover { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .main-nav a.active { color:var(--text-primary); background:var(--btn-outline-bg); }
+        .nav-indicator { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green); margin-left:-2px; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+        .nav-separator { width:1px; height:18px; background:var(--border-default); margin:0 4px; flex-shrink:0; }
+        .header-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .search-wrap { position:relative; display:flex; align-items:center; }
+        .search-input { background:var(--bg-primary); border:1px solid var(--border-default); color:var(--text-primary); padding:7px 12px 7px 34px; border-radius:20px; font-size:0.85rem; width:200px; transition:all var(--transition-smooth); outline:none; }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--accent-blue); box-shadow:0 0 0 3px rgba(88,166,255,0.12); width:240px; }
+        .search-icon { position:absolute; left:11px; pointer-events:none; color:var(--text-muted); font-size:0.85rem; }
+        .header-btn { display:flex; align-items:center; gap:5px; padding:7px 14px; border-radius:20px; font-size:0.85rem; font-weight:500; border:1px solid var(--border-default); background:var(--btn-outline-bg); color:var(--text-secondary); transition:all var(--transition-fast); white-space:nowrap; cursor:pointer; }
+        .header-btn:hover { background:var(--btn-outline-hover); color:var(--text-primary); border-color:var(--text-muted); }
+        .header-btn-primary { background:var(--btn-primary-bg); color:#fff; border-color:transparent; font-weight:600; }
+        .header-btn-primary:hover { background:var(--btn-primary-hover); color:#fff; }
+        .hamburger { display:none; background:none; border:none; cursor:pointer; padding:6px; border-radius:var(--radius-sm); color:var(--text-secondary); transition:background var(--transition-fast); }
+        .hamburger:hover { background:var(--btn-outline-bg); color:var(--text-primary); }
+        .hamburger svg { display:block; width:22px; height:22px; }
+        .mobile-nav-panel { display:none; position:fixed; top:56px; left:0; right:0; bottom:0; background:var(--bg-secondary); z-index:190; padding:20px 24px; flex-direction:column; gap:4px; overflow-y:auto; border-top:1px solid var(--border-default); }
+        .mobile-nav-panel.open { display:flex; }
+        .mobile-nav-panel a { display:block; padding:12px 16px; border-radius:var(--radius-md); font-size:1rem; font-weight:500; color:var(--text-secondary); transition:all var(--transition-fast); }
+        .mobile-nav-panel a:hover, .mobile-nav-panel a.active { background:var(--btn-outline-bg); color:var(--text-primary); }
+
+        /* 文章主体 */
+        .article { padding:40px 0 60px; }
+        .article-header { margin-bottom:30px; }
+        .article-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:10px; background:rgba(248,81,73,0.15); color:#f85149; margin-bottom:12px; }
+        .article-title { font-size:2.6rem; font-weight:800; line-height:1.2; margin-bottom:14px; color:#fff; }
+        .article-meta { color:var(--text-muted); font-size:0.9rem; display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+        .article-intro { font-size:1.1rem; color:var(--text-secondary); line-height:1.7; margin-bottom:30px; padding-bottom:24px; border-bottom:1px solid var(--border-muted); }
+        h2 { font-size:1.8rem; font-weight:700; color:#fff; margin:36px 0 16px; }
+        h3 { font-size:1.3rem; font-weight:600; color:#e6edf3; margin:24px 0 10px; }
+        p { color:var(--text-secondary); font-size:0.95rem; line-height:1.75; margin-bottom:16px; }
+        ul, ol { color:var(--text-secondary); padding-left:22px; margin-bottom:16px; }
+        li { margin-bottom:6px; }
+        strong { color:#fff; }
+        code { background:#1c2129; padding:2px 6px; border-radius:4px; font-size:0.9em; color:#e6edf3; }
+        .article a { color:var(--accent-blue); font-weight:500; }
+        .article a:hover { text-decoration:underline; }
+        blockquote { border-left:3px solid #f85149; background:rgba(248,81,73,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; color:var(--text-secondary); }
+
+        /* 敏感度卡片 */
+        .sensitive-item { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:20px; margin:14px 0; display:flex; gap:14px; align-items:flex-start; }
+        .sensitive-item:hover { border-color:rgba(248,81,73,0.35); }
+        .sens-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+        .sens-content h4 { color:#fff; font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+        .sens-content p { color:var(--text-secondary); font-size:0.9rem; margin:0; }
+        .sev-tag { font-size:0.68rem; font-weight:600; padding:2px 8px; border-radius:8px; white-space:nowrap; }
+        .sev-critical { background:rgba(248,81,73,0.18); color:#f85149; }
+        .sev-high { background:rgba(210,153,29,0.18); color:#d2991d; }
+        .sev-mid { background:rgba(88,166,255,0.15); color:#58a6ff; }
+        .sev-low { background:rgba(63,185,80,0.15); color:#3fb950; }
+
+        /* 表格 */
+        .table-wrap { overflow-x:auto; margin:20px 0; border-radius:var(--radius-md); border:1px solid var(--border-default); }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:600px; }
+        th, td { border:1px solid var(--border-default); padding:12px 16px; text-align:left; }
+        th { background:var(--bg-tertiary); color:#fff; font-weight:700; font-size:0.82rem; letter-spacing:0.03em; }
+        td { background:var(--bg-secondary); color:var(--text-secondary); }
+        tr:hover td { background:var(--bg-tertiary); }
+
+        /* 代码块 */
+        .code-block { background:#0d1117; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:18px 20px; margin:14px 0; overflow-x:auto; font-family:"SF Mono","Fira Code","Fira Mono","Menlo","Consolas","DejaVu Sans Mono",monospace; font-size:0.84rem; line-height:1.55; color:#e6edf3; white-space:pre; word-break:normal; }
+        .code-comment { color:#8b949e; font-style:italic; }
+
+        /* 提示框 */
+        .callout { border-left:3px solid var(--accent-blue); background:rgba(88,166,255,0.06); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:20px 0; }
+        .callout.tip { border-left-color:var(--accent-green); background:rgba(63,185,80,0.06); }
+        .callout.warning { border-left-color:var(--accent-orange); background:rgba(210,153,29,0.06); }
+        .callout.danger { border-left-color:#f85149; background:rgba(248,81,73,0.06); }
+
+        /* 层级卡片 */
+        .tier-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:22px; margin:16px 0; border-left:4px solid var(--accent-blue); }
+        .tier-card h4 { color:#fff; font-weight:700; margin-bottom:8px; }
+        .tier-card p { margin:0; }
+
+        /* 相关文章 */
+        .related-posts { margin-top:50px; padding-top:30px; border-top:1px solid var(--border-muted); }
+        .related-posts h3 { margin-bottom:16px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+        .related-card { background:var(--bg-secondary); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; transition:all var(--transition-smooth); }
+        .related-card:hover { border-color:var(--accent-blue); }
+        .related-card h4 { color:#fff; font-size:0.95rem; margin-bottom:4px; }
+        .related-card p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+
+        /* 页脚 */
+        .site-footer { border-top:1px solid var(--border-default); background:var(--bg-secondary); padding:48px 0 32px; margin-top:60px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:30px; margin-bottom:32px; }
+        .footer-col h4 { color:#fff; font-weight:600; margin-bottom:12px; font-size:0.95rem; }
+        .footer-col a { display:block; color:var(--text-secondary); font-size:0.88rem; padding:4px 0; transition:color var(--transition-fast); }
+        .footer-col a:hover { color:var(--accent-blue); }
+        .footer-bottom { text-align:center; color:var(--text-muted); font-size:0.82rem; padding-top:20px; border-top:1px solid var(--border-muted); }
+        .footer-bottom a { color:var(--accent-blue); }
+        .footer-bottom a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .main-nav { display:none; } .search-wrap { display:none; } .header-btn { display:none; }
+            .header-btn-primary { display:inline-flex; font-size:0.8rem; padding:6px 12px; }
+            .hamburger { display:block; } .article-title { font-size:2rem; }
+            .header-inner { height:50px; } .mobile-nav-panel { top:50px; }
+            .sensitive-item { flex-direction:column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页眉导航 -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/index.html" class="logo-link" aria-label="Clash Verge Rev 首页">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">Clash Verge Rev</span>
+                    <span class="logo-badge">v2.5.2</span>
+                </a>
+                <nav class="main-nav" aria-label="主导航">
+                    <span class="nav-separator"></span>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+                    <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="headerSearch" /></div>
+                <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank" rel="noopener" class="header-btn">⬡ GitHub</a>
+                <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html" class="header-btn header-btn-primary">⬇️ 下载 v2.5.2</a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="search-wrap-mobile"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="搜索文章…" id="mobileSearch" /></div>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/features.html">✨ 特性</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">📥 下载</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">📖 教程</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">❓ FAQ</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">📋 更新日志</a>
+            <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog.html" class="active">📝 博客</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">📦 Releases</a>
+            <a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank" rel="noopener">📚 Wiki</a>
+        </div>
+    </header>
+
+    <main>
+        <article class="article container">
+            <header class="article-header">
+                <span class="article-tag">技术深潜 · 隐私保护</span>
+                <h1 class="article-title">Clash 配置文件中的隐私边界应该在哪里</h1>
+                <div class="article-meta">
+                    <span>👤 Clash Verge Rev 核心团队</span>
+                    <span>📅 2026-09-22</span>
+                    <span>⏱️ 阅读时间约 14 分钟</span>
+                </div>
+                <div class="article-intro">
+                    在 GitHub Issues 中求助时，维护者常常会说“请附上你的配置文件”。在论坛分享调优心得时，热心用户会贴出完整的 <code>config.yaml</code>。在配置备份时，我们习惯性地把整个数据目录打包上传到云盘。这些行为看起来理所当然，却很少有人停下来思考一个问题：<strong>这份文件里到底藏着多少关于你的信息？</strong> 订阅链接指向你的付费账户，节点名称可能包含你的地理位置，DNS 服务器暴露你的运营商，规则集反映你的浏览习惯。本文将从数据分类出发，系统探讨 Clash 配置文件的隐私边界究竟应该划在哪里。
+                </div>
+            </header>
+
+            <!-- 为什么重要 -->
+            <h2>🤔 为什么配置文件比你想的更敏感？</h2>
+            <p>很多人对配置文件的敏感性存在一种直觉性的低估。原因在于：它看起来只是一堆 YAML 键值对，没有密码、没有身份证号、没有银行卡信息。但隐私泄露从来不只是“账号被盗”这么简单——它更多是关于<strong>画像</strong>。</p>
+            <p>一份完整的 Clash 配置文件，可以让一个陌生人推断出：</p>
+            <ul>
+                <li>你为哪个机场付费，你的账号标识可能就藏在订阅链接里</li>
+                <li>你常连接的节点位于哪些国家和地区</li>
+                <li>你的网络运营商是谁，你使用的是 IPv4 还是 IPv6</li>
+                <li>你在哪些时间段使用代理（如果日志一并泄露）</li>
+                <li>你关注哪些服务——AI、流媒体、游戏、开发工具</li>
+                <li>你的设备类型和操作系统（从进程规则推断）</li>
+            </ul>
+            <p>这些信息单独看都不致命，但组合起来足以构成一份相当精确的<strong>用户画像</strong>。对于记者、研究人员、企业安全团队或任何对隐私有较高要求的用户来说，这份画像本身就是风险。</p>
+            <blockquote>
+                “配置文件不是密码，但它是一把钥匙的拓印——足够聪明的人可以据此复制出很多东西。”
+            </blockquote>
+
+            <!-- 数据分类 -->
+            <h2>🔍 配置文件中的敏感数据分类</h2>
+            <p>我们把 Clash 配置文件中常见的数据按敏感程度分为四级。理解这个分类，是划定隐私边界的第一步。</p>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🔴</span>
+                <div class="sens-content">
+                    <h4>订阅链接 <span class="sev-tag sev-critical">极敏感</span></h4>
+                    <p>订阅链接通常是 <code>https://机场域名/api/v1/client/subscribe?token=xxxxx</code> 的形式。<strong>token 部分就是你的身份凭证</strong>——任何拿到这个链接的人，都可以直接下载你的节点列表、消耗你的流量、甚至通过机场后台的关联信息推断出你的注册邮箱。这是配置文件中<strong>最不应该外泄</strong>的内容。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🟠</span>
+                <div class="sens-content">
+                    <h4>节点凭据（UUID / 密码 / 私钥） <span class="sev-tag sev-critical">极敏感</span></h4>
+                    <p>如果你使用自建节点，<code>proxies</code> 列表中会包含 VMess 的 UUID、Shadowsocks 的密码、Trojan 的密码、WireGuard 的私钥等。<strong>这些凭据一旦泄露，等同于把你的服务器拱手让人</strong>。即使是机场订阅导入的节点，其凭据也应当被视为敏感——它们可能被用于流量盗用或滥用。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🟡</span>
+                <div class="sens-content">
+                    <h4>DNS 服务器配置 <span class="sev-tag sev-high">高敏感</span></h4>
+                    <p><code>nameserver</code> 和 <code>fallback</code> 中列出的 DNS 服务器，往往能推断出你的网络环境。比如使用 <code>223.5.5.5</code>（阿里 DNS）通常意味着你在国内；使用某个特定企业的内部 DNS 则暴露了你的雇主。此外，DNS 查询日志如果与配置一并泄露，可能暴露你访问过的域名。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🟡</span>
+                <div class="sens-content">
+                    <h4>节点名称与分组命名 <span class="sev-tag sev-high">高敏感</span></h4>
+                    <p>节点名称常常包含地理位置信息，如“香港-01”“东京-家宽”“公司专线”。策略组名称如“公司代理”“实验室节点”则可能暴露你的职业或组织归属。这些命名习惯虽小，却是画像的重要拼图。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🔵</span>
+                <div class="sens-content">
+                    <h4>规则集与分流策略 <span class="sev-tag sev-mid">中敏感</span></h4>
+                    <p>你的规则列表反映了你的使用偏好。如果配置中包含大量针对某类服务的规则（如特定行业网站、特定 AI 工具、特定游戏平台），观察者可以推断出你的职业方向和兴趣领域。这类信息单独看价值有限，但结合其他数据后画像精度会显著提升。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🔵</span>
+                <div class="sens-content">
+                    <h4>进程规则与设备信息 <span class="sev-tag sev-mid">中敏感</span></h4>
+                    <p><code>PROCESS-NAME</code> 规则会暴露你设备上安装了哪些软件。如果你的配置中出现了 <code>Photoshop.exe</code>、<code>Xcode</code>、<code>docker.exe</code> 等，观察者可以推断你的职业方向、技术栈甚至工作流程。</p>
+                </div>
+            </div>
+
+            <div class="sensitive-item">
+                <span class="sens-icon">🟢</span>
+                <div class="sens-content">
+                    <h4>性能参数与端口设置 <span class="sev-tag sev-low">低敏感</span></h4>
+                    <p><code>port</code>、<code>mixed-port</code>、<code>log-level</code>、<code>interval</code> 等参数基本不包含个人身份信息。它们可以被安全地分享，甚至可以作为社区最佳实践的参考。</p>
+                </div>
+            </div>
+
+            <!-- 风险场景 -->
+            <h2>⚠️ 四个真实的风险场景</h2>
+            <p>抽象的敏感度分级可能还不够直观。让我们看四个具体场景，理解隐私边界模糊会带来什么后果。</p>
+            <h3>场景一：在 GitHub Issue 中贴上完整配置</h3>
+            <p>这是最常见的泄露场景。用户遇到 Bug 后，为了“方便维护者排查”，直接粘贴了完整的 <code>config.yaml</code>。这个文件随即被搜索引擎索引（GitHub 的公开 Issue 是可以被 Google 抓取的），永久留在互联网上。几个月后，用户发现自己的机场流量异常消耗——因为订阅 token 已经被爬虫抓取并被他人使用。</p>
+            <h3>场景二：把配置上传到公开的 Gist 或 Pastebin</h3>
+            <p>一些用户习惯用在线 Paste 工具分享配置片段。但很多 Paste 服务默认是公开的，且会被专门的爬虫监控。一个包含订阅链接的 Gist 可能在几分钟内就被抓取并录入到“免费节点分享”数据库中。</p>
+            <h3>场景三：云盘备份被意外共享</h3>
+            <p>把备份文件上传到云盘本身没问题，但如果文件夹权限被误设为“公开”，或者分享链接被转发，那么整个数据目录（包括配置、日志、缓存）都会暴露。云盘的搜索功能意味着这些文件甚至可能被其他用户主动检索到。</p>
+            <h3>场景四：向“朋友”分享配置以帮忙调试</h3>
+            <p>这看起来风险最低，但实际上最难防范。你无法确认对方的设备是否安全、是否会转发、是否会被第三方获取。即使是善意的分享，也建议使用脱敏版本。</p>
+
+            <!-- 分享边界 -->
+            <h2>📏 划定边界：三层次分享框架</h2>
+            <p>“完全不能分享”并不现实——求助、协作、教学都需要分享配置。更实用的做法是建立一个<strong>分层次的分享框架</strong>，根据接收方的信任程度选择不同级别的脱敏。</p>
+
+            <div class="tier-card">
+                <h4>🟢 第一层：公开分享（论坛、GitHub Issue、教程）</h4>
+                <p><strong>适用对象：</strong>完全陌生的人、公开的互联网。<br>
+                <strong>可以分享：</strong>结构性的配置片段（如规则格式、DNS 结构、TUN 参数），但所有具体值必须替换为占位符。<br>
+                <strong>必须移除：</strong>订阅链接、所有节点凭据、真实 DNS 服务器地址、可能暴露身份的自定义命名。<br>
+                <strong>推荐做法：</strong>手写一份“最小复现配置”，只保留与问题相关的部分，所有敏感值用 <code>example.com</code>、<code>your-token-here</code> 替代。</p>
+            </div>
+
+            <div class="tier-card">
+                <h4>🟡 第二层：半信任分享（朋友、同事、社区维护者）</h4>
+                <p><strong>适用对象：</strong>你认识并信任，但无法完全控制其环境的人。<br>
+                <strong>可以分享：</strong>脱敏后的完整配置，保留真实的结构和大部分参数，但替换敏感值。<br>
+                <strong>必须移除：</strong>订阅 token、节点密码、UUID、私钥。<br>
+                <strong>推荐做法：</strong>使用自动化脱敏脚本（见下文），生成一份可读性高但无凭证的版本。</p>
+            </div>
+
+            <div class="tier-card">
+                <h4>🔴 第三层：完全信任（自己的另一台设备、加密备份）</h4>
+                <p><strong>适用对象：</strong>你完全掌控的环境。<br>
+                <strong>可以分享：</strong>完整的原始配置。<br>
+                <strong>前提条件：</strong>传输通道加密（如加密的云盘、点对点加密传输），存储位置安全（如加密硬盘、带密码的压缩包）。<br>
+                <strong>推荐做法：</strong>使用 GPG 或 age 对备份文件加密后再上传，即使云盘被攻破，配置也不会泄露。</p>
+            </div>
+
+            <!-- 脱敏实践 -->
+            <h2>🧼 脱敏实践：从原始配置到可分享版本</h2>
+            <p>手动删除敏感字段既繁琐又容易遗漏。以下是几个实用的脱敏技巧。</p>
+            <h3>技巧一：使用占位符替换法</h3>
+            <p>在分享前，将敏感值替换为语义清晰的占位符。这样接收方仍然能理解配置结构，但无法获取真实信息。</p>
+            <div class="code-block"><span class="code-comment"># 脱敏前</span>
+            proxies:
+            - name: "香港-家宽-01"
+                type: vmess
+                server: hk01.myanime.top
+                port: 443
+                uuid: 8f3a2b1c-9d4e-5f6a-7b8c-9d0e1f2a3b4c
+
+            <span class="code-comment"># 脱敏后</span>
+            proxies:
+            - name: "节点-01"
+                type: vmess
+                server: node01.example.com
+                port: 443
+                uuid: 00000000-0000-0000-0000-000000000000</div>
+            <h3>技巧二：订阅链接只保留结构</h3>
+            <p>分享订阅相关问题时，将链接替换为结构相同但 token 无效的版本：</p>
+            <div class="code-block"><span class="code-comment"># 原始链接</span>
+            https://api.myairport.com/api/v1/client/subscribe?token=a1b2c3d4e5f6g7h8
+
+            <span class="code-comment"># 脱敏后</span>
+            https://api.example.com/api/v1/client/subscribe?token=YOUR_TOKEN_HERE</div>
+            <h3>技巧三：正则批量替换脚本</h3>
+            <p>对于大型配置文件，可以使用脚本批量脱敏。以下是一个简单的 Python 示例：</p>
+            <div class="code-block"><span class="code-comment"># sanitize_config.py — 基础脱敏脚本</span>
+            import re
+            import sys
+
+            def sanitize(text):
+                <span class="code-comment"># 替换 UUID</span>
+                text = re.sub(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+                            '00000000-0000-0000-0000-000000000000', text)
+                <span class="code-comment"># 替换订阅 token</span>
+                text = re.sub(r'(token=)[a-zA-Z0-9]+', r'\1REDACTED', text)
+                <span class="code-comment"># 替换 server 地址</span>
+                text = re.sub(r'(server:\s*)[^\s]+', r'\1node.example.com', text)
+                return text
+
+            if __name__ == '__main__':
+                print(sanitize(sys.stdin.read()))</div>
+            <div class="callout warning">
+                <strong>⚠️ 注意：</strong>自动脱敏脚本只能覆盖已知模式，无法保证 100% 安全。分享前务必<strong>人工复核一遍</strong>，尤其是自定义命名的节点和策略组。
+            </div>
+
+            <!-- 分级对照表 -->
+            <h2>📊 敏感度与分享策略对照表</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>数据类型</th><th>敏感度</th><th>公开分享</th><th>半信任分享</th><th>加密备份</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>订阅链接 / token</td><td><span class="sev-tag sev-critical">极敏感</span></td><td>❌ 禁止</td><td>❌ 禁止</td><td>✅ 加密后</td></tr>
+                        <tr><td>节点 UUID / 密码 / 私钥</td><td><span class="sev-tag sev-critical">极敏感</span></td><td>❌ 禁止</td><td>❌ 禁止</td><td>✅ 加密后</td></tr>
+                        <tr><td>DNS 服务器地址</td><td><span class="sev-tag sev-high">高敏感</span></td><td>⚠️ 替换</td><td>⚠️ 替换</td><td>✅ 直接备份</td></tr>
+                        <tr><td>节点名称与分组命名</td><td><span class="sev-tag sev-high">高敏感</span></td><td>⚠️ 泛化</td><td>⚠️ 泛化</td><td>✅ 直接备份</td></tr>
+                        <tr><td>规则集内容</td><td><span class="sev-tag sev-mid">中敏感</span></td><td>✅ 可分享</td><td>✅ 可分享</td><td>✅ 直接备份</td></tr>
+                        <tr><td>进程规则</td><td><span class="sev-tag sev-mid">中敏感</span></td><td>⚠️ 按需删除</td><td>⚠️ 按需删除</td><td>✅ 直接备份</td></tr>
+                        <tr><td>端口与性能参数</td><td><span class="sev-tag sev-low">低敏感</span></td><td>✅ 可分享</td><td>✅ 可分享</td><td>✅ 直接备份</td></tr>
+                        <tr><td>日志文件</td><td><span class="sev-tag sev-high">高敏感</span></td><td>❌ 禁止</td><td>⚠️ 裁剪后</td><td>⚠️ 谨慎</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>这张表可以作为你分享前的快速检查清单。养成习惯后，每次分享前花 30 秒过一遍，就能避免绝大多数隐私泄露。</p>
+
+            <!-- 日志的隐患 -->
+            <h2>📜 被忽视的角落：日志文件</h2>
+            <p>配置文件本身的敏感性已经足够引起重视，但<strong>日志文件</strong>往往被完全忽略。Clash Verge Rev 的日志（尤其是 Debug 级别）可能记录：</p>
+            <ul>
+                <li>每一条被处理的域名（包括你访问的具体网站）</li>
+                <li>每次连接的源 IP 和目标 IP</li>
+                <li>规则匹配的详细过程</li>
+                <li>DNS 查询的完整记录</li>
+            </ul>
+            <p>一份 Debug 日志的隐私价值远高于配置文件本身——它相当于一份浓缩的浏览历史。因此：</p>
+            <ul>
+                <li>分享日志时，<strong>只提取与问题相关的几行</strong>，而不是粘贴整个文件。</li>
+                <li>使用 <code>grep</code> 过滤出关键错误，避免暴露无关的域名。</li>
+                <li>定期清理日志目录，不要让它们无限积累。</li>
+            </ul>
+            <div class="code-block"><span class="code-comment"># 从日志中提取与特定问题相关的行（示例）</span>
+            grep -i "error\|fail\|timeout" ~/.config/clash-verge-rev/logs/*.log | tail -50</div>
+
+            <!-- 边界的原则 -->
+            <h2>🧭 划定边界的四个原则</h2>
+            <p>最后，我们总结出划定隐私边界时应当遵循的四个原则：</p>
+            <h3>原则一：默认不分享</h3>
+            <p>除非有明确的必要，否则不分享完整配置。求助时优先使用“最小复现片段”，而不是“完整文件”。</p>
+            <h3>原则二：凭证永不外传</h3>
+            <p>订阅 token、节点密码、UUID、私钥——这些是绝对的禁区。无论对方是谁，都应替换为占位符后再分享。</p>
+            <h3>原则三：元数据也要考虑</h3>
+            <p>节点名称、分组命名、DNS 地址这些“看似无害”的元数据，累积起来可以构成画像。分享前泛化处理。</p>
+            <h3>原则四：传输通道加密</h3>
+            <p>即使是发给完全信任的人，也建议通过加密通道传输（如加密压缩包、点对点加密消息）。因为你无法控制对方设备的安全状况。</p>
+
+            <!-- 结语 -->
+            <h2>🏁 结语：边界是一种责任</h2>
+            <p>在开源社区中，分享是一种美德——分享配置帮助他人少走弯路，分享日志帮助维护者定位问题。但分享的前提是<strong>不伤害自己</strong>。隐私边界的划定，不是要让你变得封闭，而是让你在开放的同时保有底线。当你养成“分享前先脱敏”的习惯后，你会发现这只需要多花 30 秒，却能避免数月后追悔莫及。</p>
+            <p>如果你在脱敏实践中总结出了自己的方法，或者有更好的工具推荐，欢迎在 GitHub Discussions 中分享。保护好自己，才能更好地帮助他人。</p>
+
+            <!-- 相关文章 -->
+            <div class="related-posts">
+                <h3>📰 相关文章</h3>
+                <div class="related-grid">
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/backup-configuration.html" class="related-card">
+                        <h4>配置备份与恢复全攻略：让你的代理环境永不丢失</h4>
+                        <p>2026-07-15 · 教程指南</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/dns-anti-leak-deep.html" class="related-card">
+                        <h4>DNS 防泄漏硬核解析：Fake-IP 与 DoH/DoT 的协同工作原理</h4>
+                        <p>2026-05-15 · 安全公告</p>
+                    </a>
+                    <a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/blog/post-upgrade-config-audit.html" class="related-card">
+                        <h4>升级新版本之后，哪些旧配置最值得重新检查</h4>
+                        <p>2026-09-22 · 教程指南</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" aria-label="页脚导航">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>📥 下载</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Windows 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">macOS 版</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/download.html">Linux 版</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/releases">历史版本</a></div>
+                <div class="footer-col"><h4>📖 文档</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/TUN-Deep-Dive">TUN 模式详解</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Mihomo-Optimization">Mihomo 优化指南</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/tutorials.html">规则结构参考</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/DNS-Anti-Leak">DNS 防泄漏</a></div>
+                <div class="footer-col"><h4>🆘 帮助</h4><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">常见问题 FAQ</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/faq.html">安装问题排查</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/Configuration-Essentials">配置指导</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/issues" target="_blank">提交 Issue</a></div>
+                <div class="footer-col"><h4>🔗 项目</h4><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide" target="_blank">GitHub 仓库</a><a href="https://clash-verge2026.github.io/clash-verge-rev-omni-guide/changelog.html">更新日志</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki" target="_blank">Wiki 首页</a><a href="https://github.com/clash-verge2026/clash-verge-rev-omni-guide/stargazers" target="_blank">⭐ Star 我们</a></div>
+            </div>
+            <div class="footer-bottom">© 2026 <strong>Clash Verge Rev</strong> · 基于 <a href="#" target="_blank">Mihomo</a> 的智能代理中枢 · 开源社区驱动 · 持续迭代</div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNavPanel = document.getElementById('mobileNavPanel');
+            let menuOpen = false;
+            hamburgerBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                mobileNavPanel.classList.toggle('open', menuOpen);
+                hamburgerBtn.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            });
+            mobileNavPanel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOpen = false;
+                    mobileNavPanel.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', false);
+                    document.body.style.overflow = '';
+                });
+            });
+            function setupSearch(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = encodeURIComponent(input.value.trim());
+                        if (query) window.open('https://github.com/clash-verge2026/clash-verge-rev-omni-guide/wiki/_search?q=' + query, '_blank', 'noopener');
+                    }
+                });
+            }
+            setupSearch('headerSearch');
+            setupSearch('mobileSearch');
+            if (window.scrollY > 10) header.classList.add('scrolled');
+        })();
+    </script>
+</body>
+</html>
